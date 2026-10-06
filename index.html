@@ -1,237 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Courier is the OS-owned durable runtime for agentic work that outlives the interactive AI session. Secure, interrupt-tolerant task orchestration.">
-    <title>Courier - Durable Runtime for Agentic Work</title>
-    <style>
-        :root {
-            --bg: #0f172a;
-            --text: #f8fafc;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --surface: #1e293b;
-            --border: #334155;
-            --accent: #10b981;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        main {
-            display: block;
-        }
-        header {
-            text-align: center;
-            padding: 6rem 2rem 4rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 3rem;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .subtitle {
-            font-size: 1.25rem;
-            color: #cbd5e1;
-            margin-bottom: 2rem;
-        }
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s;
-        }
-        .btn:hover { background-color: var(--primary-hover); }
-        .btn:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 2px;
-        }
-        
-        section {
-            padding: 4rem 2rem;
-            max-width: 900px;
-            margin: 0 auto;
-            border-top: 1px solid var(--border);
-        }
-        h2 { font-size: 2rem; margin-bottom: 1.5rem; }
-        
-        .flow-diagram {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            text-align: center;
-            font-weight: bold;
-            margin: 2rem 0;
-        }
-        @media (min-width: 768px) {
-            .flow-diagram {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-        .flow-step {
-            padding: 1rem;
-            background: var(--bg);
-            border: 1px solid var(--primary);
-            border-radius: 0.5rem;
-            flex: 1;
-        }
-        .flow-arrow {
-            color: var(--border);
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        @media (min-width: 768px) {
-            .grid { grid-template-columns: 1fr 1fr 1fr; }
-        }
-        .card {
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            border: 1px solid var(--border);
-        }
-        .card h3 { margin-top: 0; color: var(--primary); font-size: 1.25rem; }
-        
-        .demo-box {
-            background: black;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            color: #10b981;
-            margin-bottom: 2rem;
-            overflow-x: auto;
-        }
-        
-        .ledger-note {
-            background: #1e1b4b;
-            border-left: 4px solid #8b5cf6;
-            padding: 1.5rem;
-            border-radius: 0 0.5rem 0.5rem 0;
-            margin: 2rem 0;
-        }
-        
-        .pilot-offer {
-            background: var(--surface);
-            text-align: center;
-            padding: 3rem 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--primary);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #64748b;
-            border-top: 1px solid var(--border);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courier Symphony — Keep AI work moving</title>
+<meta name="description" content="Courier Symphony is a continuity and orchestration layer for AI work across providers, machines, and execution environments. In active development and validation.">
+<link rel="canonical" href="https://couriersymphony.de/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Courier Symphony — Keep AI work moving">
+<meta property="og:description" content="A continuity and orchestration layer for AI work across providers, machines, and execution environments.">
+<meta property="og:url" content="https://couriersymphony.de/">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <input class="nav-toggle" type="checkbox" id="nav-toggle" aria-label="Menu">
+    <label class="nav-burger" for="nav-toggle" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav class="nav" aria-label="Primary">
+      <a href="#product">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#safety">Safety</a>
+      <a href="#status">Status</a>
+      <a class="nav-cta" href="mailto:founder@couriersymphony.de">Contact</a>
+    </nav>
+  </div>
+</header>
 
-    <main>
-        <header>
-            <h1>Courier is the runtime for work that outlives the AI session.</h1>
-            <p class="subtitle">Stop babysitting your AI agents. Bring durable, cross-platform execution to your autonomous workflows.</p>
-            <a href="#pilot" class="btn" aria-label="Scroll to Pilot Offer">Request Pilot Access</a>
-        </header>
+<main id="main">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="livedot"><span class="pulse" aria-hidden="true"></span>Courier Symphony is in active development and validation.</p>
+        <h1>Keep AI work moving.</h1>
+        <p class="lede">A continuity and orchestration layer for AI work across providers, machines, and execution environments — so a session, a machine, or a rate limit never means starting over.</p>
+        <div class="hero-actions">
+          <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20—%20hello">Talk to the founder</a>
+        </div>
+        <p class="hero-note">For potential users and partners. No signup, no tracking on this page.</p>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="orb"></span></div>
+      </div>
+    </div>
+  </section>
 
-        <section id="problem">
-            <h2>The Problem</h2>
-            <p>Today's AI agents live and die with the chat window. If the user's browser closes, a provider rate limit is hit, or a Python script crashes, the entire context is lost and the work must be restarted from scratch.</p>
-        </section>
+  <section class="strip" aria-label="Why continuity matters">
+    <div class="wrap strip-grid">
+      <p><strong>AI work stalls.</strong> A provider limit hits mid-task. A laptop sleeps. A process dies overnight. The context, the checkpoint, the half-finished run — gone, and the retry starts blind.</p>
+      <p>Courier Symphony treats that as the normal case, not the exception: durable checkpoints, capability-aware routing, and recovery that resumes instead of repeating.</p>
+    </div>
+  </section>
 
-        <section id="solution">
-            <h2>How Courier Solves It</h2>
-            <p>Courier separates the <em>Planner</em> (the interactive agent) from the <em>Motor</em> (the execution runtime). The Motor orchestrates tasks across replaceable worker processes. Once a goal is submitted, Courier drives execution until completion—surviving worker crashes and interruptions without needing human "continue" prompts.</p>
-            
-            <div class="flow-diagram" aria-label="Courier Architecture Flow">
-                <div class="flow-step">ONE GOAL</div>
-                <div class="flow-arrow" aria-hidden="true">→</div>
-                <div class="flow-step">MOTOR</div>
-                <div class="flow-arrow" aria-hidden="true">→</div>
-                <div class="flow-step">REPLACEABLE<br>WORKERS</div>
-                <div class="flow-arrow" aria-hidden="true">→</div>
-                <div class="flow-step">VERIFIED<br>RESULT</div>
-            </div>
-        </section>
+  <section class="section" id="product">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="section-lede">One layer that keeps long-running AI work durable, bounded, and recoverable.</p>
+      <dl class="caplist">
+        <div><dt>Durable continuity and checkpointing</dt><dd>Work survives session ends, restarts, and host failures. Recovery resumes from the last checkpoint.</dd></div>
+        <div><dt>Capability-aware routing</dt><dd>Each unit of work goes to an execution environment that can actually do it — by provider, machine, and tool.</dd></div>
+        <div><dt>Host-aware bounded capacity</dt><dd>Concurrency follows what the machine can bear. Small hosts stay responsive; scale comes from more hosts, not more load.</dd></div>
+        <div><dt>Safe parallelism</dt><dd>One writer per mutable scope. Parallel work that cannot collide, instead of hope and retries.</dd></div>
+        <div><dt>Recovery, not repetition</dt><dd>After provider limits or host and process failures, work continues — never a blind duplicate execution of the same effect.</dd></div>
+        <div><dt>Human gates</dt><dd>Spending, credentials, and sensitive actions always stop at a person. Unknown authorization fails closed.</dd></div>
+      </dl>
+    </div>
+  </section>
 
-        <section id="demo">
-            <h2>Watch the Demo</h2>
-            <p>In this 90-second standalone demo, we show how Courier handles real-world worker interruptions.</p>
-            
-            <div class="demo-box" aria-label="Terminal Output of Demo Execution">
-                > Submitting multi-step goal: Market Research Pipeline<br>
-                > Goal assigned ID: goal-30d2b603<br><br>
-                > Starting Local Worker Process A...<br>
-                > Worker A finished data extraction.<br>
-                > <span style="color: #ef4444;">SIMULATING CRASH: Terminating Local Worker Process A...</span><br><br>
-                > <span style="color: #f59e0b;">STATE PRESERVED. Motor safely waits.</span><br>
-                > Starting Local Worker Process B to resume work...<br>
-                > Worker B successfully picked up Task 2!<br><br>
-                > All tasks complete. Final result is verified.<br>
-                > DONE. Goal achieved gracefully across replaceable workers.
-            </div>
-            
-            <div class="grid">
-                <article class="card">
-                    <h3>Zero-Touch Worker Replacement</h3>
-                    <p>If a worker process crashes midway through a task, Courier's Motor safely preserves state and gracefully reassigns the remaining execution plan to a replacement worker.</p>
-                </article>
-                <article class="card">
-                    <h3>Session Persistence</h3>
-                    <p>State is persisted instantly by the Motor, completely independent of the UI or demo observer script.</p>
-                </article>
-                <article class="card">
-                    <h3>Independent Verification</h3>
-                    <p>Completion isn't just assumed; Courier uses a separate, independent verifier process to check output evidence before advancing the workflow.</p>
-                </article>
-            </div>
-            
-            <aside class="ledger-note">
-                <strong>Note on Durable Agent Handoff:</strong> Beyond Motor state orchestration, Courier also natively supports a <em>Durable Ledger</em> for zero-chat handoff between separate interactive AI agents. This capability is fully demonstrated in our internal test suites, operating alongside the local process orchestration shown in the demo above.
-            </aside>
-        </section>
+  <section class="section" id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><span class="step-n">1</span><div><h3>Checkpoint</h3><p>Progress, decisions, and durable state are recorded as work runs — including across machines.</p></div></li>
+        <li><span class="step-n">2</span><div><h3>Route</h3><p>Each next step is assigned to a capable, available environment. Nothing runs where it cannot succeed.</p></div></li>
+        <li><span class="step-n">3</span><div><h3>Recover</h3><p>When a provider, machine, or process fails, the work resumes from its checkpoint on a healthy path.</p></div></li>
+      </ol>
+    </div>
+  </section>
 
-        <section id="pilot">
-            <div class="pilot-offer">
-                <h2>Pilot Offer</h2>
-                <p style="font-size: 1.1rem; margin-bottom: 2rem;"><strong>Bring us one agentic workflow.</strong> We will integrate it with Courier and demonstrate durable execution and handoff on your own infrastructure.</p>
-                
-                <p>Our pilot is designed to prove value quickly, running exclusively on your network with no external dependencies.</p>
-                <br>
-                <!-- CONTACT ANCHOR REPLACED BY BUILD SCRIPT -->
-                <a href="mailto:hobbiejanssen@gmx.net?subject=Courier Pilot Request" class="btn">Apply for Early Access</a>
-            </div>
-        </section>
-    </main>
+  <section class="section" id="safety">
+    <div class="wrap narrow">
+      <h2>Safety by construction</h2>
+      <ul class="checks">
+        <li>No autonomous spending. Ever.</li>
+        <li>No credentials or secrets leave their vault.</li>
+        <li>No duplicate side effects from retries.</li>
+        <li>Every sensitive action waits for a human decision.</li>
+      </ul>
+    </div>
+  </section>
 
-    <footer>
-        <p>&copy; 2026 Courier. Open Source Community Edition.</p>
-        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Courier is an orchestration runtime, not an AI model. It requires an external LLM provider or interactive agent to generate the initial workflow plan. Demonstration components simulate distributed physical execution using local processes.</p>
-    </footer>
+  <section class="section" id="status">
+    <div class="wrap narrow">
+      <h2>Status</h2>
+      <p>Courier Symphony is in active development and validation. There is no public signup, no pricing, and no launch date to announce — if you work on long-running AI systems and this problem sounds familiar, we would like to hear from you.</p>
+      <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20—%20hello">founder@couriersymphony.de</a>
+    </div>
+  </section>
+</main>
 
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <p class="fbrand">Courier Symphony — keep AI work moving.</p>
+    <p class="fmeta"><a href="/privacy.html">Privacy</a> · This site uses no cookies and no trackers. · © 2026 Courier Symphony</p>
+  </div>
+</footer>
 </body>
 </html>
