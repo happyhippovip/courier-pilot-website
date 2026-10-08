@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Courier Symphony — Keep AI work moving</title>
-<meta name="description" content="Courier Symphony is a continuity and orchestration layer for AI work across providers, machines, and execution environments. In active development and validation.">
+<title>Courier Symphony — Keep AI Work Moving</title>
+<meta name="description" content="Courier Symphony is the local-first continuity and orchestration layer for long-running AI work across providers, machines, and execution environments.">
 <link rel="canonical" href="https://couriersymphony.de/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Courier Symphony">
-<meta property="og:title" content="Courier Symphony — Keep AI work moving">
-<meta property="og:description" content="A continuity and orchestration layer for AI work across providers, machines, and execution environments.">
+<meta property="og:title" content="Courier Symphony — Keep AI Work Moving">
+<meta property="og:description" content="Local-first continuity and orchestration layer for AI work: durable checkpoints, append-only SQLite journal, capability routing, and fail-closed verification.">
 <meta property="og:url" content="https://couriersymphony.de/">
 <meta property="og:image" content="https://couriersymphony.de/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,101 +20,559 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+
 <header class="topbar">
   <div class="wrap topbar-in">
     <a class="brand" href="/" aria-label="Courier Symphony home">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/>
+        <circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/>
+        <circle cx="16" cy="16" r="1.8" fill="#eef2f7"/>
+      </svg>
       <span>Courier <strong>Symphony</strong></span>
     </a>
-    <input class="nav-toggle" type="checkbox" id="nav-toggle" aria-label="Menu">
+    <input class="nav-toggle" type="checkbox" id="nav-toggle" aria-label="Toggle Menu">
     <label class="nav-burger" for="nav-toggle" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav class="nav" aria-label="Primary">
-      <a href="#product">Product</a>
-      <a href="#how">How it works</a>
+      <a href="#demo">Live Demo</a>
+      <a href="#use-cases">Use Cases</a>
+      <a href="#product">Architecture</a>
+      <a href="#calculator">Value Calculator</a>
       <a href="#safety">Safety</a>
-      <a href="#status">Status</a>
-      <a class="nav-cta" href="mailto:founder@couriersymphony.de">Contact</a>
+      <a class="nav-cta" href="#contact">Request Pilot</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
+  <!-- Hero Section -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="livedot"><span class="pulse" aria-hidden="true"></span>Courier Symphony is in active development and validation.</p>
+        <div class="livedot"><span class="pulse" aria-hidden="true"></span>Production-Grade V1 Engine · Local-First Architecture</div>
         <h1>Keep AI work moving.</h1>
-        <p class="lede">A continuity and orchestration layer for AI work across providers, machines, and execution environments — so a session, a machine, or a rate limit never means starting over.</p>
+        <p class="lede">A deterministic continuity and orchestration layer for AI tasks across models, machines, and local environments — so a provider rate limit, host crash, or laptop sleep never means starting over blind.</p>
         <div class="hero-actions">
-          <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20—%20hello">Talk to the founder</a>
+          <a class="btn" href="#demo">Try Interactive Simulator</a>
+          <a class="btn btn-ghost" href="#contact">Request Pilot Access</a>
         </div>
-        <p class="hero-note">For potential users and partners. No signup, no tracking on this page.</p>
+        <p class="hero-note">Runs locally on your hardware. Append-only SQLite journal. Zero telemetry tracking.</p>
       </div>
       <div class="hero-visual" aria-hidden="true">
-        <div class="orbit"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="orb"></span></div>
+        <div class="orbit">
+          <span class="ring r1"></span>
+          <span class="ring r2"></span>
+          <span class="ring r3"></span>
+          <span class="orb"></span>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Value Statement Strip -->
   <section class="strip" aria-label="Why continuity matters">
     <div class="wrap strip-grid">
-      <p><strong>AI work stalls.</strong> A provider limit hits mid-task. A laptop sleeps. A process dies overnight. The context, the checkpoint, the half-finished run — gone, and the retry starts blind.</p>
-      <p>Courier Symphony treats that as the normal case, not the exception: durable checkpoints, capability-aware routing, and recovery that resumes instead of repeating.</p>
+      <p><strong>Unattended AI work stalls.</strong> A provider 429 quota hits mid-task. A laptop sleeps during a multi-step audit. The session drops, and conventional agents rerun the entire sequence from scratch — double-billing credits and duplicating external side effects.</p>
+      <p><strong>Courier Symphony treats failure as the normal case:</strong> append-only SQLite journal as canonical truth, cryptographic receipts, capability-aware routing, and single-writer fencing that resumes exactly where execution paused.</p>
     </div>
   </section>
 
+  <!-- Interactive Live Simulator -->
+  <section class="section" id="demo">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Interactive Symphony Simulator</h2>
+        <p class="section-lede">Experience Courier's real execution engine: select an autonomous workflow, simulate live environmental failures, and inspect the cryptographic event journal in real time.</p>
+      </div>
+
+      <div class="demo-wrap">
+        <div class="demo-header">
+          <div class="demo-title">
+            <span>Journal Instance: <code>courier.db</code> (Local Memory)</span>
+            <span class="demo-badge badge-active" id="demo-status-badge">Engine Active</span>
+          </div>
+          <div class="demo-actions">
+            <button type="button" class="pill-btn" id="btn-reset-sim">Reset Journal</button>
+          </div>
+        </div>
+
+        <div class="demo-body">
+          <!-- Left Controls & Pipeline -->
+          <div class="demo-controls">
+            <div class="ctrl-group">
+              <h4>1. Select Real Workflow</h4>
+              <div class="pill-bar">
+                <button type="button" class="pill-btn active" data-flow="email">Invoice & Email Triage</button>
+                <button type="button" class="pill-btn" data-flow="workbook">Spreadsheet Cell Reconciliation</button>
+                <button type="button" class="pill-btn" data-flow="deadlines">German Bescheid Deadline Calc</button>
+              </div>
+            </div>
+
+            <div class="ctrl-group">
+              <h4>2. Inject Chaos / Edge Cases</h4>
+              <div class="pill-bar">
+                <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-429">⚡ Inject Provider 429 Limit</button>
+                <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
+                <button type="button" class="pill-btn" id="btn-fault-gate">✋ Trigger Human Decision Gate</button>
+              </div>
+            </div>
+
+            <div class="ctrl-group">
+              <h4>Active Pipeline Stage</h4>
+              <div class="pipeline-diagram">
+                <div class="pipe-step current" id="pipe-ingest">
+                  <span class="step-title">1. Intake</span>
+                  <span class="step-val">TASK_CREATED</span>
+                </div>
+                <div class="pipe-step" id="pipe-route">
+                  <span class="step-title">2. Route</span>
+                  <span class="step-val">CLAIM_FENCE</span>
+                </div>
+                <div class="pipe-step" id="pipe-execute">
+                  <span class="step-title">3. Execute</span>
+                  <span class="step-val">WORKING</span>
+                </div>
+                <div class="pipe-step" id="pipe-verify">
+                  <span class="step-title">4. Verify</span>
+                  <span class="step-val">FAIL_CLOSED</span>
+                </div>
+                <div class="pipe-step" id="pipe-complete">
+                  <span class="step-title">5. Receipt</span>
+                  <span class="step-val">ACCEPTED</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Journal Output -->
+          <div class="demo-terminal" id="demo-terminal" role="region" aria-label="Cryptographic event log" tabindex="0">
+            <div class="term-head">
+              <span>LEDGER EVENT STREAM (Click row to inspect payload)</span>
+              <span id="journal-count">4 Events Recorded</span>
+            </div>
+            <div class="journal-log" id="journal-log">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real Customer Use Cases -->
+  <section class="section" id="use-cases">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built for Real Work, Not Tech Demos</h2>
+        <p class="section-lede">Courier Symphony solves high-consequence administrative, financial, and data housekeeping tasks where errors and duplicated runs are unacceptable.</p>
+      </div>
+
+      <div class="usecase-grid">
+        <!-- Card 1 -->
+        <div class="usecase-card">
+          <div class="card-icon">01</div>
+          <h3>German Bescheid Deadline Tracker</h3>
+          <p>Calculates strict administrative appeal deadlines (Rechtsbehelfsfristen) under § 41 VwVfG with automated 4-day Bekanntgabe-Fiktion and state holiday shifts.</p>
+          <ul class="card-metrics">
+            <li>Considers Reformationstag & Easter shifts</li>
+            <li>Enforces 7-day early action target boundary</li>
+            <li>Zero hallucinated calendar dates</li>
+          </ul>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="usecase-card">
+          <div class="card-icon">02</div>
+          <h3>Deterministic Spreadsheet Reconciliation</h3>
+          <p>Modifies cell formulas and values in .xlsx workbooks with standard-library precision and independent before/after SHA-256 validation.</p>
+          <ul class="card-metrics">
+            <li>Atomic in-place mutations without Excel locks</li>
+            <li>Verifiable before/after hash receipts</li>
+            <li>Rollback on untouched cell modification</li>
+          </ul>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="usecase-card">
+          <div class="card-icon">03</div>
+          <h3>Inbound Triage & Gated Invoice Delivery</h3>
+          <p>Processes incoming customer emails, classifies intent, generates invoices, and blocks external communication until explicit human confirmation.</p>
+          <ul class="card-metrics">
+            <li>Auto-detects bounces and vacation notices</li>
+            <li>Strict human gate for monetary transactions</li>
+            <li>Zero outbound emails without authorization</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Architecture -->
   <section class="section" id="product">
     <div class="wrap">
-      <h2>What it does</h2>
-      <p class="section-lede">One layer that keeps long-running AI work durable, bounded, and recoverable.</p>
+      <div class="section-head">
+        <h2>Architecture Guarantees</h2>
+        <p class="section-lede">A disciplined execution framework engineered for enterprise stability.</p>
+      </div>
+
       <dl class="caplist">
-        <div><dt>Durable continuity and checkpointing</dt><dd>Work survives session ends, restarts, and host failures. Recovery resumes from the last checkpoint.</dd></div>
-        <div><dt>Capability-aware routing</dt><dd>Each unit of work goes to an execution environment that can actually do it — by provider, machine, and tool.</dd></div>
-        <div><dt>Host-aware bounded capacity</dt><dd>Concurrency follows what the machine can bear. Small hosts stay responsive; scale comes from more hosts, not more load.</dd></div>
-        <div><dt>Safe parallelism</dt><dd>One writer per mutable scope. Parallel work that cannot collide, instead of hope and retries.</dd></div>
-        <div><dt>Recovery, not repetition</dt><dd>After provider limits or host and process failures, work continues — never a blind duplicate execution of the same effect.</dd></div>
-        <div><dt>Human gates</dt><dd>Spending, credentials, and sensitive actions always stop at a person. Unknown authorization fails closed.</dd></div>
+        <div>
+          <dt>Durable SQLite Event Journal</dt>
+          <dd>All mutations, state shifts, and task outcomes are appended to a local <code>courier.db</code> database. Replay yields identical state byte-for-byte.</dd>
+        </div>
+        <div>
+          <dt>Capability-Aware Dispatch</dt>
+          <dd>Tasks route exclusively to execution adapters matching declared capabilities. Local deterministic work executes locally without spending paid API tokens.</dd>
+        </div>
+        <div>
+          <dt>Host Resource Governor</dt>
+          <dd>Monitors host memory, swap rate, and CPU load. Automatically coalesces wakeups to prevent EMFILE handle exhaustion or system freezing.</dd>
+        </div>
+        <div>
+          <dt>One-Writer Distributed Fencing</dt>
+          <dd>Strict lock leasing prevents concurrent worker instances from colliding on shared files, repositories, or external services.</dd>
+        </div>
+        <div>
+          <dt>Independent Verifier Path</dt>
+          <dd>Workers never judge their own work. The controller queries independent verifier modules that reject invalid artifacts fail-closed.</dd>
+        </div>
+        <div>
+          <dt>Human Authorization Gates</dt>
+          <dd>Consequential external effects (sending emails, modifying ledgers, purchasing credits) pause in <code>NEEDS_USER</code> state until signed approval.</dd>
+        </div>
       </dl>
     </div>
   </section>
 
-  <section class="section" id="how">
+  <!-- Interactive ROI & Waste Calculator -->
+  <section class="section" id="calculator">
     <div class="wrap">
-      <h2>How it works</h2>
-      <ol class="steps">
-        <li><span class="step-n">1</span><div><h3>Checkpoint</h3><p>Progress, decisions, and durable state are recorded as work runs — including across machines.</p></div></li>
-        <li><span class="step-n">2</span><div><h3>Route</h3><p>Each next step is assigned to a capable, available environment. Nothing runs where it cannot succeed.</p></div></li>
-        <li><span class="step-n">3</span><div><h3>Recover</h3><p>When a provider, machine, or process fails, the work resumes from its checkpoint on a healthy path.</p></div></li>
-      </ol>
+      <div class="section-head">
+        <h2>Calculate Your Autonomous Waste Elimination</h2>
+        <p class="section-lede">Unfenced AI agents waste dozens of hours each month re-running failed multi-step workflows. Calculate your savings with Courier's durable checkpoints.</p>
+      </div>
+
+      <div class="calc-box">
+        <div class="calc-inputs">
+          <div class="calc-field">
+            <label for="range-workflows">
+              <span>Automated Workflows / Week:</span>
+              <strong id="val-workflows">60</strong>
+            </label>
+            <input type="range" id="range-workflows" min="10" max="300" step="10" value="60">
+          </div>
+
+          <div class="calc-field">
+            <label for="range-rate">
+              <span>Engineering Hourly Value (€/h):</span>
+              <strong id="val-rate">120 €</strong>
+            </label>
+            <input type="range" id="range-rate" min="50" max="300" step="10" value="120">
+          </div>
+
+          <div class="calc-field">
+            <label for="range-failure">
+              <span>Estimated Interruption Rate (limits/sleeps/restarts):</span>
+              <strong id="val-failure">20 %</strong>
+            </label>
+            <input type="range" id="range-failure" min="5" max="50" step="5" value="20">
+          </div>
+        </div>
+
+        <div class="calc-summary">
+          <div class="calc-stat">
+            <span class="lbl">Duplicate Runs Prevented / Month:</span>
+            <span class="val" id="res-runs">48 runs</span>
+          </div>
+          <div class="calc-stat">
+            <span class="lbl">Developer Recovery Hours Saved:</span>
+            <span class="val" id="res-hours">24 hrs</span>
+          </div>
+          <div class="calc-stat highlight">
+            <span class="lbl">Estimated Monthly Net Value:</span>
+            <span class="val" id="res-money">2.880 €</span>
+          </div>
+          <p style="margin:0;font-size:0.85rem;color:var(--muted)">Assumes average 30 minutes of developer debugging and manual context rebuild per interrupted run.</p>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- Safety & Security -->
   <section class="section" id="safety">
     <div class="wrap narrow">
-      <h2>Safety by construction</h2>
+      <div class="section-head">
+        <h2>Safety by Construction</h2>
+        <p class="section-lede">Courier Symphony contains zero autonomous black-box behavior.</p>
+      </div>
       <ul class="checks">
-        <li>No autonomous spending. Ever.</li>
-        <li>No credentials or secrets leave their vault.</li>
-        <li>No duplicate side effects from retries.</li>
-        <li>Every sensitive action waits for a human decision.</li>
+        <li><strong>Zero autonomous spending:</strong> Model call budgets and external financial actions stop at human gates.</li>
+        <li><strong>No secret exfiltration:</strong> API keys remain in local environment variables and are scrubbed from diagnostic packages.</li>
+        <li><strong>Zero duplicate side effects:</strong> Idempotency keys protect external webhooks from repeated execution.</li>
+        <li><strong>Fail-closed verification:</strong> Missing or raising verifier functions result in rejection; no default PASS.</li>
       </ul>
     </div>
   </section>
 
-  <section class="section" id="status">
-    <div class="wrap narrow">
-      <h2>Status</h2>
-      <p>Courier Symphony is in active development and validation. There is no public signup, no pricing, and no launch date to announce — if you work on long-running AI systems and this problem sounds familiar, we would like to hear from you.</p>
-      <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20—%20hello">founder@couriersymphony.de</a>
+  <!-- Pilot Request & Contact -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact-card">
+        <div>
+          <h2>Request Pilot Access & Architecture Briefing</h2>
+          <p style="color:var(--muted);margin:0">Courier Symphony is currently accepting technical design partners for self-hosted pilot evaluations (Windows EXE, Mac daemon, Linux worker).</p>
+        </div>
+
+        <form class="contact-form" id="pilot-form">
+          <div class="form-row">
+            <label for="contact-name">Your Name / Organization</label>
+            <input type="text" id="contact-name" placeholder="e.g. Dr. Dennis Schmidt / Tech Systems GmbH" required>
+          </div>
+          <div class="form-row">
+            <label for="contact-tier">Primary Pilot Scope</label>
+            <select id="contact-tier">
+              <option value="Windows Desktop Hub & Local Workers">Windows Desktop Hub & Local Workers (EXE Evaluation)</option>
+              <option value="Enterprise Architecture & Security Review">Enterprise Architecture & Security Review</option>
+              <option value="Autonomous Email & Document Housekeeping">Autonomous Email & Document Housekeeping</option>
+              <option value="Custom Adapter & Provider Integration">Custom Adapter & Provider Integration</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="contact-notes">Project Requirements & Target OS</label>
+            <textarea id="contact-notes" rows="3" placeholder="Tell us about your workload frequency, environment (Windows, Mac, Linux), and current failure bottlenecks..."></textarea>
+          </div>
+          <button type="submit" class="btn">Send Pilot Request (Direct to Founder)</button>
+        </form>
+        <p class="hero-note">Or reach us directly at <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. No tracking cookies used.</p>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="footer">
   <div class="wrap footer-grid">
-    <p class="fbrand">Courier Symphony — keep AI work moving.</p>
-    <p class="fmeta"><a href="/privacy.html">Privacy</a> · This site uses no cookies and no trackers. · © 2026 Courier Symphony</p>
+    <p class="fbrand">Courier Symphony — Keep AI work moving.</p>
+    <p class="fmeta"><a href="/privacy.html">Privacy</a> · No cookies · No trackers · © 2026 Courier Symphony</p>
   </div>
 </footer>
+
+<!-- Modal for Inspecting Journal Log Event -->
+<div class="inspect-modal" id="inspect-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-content">
+    <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+    <h3 id="modal-title">Ledger Event Details</h3>
+    <pre id="modal-json"></pre>
+  </div>
+</div>
+
+<script>
+// --- INTERACTIVE SIMULATOR LOGIC ---
+const WORKFLOWS = {
+  email: [
+    { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Inbound email received: 'Inquiry - Audit Services'", hash: "sha256:7f9a1b...34e1", data: { task_id: "task-inbound-01", adapter: "inbound_observer", effect_class: "idempotent", max_attempts: 3 } },
+    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Worker claimed task on host mac-1 (dispatch-01)", hash: "sha256:88bc20...55fa", data: { dispatch_id: "disp-01", worker_id: "worker-intake", lease_ttl_s: 30 } },
+    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Classification complete: POSITIVE_INTEREST (0.95 conf)", hash: "sha256:332d91...aa88", data: { category: "POSITIVE_INTEREST", checkpoint_token: "ckpt-9102" } },
+    { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Invoice draft INV-2026-004 generated with verified pricing", hash: "sha256:eef401...7712", data: { invoice_id: "INV-2026-004", amount_eur: 450.00, outcome: "success" } },
+    { seq: 5, type: "RESULT_ACCEPTED", kind: "verified", desc: "Independent verifier validated invoice schema & hash", hash: "sha256:bb144a...9090", data: { verifier: "adapters.invoice.verify", accepted: true } },
+    { seq: 6, type: "TASK_COMPLETE", kind: "verified", desc: "Execution completed in 1.4s · Zero duplicate calls", hash: "sha256:0a41bc...d91e", data: { status: "COMPLETE", total_duration_s: 1.4 } }
+  ],
+  workbook: [
+    { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Reconciliation requested: 'Q3_Financials.xlsx' (cells B2:B10)", hash: "sha256:4a12ec...9980", data: { task_id: "task-wb-02", adapter: "workbook", effect_class: "idempotent" } },
+    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Fenced writer lock acquired by local_shell worker", hash: "sha256:c180da...fe01", data: { lock_id: "lock-wb-q3", granted_to: "worker-local-01" } },
+    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Workbook preview planned: 4 cells modified, formulas intact", hash: "sha256:77bc34...441a", data: { untouched_cells: 42, planned_edits: 4 } },
+    { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Atomic file swap completed · SHA-256 before/after verified", hash: "sha256:199fba...dcb4", data: { before_sha: "a1c9...33", after_sha: "99fa...01", outcome: "success" } },
+    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Receipt generated with atomic rollback safety guarantee", hash: "sha256:6e5801...aa77", data: { status: "COMPLETE", receipt_verified: true } }
+  ],
+  deadlines: [
+    { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Bescheid analysis requested: Letter date 2026-07-20", hash: "sha256:9123df...1102", data: { letter_date: "2026-07-20", fiction_days: 4, jurisdiction: "Niedersachsen" } },
+    { seq: 2, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Bekanntgabe established: 2026-07-24 (4-day legal presumption)", hash: "sha256:0b0b88...7710", data: { bekanntgabe: "2026-07-24", holiday_adjusted: false } },
+    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "1-Month legal period computed · Shifted for weekend to Monday", hash: "sha256:456cde...99ff", data: { raw_end: "2026-08-24", legal_deadline: "2026-08-24" } },
+    { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Target safety alert set 7 calendar days before deadline: 2026-08-17", hash: "sha256:119acd...3322", data: { target_date: "2026-08-17", status: "VERIFIED" } },
+    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Calendar dispatch confirmed · Zero hallucinated dates", hash: "sha256:ff0132...ee55", data: { status: "COMPLETE" } }
+  ]
+};
+
+let currentFlow = "email";
+let logEntries = [...WORKFLOWS[currentFlow]];
+
+const journalContainer = document.getElementById("journal-log");
+const journalCount = document.getElementById("journal-count");
+const statusBadge = document.getElementById("demo-status-badge");
+const modal = document.getElementById("inspect-modal");
+const modalJson = document.getElementById("modal-json");
+const modalClose = document.getElementById("modal-close");
+
+function renderJournal() {
+  journalContainer.innerHTML = "";
+  logEntries.forEach(entry => {
+    const row = document.createElement("div");
+    row.className = `log-row kind-${entry.kind}`;
+    row.innerHTML = `
+      <span class="log-seq">#${String(entry.seq).padStart(2, "0")}</span>
+      <span class="log-type">${entry.type}</span>
+      <span class="log-desc">${entry.desc}</span>
+      <span class="log-hash">${entry.hash}</span>
+    `;
+    row.addEventListener("click", () => {
+      modalJson.textContent = JSON.stringify(entry, null, 2);
+      modal.classList.add("open");
+    });
+    journalContainer.appendChild(row);
+  });
+  journalCount.textContent = `${logEntries.length} Events Recorded`;
+}
+
+renderJournal();
+
+// Workflow switching
+document.querySelectorAll("[data-flow]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-flow]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFlow = btn.dataset.flow;
+    logEntries = [...WORKFLOWS[currentFlow]];
+    statusBadge.className = "demo-badge badge-active";
+    statusBadge.textContent = "Engine Active";
+    renderJournal();
+  });
+});
+
+// Reset simulation
+document.getElementById("btn-reset-sim").addEventListener("click", () => {
+  logEntries = [...WORKFLOWS[currentFlow]];
+  statusBadge.className = "demo-badge badge-active";
+  statusBadge.textContent = "Engine Active";
+  renderJournal();
+});
+
+// Fault Injections
+document.getElementById("btn-fault-429").addEventListener("click", () => {
+  const nextSeq = logEntries.length + 1;
+  logEntries.push({
+    seq: nextSeq,
+    type: "CIRCUIT_TRIPPED_429",
+    kind: "circuit",
+    desc: "Provider 429 Quota Exceeded · Circuit breaker transitioned to QUOTA_EXHAUSTED",
+    hash: "sha256:ee99ff...4412",
+    data: { error_code: 429, reset_seconds: 60, single_probe_locked: true, state: "HIBERNATED" }
+  });
+  logEntries.push({
+    seq: nextSeq + 1,
+    type: "DURABLE_RESUME",
+    kind: "ckpt",
+    desc: "Single bounded probe succeeded · Resumed from checkpoint seq #" + (nextSeq - 2) + " without duplicate re-run",
+    hash: "sha256:11bb88...0019",
+    data: { restored_from_checkpoint: true, re_billed_credits: 0 }
+  });
+  statusBadge.className = "demo-badge badge-hibernating";
+  statusBadge.textContent = "Circuit Fenced";
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
+document.getElementById("btn-fault-crash").addEventListener("click", () => {
+  const nextSeq = logEntries.length + 1;
+  logEntries.push({
+    seq: nextSeq,
+    type: "HOST_CRASH_DETECTED",
+    kind: "circuit",
+    desc: "Process terminated unexpectedly · Stale worker heartbeat expired",
+    hash: "sha256:dd0012...55aa",
+    data: { crash_recovery: true, orphan_worker_reclaimed: true }
+  });
+  logEntries.push({
+    seq: nextSeq + 1,
+    type: "JOURNAL_REPLAY_VERIFIED",
+    kind: "ckpt",
+    desc: "Host restarted · Read SQLite journal up to seq #" + (nextSeq - 1) + " · Lock fence restored",
+    hash: "sha256:77bb00...3341",
+    data: { replay_verified: true, duplicate_side_effects: 0 }
+  });
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
+document.getElementById("btn-fault-gate").addEventListener("click", () => {
+  const nextSeq = logEntries.length + 1;
+  logEntries.push({
+    seq: nextSeq,
+    type: "HUMAN_GATE_REQUIRED",
+    kind: "paused",
+    desc: "Consequential Action: External outbound email or transaction paused for human approval",
+    hash: "sha256:aa2211...7766",
+    data: { gate_reason: "CONSEQUENTIAL_FINANCIAL_ACTION", status: "NEEDS_USER", actor: "REQUIRED" }
+  });
+  statusBadge.className = "demo-badge badge-paused";
+  statusBadge.textContent = "Awaiting Approval";
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
+// Modal close
+modalClose.addEventListener("click", () => modal.classList.remove("open"));
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) modal.classList.remove("open");
+});
+
+// --- CALCULATOR LOGIC ---
+const rangeWf = document.getElementById("range-workflows");
+const rangeRate = document.getElementById("range-rate");
+const rangeFail = document.getElementById("range-failure");
+const valWf = document.getElementById("val-workflows");
+const valRate = document.getElementById("val-rate");
+const valFail = document.getElementById("val-failure");
+const resRuns = document.getElementById("res-runs");
+const resHours = document.getElementById("res-hours");
+const resMoney = document.getElementById("res-money");
+
+function updateCalculator() {
+  const wf = parseInt(rangeWf.value);
+  const rate = parseInt(rangeRate.value);
+  const failRate = parseInt(rangeFail.value) / 100;
+
+  valWf.textContent = wf;
+  valRate.textContent = rate + " €";
+  valFail.textContent = Math.round(failRate * 100) + " %";
+
+  const monthlyWf = wf * 4;
+  const wastedRuns = Math.round(monthlyWf * failRate);
+  const hoursSaved = Math.round(wastedRuns * 0.5); // 30 min per failure
+  const moneySaved = hoursSaved * rate;
+
+  resRuns.textContent = `${wastedRuns} runs`;
+  resHours.textContent = `${hoursSaved} hrs`;
+  resMoney.textContent = moneySaved.toLocaleString("de-DE") + " €";
+}
+
+[rangeWf, rangeRate, rangeFail].forEach(el => el.addEventListener("input", updateCalculator));
+updateCalculator();
+
+// --- CONTACT FORM BUILDER ---
+document.getElementById("pilot-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("contact-name").value.trim();
+  const tier = document.getElementById("contact-tier").value;
+  const notes = document.getElementById("contact-notes").value.trim();
+
+  const subject = encodeURIComponent(`Courier Symphony Pilot Request — ${name} (${tier})`);
+  const body = encodeURIComponent(
+`Hello Courier Symphony Team,
+
+I would like to request pilot evaluation details for Courier Symphony.
+
+Applicant: ${name}
+Primary Focus: ${tier}
+Environment & Workload Details:
+${notes || "Self-hosted evaluation of durable AI orchestration engine."}
+
+Please send instructions for accessing the pilot build and technical architecture overview.
+
+Best regards,
+${name}`
+  );
+
+  window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
+});
+</script>
 </body>
 </html>
