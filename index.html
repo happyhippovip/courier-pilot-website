@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Courier Symphony — Keep AI Work Moving</title>
-<meta name="description" content="Courier Symphony is the local-first continuity and orchestration layer for long-running AI work across providers, machines, and execution environments.">
+<title>Courier Symphony — AI work that continues.</title>
+<meta name="description" content="Starte mit einem Ziel. Geprüfte KI-Abläufe führen deine Arbeit sicher weiter, auch nach Unterbrechungen. Prototyp, Early Access per E-Mail.">
 <link rel="canonical" href="https://couriersymphony.de/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Courier Symphony">
-<meta property="og:title" content="Courier Symphony — Keep AI Work Moving">
-<meta property="og:description" content="Local-first continuity and orchestration layer for AI work: durable checkpoints, append-only SQLite journal, capability routing, and fail-closed verification.">
+<meta property="og:title" content="Courier Symphony — AI work that continues.">
+<meta property="og:description" content="Start with a goal. Let verified AI workflows continue your work safely across interruptions.">
 <meta property="og:url" content="https://couriersymphony.de/">
 <meta property="og:image" content="https://couriersymphony.de/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -21,19 +21,19 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Courier Symphony",
-  "operatingSystem": "Windows 10, Windows 11, macOS, Linux",
   "applicationCategory": "BusinessApplication",
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "EUR"
+    "priceCurrency": "EUR",
+    "description": "Early Access per E-Mail. Keine Zahlung auf dieser Website."
   },
-  "description": "Local-first continuity and orchestration layer for long-running AI work across providers, machines, and local execution environments."
+  "description": "Prototyp: Starte mit einem Ziel. Geprüfte KI-Abläufe führen die Arbeit sicher über Unterbrechungen hinweg weiter."
 }
 </script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">Zum Inhalt springen</a>
 
 <header class="topbar">
   <div class="wrap topbar-in">
@@ -48,14 +48,14 @@
     <input class="nav-toggle" type="checkbox" id="nav-toggle" aria-label="Toggle Menu">
     <label class="nav-burger" for="nav-toggle" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav class="nav" aria-label="Primary">
-      <a href="#demo">Live Demo</a>
-      <a href="#use-cases">Use Cases</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#platforms">Platforms</a>
-      <a href="#calculator">Value Calculator</a>
-      <a href="#faq">FAQ</a>
-      <a href="#bestellen">Bestellen</a>
-      <a class="nav-cta" href="#contact">Request Pilot</a>
+      <a href="#problem">Problem</a>
+      <a href="#loesung">Lösung</a>
+      <a href="#beleg">Beleg</a>
+      <a href="#demo">Simulation</a>
+      <a href="#werkzeuge">Werkzeuge</a>
+      <a href="#transparenz">Kosten</a>
+      <a href="#contact">Pilot</a>
+      <a class="nav-cta" href="#early-access">Early Access</a>
     </nav>
   </div>
 </header>
@@ -65,14 +65,16 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <div class="livedot"><span class="pulse" aria-hidden="true"></span>Production-Grade V1 Engine · Local-First Architecture</div>
-        <h1>Keep AI work moving.</h1>
-        <p class="lede">A deterministic continuity and orchestration layer for AI tasks across models, machines, and local environments — so a provider rate limit, host crash, or laptop sleep never means starting over blind.</p>
+        <div class="livedot"><span class="pulse" aria-hidden="true"></span>Prototyp · Beta · Privatperson, Gründung in Vorbereitung</div>
+        <h1>Courier Symphony — AI work that continues.</h1>
+        <p class="lede">Starte mit einem Ziel. Geprüfte KI-Abläufe führen deine Arbeit sicher weiter, auch nach Unterbrechungen.</p>
+        <p class="lede en-line" lang="en">Start with a goal. Let verified AI workflows continue your work safely across interruptions.</p>
+        <p class="hero-note" lang="en">Courier brings you back to exactly where your work left off.</p>
         <div class="hero-actions">
-          <a class="btn" href="#demo">Try Interactive Simulator</a>
-          <a class="btn btn-ghost" href="#contact">Request Pilot Access</a>
+          <a class="btn" href="#early-access">Early Access anfragen</a>
+          <a class="btn btn-ghost" href="#beleg">Beleg ansehen</a>
         </div>
-        <p class="hero-note">Runs locally on your hardware. Append-only SQLite journal. Zero telemetry tracking.</p>
+        <p class="hero-note">Lokal auf deinem Rechner gedacht. Nur anhängbares Journal. Kein Tracking, keine Cookies.</p>
       </div>
       <div class="hero-visual" aria-hidden="true">
         <div class="orbit">
@@ -85,61 +87,67 @@
     </div>
   </section>
 
-  <!-- Courier: two order buttons (Repo-Check + Video-Schnitt). Synced from build.py; text by Courier, not Antigravity. -->
-  <section class="section order-duo" id="bestellen" lang="de" aria-label="Jetzt bestellen">
-    <div class="wrap">
-      <p class="duo-kicker">Beta · Privatperson, Gründung in Vorbereitung · Bestellung per Mail</p>
-      <div class="duo-grid">
-        <article class="duo-card" id="repo-check">
-          <figure class="duo-fig"><img src="/assets/konzept/reality-check-thumb.webp" width="640" height="362" alt="Konzept-Vorschau: Repo Reality Check" loading="eager"><figcaption><span class="soon">Konzept-Vorschau</span></figcaption></figure>
-          <h2>Repo Reality Check – 5&nbsp;€</h2>
-          <p>Du schickst den öffentlichen GitHub-Link deines Repos. Du bekommst einen ehrlichen Report: Tests, CI-Konfiguration, TODO-Schulden, Abhängigkeiten, Risiko-Muster, Reality-Score 0–100 und die 5 wichtigsten nächsten Schritte. Kein Sicherheitsaudit, keine Zertifizierung. <a href="/repo-reality-check.html#beispiel">Beispielreport ansehen</a></p>
-          <div class="order-slot">
-<!-- BEGIN:order-block -->
-<p class="order-pay">Bezahlung per Überweisung erst nach unserer Bestätigung per Mail. Die Bankverbindung steht nur in dieser Antwort-Mail – nie auf der Website. Lieferung des Reports innerhalb von 48&nbsp;Stunden nach Zahlungseingang.</p>
-<a class="btn" href="mailto:founder@couriersymphony.de?subject=Repo%20Reality%20Check%20bestellen&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Aich%20m%C3%B6chte%20einen%20Repo%20Reality%20Check%20%28Beta%2C%205%20EUR%20per%20%C3%9Cberweisung%29%20bestellen.%0A%0A%C3%96ffentlicher%20GitHub-Link%3A%20https%3A//github.com/OWNER/REPO%0AWas%20soll%20gepr%C3%BCft%20werden%20%28optional%29%3A%20%0AMein%20Name%3A%20%0A%0AIch%20stimme%20ausdr%C3%BCcklich%20zu%2C%20dass%20ihr%20vor%20Ablauf%20der%20Widerrufsfrist%20mit%20dem%20Report%20beginnt%2C%20und%20wei%C3%9F%2C%20dass%20ich%20mit%20Beginn%20der%20Ausf%C3%BChrung%20mein%20Widerrufsrecht%20verliere%20%28siehe%20Widerrufsbelehrung%20auf%20couriersymphony.de%29.%0A%0ABitte%20best%C3%A4tigt%20die%20Bestellung%20und%20schickt%20mir%20die%20Bankverbindung.%0A%0ADanke">Repo-Check bestellen – 5 €</a>
-<p class="fine">Fragen: <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a></p>
-<!-- END:order-block -->
-          </div>
-        </article>
-        <article class="duo-card" id="video-schnitt">
-          <figure class="duo-fig"><img src="/assets/konzept/workflows-thumb.webp" width="640" height="362" alt="Konzept-Vorschau: Workflows für Video-Inhalte" loading="eager"><figcaption><span class="soon">Konzept-Vorschau</span></figcaption></figure>
-          <h2>Video-Schnitt anfragen</h2>
-          <p>Aus deinem Langvideo (Podcast-Folge, YouTube-Video, Stream-Ausschnitt) schneiden wir 10 Shorts/Reels/TikToks im Hochformat mit Untertiteln, eine Korrekturrunde inklusive. Freie kreative Schnittarbeit durch eine Privatperson (Gründung in Vorbereitung). Keine Reichweiten- oder Klickversprechen.</p>
-          <div class="order-slot">
-<!-- BEGIN:video-block -->
-<p class="order-pay">79 € pro Paket, verbindlich erst mit unserer Bestätigung per Mail; die Lieferzeit nennen wir in der Bestätigung. Bezahlung per Überweisung erst nach unserer Bestätigung per Mail. Die Bankverbindung steht nur in dieser Antwort-Mail – nie auf der Website.</p>
-<a class="btn" href="mailto:founder@couriersymphony.de?subject=Video-Schnitt%20anfragen%20%28Shorts-Paket%2079%20EUR%29&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Aich%20m%C3%B6chte%20das%20Shorts-Paket%20anfragen%20%2810%20Clips%20aus%20einem%20Langvideo%2C%2079%20EUR%2C%20%C3%9Cberweisung%20nach%20Best%C3%A4tigung%29.%0A%0ALink%20zum%20langen%20Video%20%28z.%20B.%20YouTube%2C%20Cloud-Ordner%29%3A%20%0AL%C3%A4nge%20des%20Videos%3A%20%0APlattform%20%28YouTube%20Shorts%20/%20Instagram%20Reels%20/%20TikTok%29%3A%20%0AW%C3%BCnsche%20zum%20Stil%20%28optional%29%3A%20%0AMein%20Name%3A%20%0A%0AIch%20best%C3%A4tige%2C%20dass%20ich%20die%20Rechte%20am%20Videomaterial%20habe%20und%20die%20gezeigten%20Personen%20einverstanden%20sind.%0A%0AIch%20stimme%20ausdr%C3%BCcklich%20zu%2C%20dass%20ihr%20vor%20Ablauf%20der%20Widerrufsfrist%20mit%20dem%20Schnitt%20beginnt%2C%20und%20wei%C3%9F%2C%20dass%20ich%20mit%20Beginn%20der%20Ausf%C3%BChrung%20mein%20Widerrufsrecht%20verliere%20%28siehe%20Widerrufsbelehrung%20auf%20couriersymphony.de%29.%0A%0ABitte%20best%C3%A4tigt%20den%20Auftrag%20mit%20Lieferzeit%20und%20schickt%20mir%20dann%20die%20Bankverbindung.%0A%0ADanke">Shorts-Paket – 10 Clips aus einem Langvideo: 79 €</a>
-<p class="fine">Erster Probe-Clip kostenlos.</p>
-<!-- END:video-block -->
-          </div>
-        </article>
-      </div>
-      <p class="fine">Konzeptbilder und KI-Clips. Zahlen, Namen und Avatare darin sind Beispiele, keine echten Nutzer- oder Umsatzdaten. Keine Zahlungsdaten auf dieser Seite, kein Konto, kein Checkout. <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerrufsbelehrung</a></p>
+  <section class="section order-duo" id="early-access" lang="de" aria-label="Early Access">
+    <div class="wrap narrow">
+      <p class="duo-kicker">Early Access · kostenlos · unverbindlich</p>
+      <h2>Early Access anfragen</h2>
+      <p>Es gibt auf dieser Website keine Bezahlung, kein Konto und keinen Checkout. Schreib uns, wenn du den Prototyp im Pilot ausprobieren willst.</p>
+      <p class="en-line" lang="en">Early Access is a mailto. No payment on this site.</p>
+      <p><a class="btn" href="mailto:founder@couriersymphony.de?subject=Early%20Access%20Courier%20Symphony&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Aich%20m%C3%B6chte%20Early%20Access%20anfragen.%0A%0AName%20/%20Team%3A%20%0AWas%20ihr%20betreibt%20%28KI-Agenten%2C%20n8n%2C%20Make%20oder%20anderes%29%3A%20%0A%0ADanke">Early Access per E-Mail</a></p>
+      <p class="fine">Kontakt: <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a></p>
+      <p class="fine">Konzeptbilder und KI-Clips. Zahlen, Namen und Avatare darin sind Beispiele, keine echten Nutzer- oder Umsatzdaten. <a href="/konzept.html">Konzept-Vorschau</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerrufsbelehrung</a></p>
     </div>
   </section>
 
-  <!-- Value Statement Strip -->
-  <section class="strip" aria-label="Why continuity matters">
+  <section class="strip" id="problem" aria-label="Problem">
     <div class="wrap strip-grid">
-      <p><strong>Unattended AI work stalls.</strong> A provider 429 quota hits mid-task. A laptop sleeps during a multi-step audit. The session drops, and conventional agents rerun the entire sequence from scratch — double-billing credits and duplicating external side effects.</p>
-      <p><strong>Courier Symphony treats failure as the normal case:</strong> append-only SQLite journal as canonical truth, cryptographic receipts, capability-aware routing, and single-writer fencing that resumes exactly where execution paused.</p>
+      <p><strong>Das Problem.</strong> Unbeaufsichtigte KI-Arbeit bricht ab: ein Anbieter-Limit mitten in der Aufgabe, ein Laptop im Ruhezustand, ein beendeter Prozess. Übliche Agenten starten die Folge dann von vorn und können denselben Schritt ein zweites Mal auslösen.</p>
+      <p class="en-line" lang="en">Unattended AI work stalls on a rate limit, a sleep, or a killed process — and a blind restart can run the same step twice.</p>
     </div>
   </section>
 
-  <!-- Interactive Live Simulator -->
+  <section class="section" id="loesung">
+    <div class="wrap narrow">
+      <div class="section-head">
+        <p class="duo-kicker">Prototyp</p>
+        <h2>Lösung: kontrollierte Fortsetzung</h2>
+        <p class="section-lede">Courier merkt sich den letzten geprüften Stand und setzt dort fort. Erledigte Schritte laufen nicht noch einmal. Das ist der Prototyp, kein fertiges Produkt.</p>
+        <p class="en-line" lang="en">Controlled continuation from the last verified checkpoint. Prototype, not a finished product.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="beleg">
+    <div class="wrap narrow">
+      <div class="section-head">
+        <p class="duo-kicker">Nachprüfbare Demo</p>
+        <h2>Ein echter Lauf, klar begrenzt</h2>
+        <p class="section-lede">Ein echter Lauf von Controller und Worker: Ziel, Aufgabe A, harter Abbruch (der Prozess wird beendet), Neustart, Aufgabe B, fertig.</p>
+      </div>
+      <ul class="fact-list">
+        <li>0 doppelte Aufgaben nach dem Neustart</li>
+        <li>Ein Beleg (<code>receipt.json</code>), den jede Person aus den Dateien nachrechnen kann. Wird Beleg, Ledger oder Journal verändert, fällt das auf.</li>
+        <li>Automatische Prüfungen: 12 von 12 grün</li>
+      </ul>
+      <p class="limit">Ehrliche Grenze: Die Demo nutzt einen synthetischen Test-Baustein. Ein Lauf mit echtem KI-Anbieter oder einem echten n8n-Ablauf ist noch nicht nachgewiesen.</p>
+      <p class="en-line" lang="en">Real controller + worker run: hard kill, restart, 0 duplicate tasks, re-verifiable receipt, CI 12/12. Limit: synthetic adapter so far.</p>
+      <p><a class="btn" href="https://github.com/happyhippovip/2026-courier/pull/361">Beleg ansehen (GitHub, PR #361)</a></p>
+    </div>
+  </section>
+
   <section class="section" id="demo">
     <div class="wrap">
       <div class="section-head">
-        <h2>Interactive Symphony Simulator</h2>
-        <p class="section-lede">Experience Courier's real execution engine: select an autonomous workflow, simulate live environmental failures, and inspect the cryptographic event journal in real time.</p>
+        <h2>Simulation im Browser</h2>
+        <p class="section-lede">Simulation im Browser (Konzept-Vorschau). Zeigt das Prinzip, nicht die echte Engine.</p>
+        <p class="en-line" lang="en">Browser simulation, not the real engine.</p>
       </div>
 
       <div class="demo-wrap">
         <div class="demo-header">
           <div class="demo-title">
-            <span>Journal Instance: <code>courier.db</code> (Local Memory)</span>
-            <span class="demo-badge badge-active" id="demo-status-badge">Engine Active</span>
+            <span>Beispiel-Journal: <code>courier.db</code> (nur diese Seite)</span>
+            <span class="demo-badge badge-active" id="demo-status-badge">Simulation</span>
           </div>
           <div class="demo-actions">
             <button type="button" class="pill-btn" id="btn-export-log">Export JSON</button>
@@ -151,7 +159,7 @@
           <!-- Left Controls & Pipeline -->
           <div class="demo-controls">
             <div class="ctrl-group">
-              <h4>1. Select Real Workflow</h4>
+              <h4>1. Beispielablauf wählen (Konzept)</h4>
               <div class="pill-bar">
                 <button type="button" class="pill-btn active" data-flow="email">Invoice & Email Triage</button>
                 <button type="button" class="pill-btn" data-flow="workbook">Spreadsheet Cell Reconciliation</button>
@@ -161,18 +169,18 @@
             </div>
 
             <div class="ctrl-group">
-              <h4>2. Simulation Execution Controls</h4>
+              <h4>2. Steuerung der Simulation</h4>
               <div class="sim-player">
                 <button type="button" id="btn-play-sim">▶ Auto Play</button>
                 <button type="button" id="btn-step-sim">⏭ Step Next</button>
                 <div class="chain-status" id="chain-status">
-                  <span>✓ Hash Chain Verified</span>
+                  <span>Beispielkette (Simulation)</span>
                 </div>
               </div>
             </div>
 
             <div class="ctrl-group">
-              <h4>3. Inject Chaos / Edge Cases</h4>
+              <h4>3. Störungen einspielen (Beispiel)</h4>
               <div class="pill-bar">
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-429">⚡ Inject Provider 429 Limit</button>
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
@@ -190,7 +198,7 @@
                 </div>
                 <div class="pipe-step" id="pipe-route">
                   <span class="step-title">2. Route</span>
-                  <span class="step-val">CLAIM_FENCE</span>
+                  <span class="step-val">EIN_SCHREIBER</span>
                 </div>
                 <div class="pipe-step" id="pipe-execute">
                   <span class="step-title">3. Execute</span>
@@ -227,8 +235,10 @@
   <section class="section" id="use-cases">
     <div class="wrap">
       <div class="section-head">
-        <h2>Built for Real Work, Not Tech Demos</h2>
-        <p class="section-lede">Courier Symphony solves high-consequence administrative, financial, and data housekeeping tasks where errors and duplicated runs are unacceptable.</p>
+        <p class="duo-kicker">Konzept / Prototyp</p>
+        <h2>Beispiel-Abläufe</h2>
+        <p class="section-lede">Konzept und Prototyp. Die Karten beschreiben das Ziel. Ein Lauf mit echtem Anbieter ist dafür noch nicht nachgewiesen.</p>
+        <p class="en-line" lang="en">Concept sketches. Not evidenced with a real provider run.</p>
       </div>
 
       <div class="usecase-grid">
@@ -240,7 +250,7 @@
           <ul class="card-metrics">
             <li>Considers Reformationstag & Easter shifts</li>
             <li>Enforces 7-day early action target boundary</li>
-            <li>Zero hallucinated calendar dates</li>
+            <li>Ziel: keine erfundenen Kalenderdaten</li>
           </ul>
         </div>
 
@@ -264,7 +274,7 @@
           <ul class="card-metrics">
             <li>Auto-detects bounces and vacation notices</li>
             <li>Strict human gate for monetary transactions</li>
-            <li>Zero outbound emails without authorization</li>
+            <li>Ziel: keine ausgehende Mail ohne Freigabe</li>
           </ul>
         </div>
 
@@ -276,19 +286,30 @@
           <ul class="card-metrics">
             <li>Single-writer concurrency lock enforcement</li>
             <li>Self-healing crash recovery from SQLite WAL</li>
-            <li>Zero hallucinated changes or forced merges</li>
+            <li>Ziel: keine erfundenen Änderungen</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Interactive Architecture Deep-Dive -->
+  <section class="section" id="werkzeuge">
+    <div class="wrap narrow">
+      <div class="section-head">
+        <h2>Ein Ziel, mehrere Werkzeuge</h2>
+        <p class="section-lede">Courier hält fest, welches Werkzeug welche Aufgabe übernommen hat, und gibt jede Aufgabe nur an einen Bearbeiter (ein Schreiber pro Aufgabe). Fällt ein Werkzeug aus, kann ein anderes am letzten geprüften Stand weitermachen. Stand: Prinzip im Prototyp umgesetzt, Anbindung echter Anbieter in Arbeit.</p>
+        <p class="en-line" lang="en">One goal, many tools: one writer per task, handover at the last verified checkpoint. Prototype; real provider adapters in progress.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="architecture">
     <div class="wrap">
       <div class="section-head">
-        <h2>Architecture Deep-Dive</h2>
-        <p class="section-lede">Explore the four engineering pillars that provide mathematical guarantees for autonomous workflow execution.</p>
+        <p class="duo-kicker">Konzeptskizze</p>
+        <h2>Architektur im Prototyp</h2>
+        <p class="section-lede">Vier Bausteine, an denen der Prototyp arbeitet. Die Codekästen sind erläuternde Skizzen, keine Zusage eines fertigen Produkts.</p>
+        <p class="en-line" lang="en">Prototype sketch. The code boxes illustrate the idea.</p>
       </div>
 
       <div class="arch-box">
@@ -353,7 +374,7 @@ def evaluate_admission(host_snapshot: dict) -> bool:
 def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[WorkPacket]:
     currents = [p for p in self.packets.values() if p.state == PacketState.CURRENT]
     if currents:
-        return currents[0] # Retain lock, single writer guaranteed
+        return currents[0] # one writer at a time in this sketch
     # Promote next only if host is safe
           </div>
         </div>
@@ -361,12 +382,22 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
     </div>
   </section>
 
-  <!-- Interactive ROI & Waste Calculator -->
+  <section class="section" id="transparenz">
+    <div class="wrap narrow">
+      <div class="section-head">
+        <h2>Transparenz und Kostenkontrolle</h2>
+        <p class="section-lede">Jeder Schritt landet in einem nur anhängbaren Journal. Nichts wird doppelt bezahlt, weil erledigte Schritte nicht erneut laufen. Läuft alles lokal auf deinem Rechner, gibt es kein Tracking und keine Cookies. Kostenanzeige pro Aufgabe: geplant.</p>
+        <p class="en-line" lang="en">Append-only journal, no paid step runs twice, local-first, no tracking. Per-task cost view: planned.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="calculator">
     <div class="wrap">
       <div class="section-head">
-        <h2>Calculate Your Autonomous Waste Elimination</h2>
-        <p class="section-lede">Unfenced AI agents waste dozens of hours each month re-running failed multi-step workflows. Calculate your savings with Courier's durable checkpoints.</p>
+        <h2>Rechenbeispiel</h2>
+        <p class="section-lede">Rechenbeispiel mit frei gewählten Werten, keine gemessenen Ergebnisse. Die Startwerte (60 Abläufe pro Woche, 120 €/Stunde, 20 %) sind Beispiele, keine Messwerte und kein Angebot.</p>
+        <p class="en-line" lang="en">Example calculator. Chosen inputs, not measured results.</p>
       </div>
 
       <div class="calc-box">
@@ -409,7 +440,7 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <span class="lbl">Estimated Monthly Net Value:</span>
             <span class="val" id="res-money">2.880 €</span>
           </div>
-          <p style="margin:0;font-size:0.85rem;color:var(--muted)">Assumes average 30 minutes of developer debugging and manual context rebuild per interrupted run.</p>
+          <p style="margin:0;font-size:0.85rem;color:var(--muted)">Annahme im Beispiel: 30 Minuten Wiederaufbau pro Unterbrechung. Keine gemessenen Ergebnisse.</p>
         </div>
       </div>
     </div>
@@ -419,8 +450,8 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
   <section class="section" id="faq">
     <div class="wrap">
       <div class="section-head">
-        <h2>Technical Due Diligence FAQ</h2>
-        <p class="section-lede">Answers to architectural and integration questions for technical leaders.</p>
+        <h2>Fragen</h2>
+        <p class="section-lede">Kurze Antworten. Wo etwas noch nicht belegt ist, steht das dabei.</p>
       </div>
 
       <div class="accordion">
@@ -436,11 +467,12 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
 
         <div class="acc-item">
           <button type="button" class="acc-header">
-            <span>Can Courier run in an entirely air-gapped / offline environment?</span>
+            <span>Läuft Courier vollständig offline?</span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-content">
-            <p>Yes. All core adapters (spreadsheet reconciliation, filesystem housekeeping, rule verification, Bescheid calculations) operate with standard-library Python and local binaries without external internet access. Cloud model providers are optional external adapters that can be enabled or disabled per policy.</p>
+            <p>Ziel ist lokal zuerst: Journal und Prüfungen auf dem eigenen Rechner, ohne Tracking. Ein vollständig abgeschotteter Lauf ohne Netz ist noch nicht als fertiges Produkt nachgewiesen. Anbieter im Netz bleiben optionale Adapter und sind in Arbeit.</p>
+            <p class="en-line" lang="en">Local-first is the goal. A fully offline product run is not yet shown.</p>
           </div>
         </div>
 
@@ -456,11 +488,12 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
 
         <div class="acc-item">
           <button type="button" class="acc-header">
-            <span>What are the platform requirements for the V1 build?</span>
+            <span>Auf welchen Systemen läuft der Prototyp?</span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-content">
-            <p>Courier Symphony is engineered for Windows 10/11 desktop environments as a self-contained executable (EXE), with support for background worker daemons on macOS and headless Linux servers.</p>
+            <p>Der belegte Lauf ist ein Controller- und Worker-Prototyp (siehe Beleg, PR #361). Fertige Desktop-Pakete für Windows, macOS oder Linux sind geplant, nicht ausgeliefert.</p>
+            <p class="en-line" lang="en">Desktop packages are planned, not shipped. The evidenced run is the prototype in PR #361.</p>
           </div>
         </div>
       </div>
@@ -487,27 +520,28 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
   <section class="section" id="platforms">
     <div class="wrap">
       <div class="section-head">
-        <h2>Deployment Targets & Operating Matrix</h2>
-        <p class="section-lede">Architected for production stability across desktop and server operating systems without Docker dependencies or cloud vendor lock-in.</p>
+        <p class="duo-kicker">Geplant, nicht ausgeliefert</p>
+        <h2>Zielbild für Systeme</h2>
+        <p class="section-lede">Richtung des Prototyps. Nichts davon ist als fertiges Paket belegt.</p>
+        <p class="en-line" lang="en">Target picture. Not a shipped package.</p>
       </div>
 
       <div class="matrix-grid">
         <div class="matrix-card">
-          <div class="matrix-badge">Primary Desktop</div>
-          <h3>Windows 10 / 11</h3>
-          <p class="matrix-sub">Single Self-Contained Executable (EXE)</p>
+          <div class="matrix-badge">Geplant</div>
+          <h3>Windows</h3>
+          <p class="matrix-sub">Desktop-Paket, noch nicht ausgeliefert</p>
           <ul class="matrix-list">
-            <li>Zero Python runtime installation required</li>
-            <li>Embedded SQLite WAL journal engine</li>
-            <li>Desktop Hub UI with visual activity replay</li>
-            <li>Clean background tray hibernation</li>
+            <li>Ziel: lokales Journal auf dem Rechner</li>
+            <li>Ziel: sichtbarer Ablauf im Desktop</li>
+            <li>Heute nicht als Installationspaket belegt</li>
           </ul>
         </div>
 
         <div class="matrix-card">
-          <div class="matrix-badge">Autonomous Daemon</div>
-          <h3>macOS (Apple Silicon & Intel)</h3>
-          <p class="matrix-sub">Local Background Worker Daemon</p>
+          <div class="matrix-badge">Geplant</div>
+          <h3>macOS</h3>
+          <p class="matrix-sub">Hintergrund-Worker, Prototyp</p>
           <ul class="matrix-list">
             <li>Low-overhead background process</li>
             <li>Automatic laptop sleep / wake reconciliation</li>
@@ -517,14 +551,13 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
         </div>
 
         <div class="matrix-card">
-          <div class="matrix-badge">Enterprise Infrastructure</div>
-          <h3>Headless Linux</h3>
-          <p class="matrix-sub">Systemd Service / Air-Gapped Appliance</p>
+          <div class="matrix-badge">Geplant</div>
+          <h3>Linux ohne Oberfläche</h3>
+          <p class="matrix-sub">Dienst auf einem eigenen Rechner, Prototyp</p>
           <ul class="matrix-list">
-            <li>100% offline air-gapped network execution</li>
-            <li>Zero external telemetry outbound connections</li>
-            <li>Deterministic shell and script adapters</li>
-            <li>Multi-user audit receipt generation</li>
+            <li>Ziel: kein Tracking nach außen</li>
+            <li>Ziel: lokale Adapter für Shell und Skripte</li>
+            <li>Ein vollständig abgeschottetes Gerät ist nicht belegt</li>
           </ul>
         </div>
       </div>
@@ -536,42 +569,58 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
     <div class="wrap">
       <div class="contact-card">
         <div>
-          <h2>Request Pilot Access & Architecture Briefing</h2>
-          <p style="color:var(--muted);margin:0">Courier Symphony is currently accepting technical design partners for self-hosted pilot evaluations (Windows EXE, Mac daemon, Linux worker).</p>
+          <h2>Kostenloses Pilotprogramm</h2>
+          <p style="color:var(--muted);margin:0">Wir suchen 3–5 Teams, die KI-Agenten oder Automationen (z. B. n8n, Make) betreiben und Abbrüche oder doppelte Aktionen kennen. Der Pilot ist kostenlos und unverbindlich. Ihr schickt einen exportierten Ablauf ohne Zugangsdaten, wir zeigen, wo ein Neustart doppelt auslösen würde, und liefern einen nachprüfbaren Beleg.</p>
+          <p class="en-line" lang="en">Free pilot for 3–5 teams running AI agents or automations. Send an exported workflow (no credentials), get a duplicate-risk report plus a verifiable receipt.</p>
+          <p style="margin-top:1rem"><a class="btn" href="mailto:founder@couriersymphony.de?subject=Pilot%20anfragen&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Awir%20m%C3%B6chten%20den%20kostenlosen%20Pilot%20anfragen.%0A%0ATeam%3A%20%0AAblauf%20%28exportiert%2C%20ohne%20Zugangsdaten%29%3A%20%0A%0ADanke">Pilot anfragen</a></p>
         </div>
 
         <form class="contact-form" id="pilot-form">
           <div class="form-row">
-            <label for="contact-name">Your Name / Organization</label>
-            <input type="text" id="contact-name" placeholder="e.g. your name / project" required>
+            <label for="contact-name">Name / Team</label>
+            <input type="text" id="contact-name" placeholder="Name oder Team" required>
           </div>
           <div class="form-row">
-            <label for="contact-tier">Primary Pilot Scope</label>
+            <label for="contact-tier">Worum geht es?</label>
             <select id="contact-tier">
-              <option value="Windows Desktop Hub & Local Workers">Windows Desktop Hub & Local Workers (EXE Evaluation)</option>
-              <option value="Enterprise Architecture & Security Review">Enterprise Architecture & Security Review</option>
-              <option value="Autonomous Email & Document Housekeeping">Autonomous Email & Document Housekeeping</option>
-              <option value="Custom Adapter & Provider Integration">Custom Adapter & Provider Integration</option>
+              <option value="Pilot: exportierter Ablauf ohne Zugangsdaten">Pilot: exportierter Ablauf ohne Zugangsdaten</option>
+              <option value="Adapter-Anbindung (geplant)">Adapter-Anbindung (geplant)</option>
+              <option value="Lokale Fortsetzung im Prototyp">Lokale Fortsetzung im Prototyp</option>
             </select>
           </div>
           <div class="form-row">
-            <label for="contact-notes">Project Requirements & Target OS</label>
-            <textarea id="contact-notes" rows="3" placeholder="Tell us about your workload frequency, environment (Windows, Mac, Linux), and current failure bottlenecks..."></textarea>
+            <label for="contact-notes">Kurz zum Ablauf</label>
+            <textarea id="contact-notes" rows="3" placeholder="Welcher Ablauf bricht ab, und wo entsteht eine doppelte Aktion?"></textarea>
           </div>
-          <button type="submit" class="btn">Send Pilot Request (Direct to Founder)</button>
+          <button type="submit" class="btn">Pilot anfragen (öffnet E-Mail)</button>
           <div class="form-feedback" id="form-feedback" style="display:none;margin-top:.8rem;padding:.8rem;background:rgba(61,214,140,.1);border:1px solid rgba(61,214,140,.3);border-radius:8px;color:var(--green);font-size:.9rem">
-            Opening your email client... Alternatively, email us directly at <a href="mailto:founder@couriersymphony.de" style="color:var(--gold);font-weight:bold">founder@couriersymphony.de</a>.
+            E-Mail-Programm wird geöffnet. Sonst direkt an <a href="mailto:founder@couriersymphony.de" style="color:var(--gold);font-weight:bold">founder@couriersymphony.de</a>.
           </div>
         </form>
-        <p class="hero-note">Or reach us directly at <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. Zero cookies or trackers used.</p>
+        <p class="hero-note">Oder direkt an <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. Keine Cookies, kein Tracking.</p>
       </div>
     </div>
   </section>
 </main>
 
+<!-- BEGIN:draft-support -->
+<!-- DRAFT, hidden. Activation requires the founder's explicit approval and a tax check.
+     Do not link this section from navigation. No payment links. No donation amounts. -->
+<section class="section" id="support-development" hidden data-draft="support" lang="de">
+  <div class="wrap narrow">
+    <h2>Support Courier Symphony's Development</h2>
+    <p>Lokale Modelle und mehrere geprüfte Worker-Läufe parallel brauchen mehr Arbeitsspeicher, als der Entwicklungsrechner derzeit bereitstellt. Der aktuelle Entwicklungs-Mac geht dabei der Speicher aus.</p>
+    <p>Mehr geeigneter Arbeitsspeicher würde es möglich machen, lokale Modelle und parallele geprüfte Worker-Läufe zu halten, ohne dass der Rechner abbricht.</p>
+    <p>Unterstützung ist möglich über Hardware-Sponsoring, geliehene Geräte oder Sachleistungen. Dafür reicht eine E-Mail an <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. Auf dieser Seite gibt es keine Zahlung.</p>
+    <p class="en-line" lang="en">Hardware sponsoring, loaned devices, or in-kind support — write to founder@couriersymphony.de. No payment link on this page.</p>
+    <p>Nachprüfbarer Fortschritt: <a href="https://github.com/happyhippovip/2026-courier/pull/361">PR #361</a> — harter Abbruch, Neustart, 0 doppelte Aufgaben, nachrechenbarer Beleg, CI 12/12, synthetischer Test-Baustein.</p>
+  </div>
+</section>
+<!-- END:draft-support -->
+
 <footer class="footer">
   <div class="wrap footer-grid">
-    <p class="fbrand">Courier Symphony — Keep AI work moving.</p>
+    <p class="fbrand">Courier Symphony — AI work that continues.</p>
     <p class="fmeta"><a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerruf</a> · <a href="/repo-reality-check.html">Repo-Check</a> · <a href="/konzept.html">Konzept</a> · <a href="/mitmachen.html">Mitmachen</a> · <a href="/privacy.html">Privacy</a> · No cookies · No trackers · © 2026 Courier Symphony</p>
   </div>
 </footer>
@@ -590,7 +639,7 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
 const WORKFLOWS = {
   email: [
     { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Inbound email received: 'Inquiry - Audit Services'", hash: "sha256:7f9a1b...34e1", data: { task_id: "task-inbound-01", adapter: "inbound_observer", effect_class: "idempotent", max_attempts: 3 } },
-    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Worker claimed task on host mac-1 (dispatch-01)", hash: "sha256:88bc20...55fa", data: { dispatch_id: "disp-01", worker_id: "worker-intake", lease_ttl_s: 30 } },
+    { seq: 2, type: "TASK_LEASED", kind: "leased", desc: "Worker took the task on host mac-1 (dispatch-01)", hash: "sha256:88bc20...55fa", data: { dispatch_id: "disp-01", worker_id: "worker-intake", lease_ttl_s: 30 } },
     { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Classification complete: POSITIVE_INTEREST (0.95 conf)", hash: "sha256:332d91...aa88", data: { category: "POSITIVE_INTEREST", checkpoint_token: "ckpt-9102" } },
     { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Invoice draft INV-2026-004 generated with verified pricing", hash: "sha256:eef401...7712", data: { invoice_id: "INV-2026-004", amount_eur: 450.00, outcome: "success" } },
     { seq: 5, type: "RESULT_ACCEPTED", kind: "verified", desc: "Independent verifier validated invoice schema & hash", hash: "sha256:bb144a...9090", data: { verifier: "adapters.invoice.verify", accepted: true } },
@@ -598,10 +647,10 @@ const WORKFLOWS = {
   ],
   workbook: [
     { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Reconciliation requested: 'Q3_Financials.xlsx' (cells B2:B10)", hash: "sha256:4a12ec...9980", data: { task_id: "task-wb-02", adapter: "workbook", effect_class: "idempotent" } },
-    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Fenced writer lock acquired by local_shell worker", hash: "sha256:c180da...fe01", data: { lock_id: "lock-wb-q3", granted_to: "worker-local-01" } },
+    { seq: 2, type: "TASK_LEASED", kind: "leased", desc: "Fenced writer lock acquired by local_shell worker", hash: "sha256:c180da...fe01", data: { lock_id: "lock-wb-q3", granted_to: "worker-local-01" } },
     { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Workbook preview planned: 4 cells modified, formulas intact", hash: "sha256:77bc34...441a", data: { untouched_cells: 42, planned_edits: 4 } },
     { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Atomic file swap completed · SHA-256 before/after verified", hash: "sha256:199fba...dcb4", data: { before_sha: "a1c9...33", after_sha: "99fa...01", outcome: "success" } },
-    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Receipt generated with atomic rollback safety guarantee", hash: "sha256:6e5801...aa77", data: { status: "COMPLETE", receipt_verified: true } }
+    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Receipt generated in this example, with a rollback check", hash: "sha256:6e5801...aa77", data: { status: "COMPLETE", receipt_verified: true } }
   ],
   deadlines: [
     { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Bescheid analysis requested: Letter date 2026-07-20", hash: "sha256:9123df...1102", data: { letter_date: "2026-07-20", fiction_days: 4, jurisdiction: "Niedersachsen" } },
@@ -612,7 +661,7 @@ const WORKFLOWS = {
   ],
   repo: [
     { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Repository scan initiated: Audit active branches and locks", hash: "sha256:7a81dd...1142", data: { task_id: "task-repo-audit", adapter: "repo_reality", scope: "locked_route" } },
-    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Fenced L4 worker claimed audit token · Lock valid for 60s", hash: "sha256:3e44fa...7781", data: { worker_id: "worker-l4-verifier", fencing_token: "fence-8812" } },
+    { seq: 2, type: "TASK_LEASED", kind: "leased", desc: "Fenced L4 worker took the audit token · Lock valid for 60s", hash: "sha256:3e44fa...7781", data: { worker_id: "worker-l4-verifier", fencing_token: "fence-8812" } },
     { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Worktree scan complete: 0 orphaned locks · Clean machine verified", hash: "sha256:bb0122...3344", data: { clean_worktrees: 12, stale_locks_purged: 0 } },
     { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Cryptographic SHA chain intact: 100% test coverage verified", hash: "sha256:99ff11...00aa", data: { head_sha: "f425d3285", ledger_valid: true, outcome: "success" } },
     { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Audit receipt committed to journal · Zero architecture drift", hash: "sha256:88ee99...dd44", data: { status: "COMPLETE", drift_detected: false } }
@@ -639,7 +688,7 @@ function updatePipelineStatus(lastType) {
 
   if (lastType === "TASK_CREATED") {
     document.getElementById("pipe-ingest").className = "pipe-step current";
-  } else if (lastType === "TASK_CLAIMED") {
+  } else if (lastType === "TASK_LEASED") {
     document.getElementById("pipe-ingest").className = "pipe-step done";
     document.getElementById("pipe-route").className = "pipe-step current";
   } else if (lastType === "CHECKPOINT_SAVED" || lastType === "CIRCUIT_TRIPPED_429" || lastType === "HOST_CRASH_DETECTED") {
@@ -693,7 +742,7 @@ document.querySelectorAll("[data-flow]").forEach(btn => {
     currentFlow = btn.dataset.flow;
     logEntries = [...WORKFLOWS[currentFlow]];
     statusBadge.className = "demo-badge badge-active";
-    statusBadge.textContent = "Engine Active";
+    statusBadge.textContent = "Simulation";
     renderJournal();
   });
 });
@@ -760,7 +809,7 @@ document.getElementById("btn-reset-sim").addEventListener("click", () => {
   if (playInterval) clearInterval(playInterval);
   logEntries = [...WORKFLOWS[currentFlow]];
   statusBadge.className = "demo-badge badge-active";
-  statusBadge.textContent = "Engine Active";
+  statusBadge.textContent = "Simulation";
   renderJournal();
 });
 
@@ -797,7 +846,7 @@ document.getElementById("btn-fault-crash").addEventListener("click", () => {
     kind: "circuit",
     desc: "Process terminated unexpectedly · Stale worker heartbeat expired",
     hash: "sha256:dd0012...55aa",
-    data: { crash_recovery: true, orphan_worker_reclaimed: true }
+    data: { crash_recovery: true, orphan_worker_recovered: true }
   });
   logEntries.push({
     seq: nextSeq + 1,
@@ -916,20 +965,18 @@ document.getElementById("pilot-form").addEventListener("submit", (e) => {
   const tier = document.getElementById("contact-tier").value;
   const notes = document.getElementById("contact-notes").value.trim();
 
-  const subject = encodeURIComponent(`Courier Symphony Pilot Request — ${name} (${tier})`);
+  const subject = encodeURIComponent(`Pilot anfragen — ${name}`);
   const body = encodeURIComponent(
-`Hello Courier Symphony Team,
+`Hallo Courier Symphony,
 
-I would like to request pilot evaluation details for Courier Symphony.
+wir möchten den kostenlosen Pilot anfragen.
 
-Applicant: ${name}
-Primary Focus: ${tier}
-Environment & Workload Details:
-${notes || "Self-hosted evaluation of durable AI orchestration engine."}
+Name / Team: ${name}
+Thema: ${tier}
+Ablauf (ohne Zugangsdaten):
+${notes || "Exportierter Ablauf folgt."}
 
-Please send instructions for accessing the pilot build and technical architecture overview.
-
-Best regards,
+Danke
 ${name}`
   );
 

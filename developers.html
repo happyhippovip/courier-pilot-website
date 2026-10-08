@@ -34,7 +34,7 @@
       <a href="/developers.html" class="is-active" aria-current="page">Developers</a>
       <a href="/company.html">Company</a>
       <a href="/repo-reality-check.html">Beta</a>
-      <a class="nav-cta" href="/#bestellen">Bestellen</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
     </nav>
   </div>
 </header>
@@ -63,7 +63,7 @@
 }
 {
   "event_id": "evt-01J9X8M2C4...",
-  "type": "CLAIM_ACQUIRED",
+  "type": "LEASE_ACQUIRED",
   "item_id": "P9",
   "worker_id": "antigravity-worker-1",
   "lease_seconds": 3600,
@@ -84,7 +84,7 @@
   <section class="section">
     <div class="wrap">
       <h2>2. Atomic Work Queue State Machine</h2>
-      <p class="section-lede">The work queue guarantees exactly-once processing with lease-based fencing and automatic recovery.</p>
+      <p class="section-lede">Prototype sketch: one writer per task, with a time-bounded lease and recovery after a crash. Exactly-once with a real provider is not yet shown.</p>
 
       <div class="card-grid">
         <article class="card">
@@ -92,8 +92,8 @@
           <p class="fine">Work item registered with scope boundaries, dependencies, and required runtime capabilities.</p>
         </article>
         <article class="card">
-          <h3>CLAIMED</h3>
-          <p class="fine">Worker holds an exclusive, time-bounded lease. Parallel claims on overlapping scopes are rejected immediately.</p>
+          <h3>LEASED</h3>
+          <p class="fine">Worker holds an exclusive, time-bounded lease. A second writer on the same scope is rejected immediately.</p>
         </article>
         <article class="card">
           <h3>COMPLETED</h3>
@@ -117,8 +117,8 @@
         <p>Audits ledger files for cryptographic and state machine consistency:</p>
         <ul class="checks">
           <li><strong>Chronological Monotonicity:</strong> Rejects timestamps moving backwards in time (<code>TIME_TRAVEL</code>).</li>
-          <li><strong>Scope Collision Detection:</strong> Verifies no two concurrent workers claimed intersecting codebase files (<code>CONCURRENT_SCOPE_CONFLICT</code>).</li>
-          <li><strong>State Invariant Auditing:</strong> Catches illegal double claims, unheld releases, or expired lease extensions.</li>
+          <li><strong>Scope Collision Detection:</strong> Verifies no two concurrent workers held intersecting codebase files (<code>CONCURRENT_SCOPE_CONFLICT</code>).</li>
+          <li><strong>State Invariant Auditing:</strong> Catches a second writer, an unheld release, or an expired lease extension.</li>
         </ul>
         <pre><code>python -m courier_core.work_queue_audit --ledger /path/to/ledger.jsonl
 # Output: {"ok": true, "events_audited": 142, "items": 9, "violations": []}</code></pre>

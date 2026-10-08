@@ -10,13 +10,16 @@ build = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(build)
 
 
-def test_every_order_page_carries_the_synced_block():
-    assert "index.html" in build.ORDER_PAGES
-    for page in build.ORDER_PAGES:
-        text = (ROOT / page).read_text(encoding="utf-8")
-        updated, count = build.replace_order_blocks(text)
-        assert count >= 1, page
-        assert updated == text, f"{page}: run python3 build.py --sync"
+def test_paid_order_slots_are_off():
+    assert build.ORDER_PAGES == []
+    assert build.VIDEO_PAGES == []
+    for name in ("index.html", "repo-reality-check.html"):
+        text = (ROOT / name).read_text(encoding="utf-8")
+        assert "BEGIN:order-block" not in text, name
+        assert "BEGIN:video-block" not in text, name
+        assert "5\u00a0€" not in text and "79\u00a0€" not in text, name
+        assert "5 EUR" not in text and "79 EUR" not in text, name
+        assert "mailto:founder@couriersymphony.de" in text, name
 
 
 def test_ueberweisung_mailto_is_primary_and_no_checkout_without_link():
@@ -53,16 +56,29 @@ def test_no_third_party_forms_scripts_or_zip_offer_on_landing():
     assert "mailto:founder@couriersymphony.de" in text
 
 
-def test_two_order_buttons_high_on_start_page():
+def test_early_access_mailto_replaces_purchase_buttons():
     text = (ROOT / "index.html").read_text(encoding="utf-8")
-    duo = text.index('id="bestellen"')
-    assert duo < text.index('id="demo"'), "order buttons must sit right below the hero"
-    updated, count = build.replace_video_blocks(text)
-    assert count == 1 and updated == text, "run python3 build.py --sync"
-    assert "Repo-Check bestellen" in text
-    assert "Shorts-Paket – 10 Clips aus einem Langvideo: " + build.VIDEO_PRICE_LABEL in text
-    assert "Erster Probe-Clip kostenlos." in text
-    assert text.count("Konzept-Vorschau</span>") >= 2
+    early = text.index('id="early-access"')
+    assert early < text.index('id="demo"'), "Early Access sits with the hero, above the simulator"
+    assert "Early Access per E-Mail" in text
+    assert "Repo-Check bestellen" not in text
+    assert "Shorts-Paket" not in text
+    assert build.VIDEO_PRICE_LABEL not in text
+    assert build.REPO_PRICE_LABEL not in text
+    assert "Keine Bezahlung" in text or "keine Bezahlung" in text
+    nav = text.split("<nav", 1)[1].split("</nav>", 1)[0]
+    assert "support-development" not in nav
+    start = text.index('id="support-development"')
+    tag = text[text.rfind("<", 0, start):text.find(">", start)]
+    assert "hidden" in tag and 'data-draft="support"' in tag
+    assert "Support Courier Symphony's Development" in text
+    assert "Hardware-Sponsoring" in text
+    assert "founder@couriersymphony.de" in text
+    # Activation stays a comment until the founder approves it and a tax check is done.
+    assert "tax check" in text
+    stripped = build.strip_draft_support(text)
+    assert "Support Courier Symphony's Development" not in stripped
+    assert "support-development" not in stripped
 
 
 def test_video_block_price_single_source_and_no_bank_data():

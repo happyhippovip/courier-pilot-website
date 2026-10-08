@@ -34,7 +34,7 @@
       <a href="/developers.html">Developers</a>
       <a href="/company.html">Company</a>
       <a href="/repo-reality-check.html">Beta</a>
-      <a class="nav-cta" href="/#bestellen">Bestellen</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
     </nav>
   </div>
 </header>
@@ -89,7 +89,7 @@
           <h2>Heavy Media &amp; Asset Generation Pipelines</h2>
           <p>Rendering Godot animations, video encoding, and multi-model synthesis demand strict resource admission and fault tolerance.</p>
           <ul class="checks">
-            <li><strong>Admission Mutexes:</strong> Guarantees only one heavy render pipeline runs per physical host at any time.</li>
+            <li><strong>Admission Mutexes:</strong> The prototype aims for one heavy render pipeline per physical host at a time.</li>
             <li><strong>Solid-Color &amp; Integrity Detection:</strong> Automatically validates media output (e.g., detecting blank frames or corrupted streams) before marking tasks complete.</li>
             <li><strong>Atomic Artifact Delivery:</strong> Output files are verified, checksummed, and packaged with verifiable receipt metadata.</li>
           </ul>
@@ -101,12 +101,12 @@
   <section class="section" id="evidence">
     <div class="wrap">
       <div class="report">
-        <h2>Evidence-Backed Operations</h2>
-        <p>Courier Symphony never relies on vague marketing claims. Every feature documented here is verified daily across automated CI suites:</p>
+        <h2>Was belegt ist</h2>
+        <p>Die Seiten zu Anwendungsfällen sind Konzept und Prototyp. Belegt ist ein Controller- und Worker-Lauf mit synthetischem Test-Baustein: harter Abbruch, Neustart, 0 doppelte Aufgaben, nachrechenbarer Beleg, CI 12 von 12. Ein Lauf mit echtem Anbieter ist noch nicht nachgewiesen.</p>
         <ul class="checks">
-          <li>Over 1,700 automated unit and integration tests passing on Ubuntu and Windows.</li>
-          <li>Strict zero-regression ratchet on test exclusions and skipped fixtures.</li>
-          <li>Open source codebase open for inspection and verification on GitHub.</li>
+          <li>Beleg: <a href="https://github.com/happyhippovip/2026-courier/pull/361">PR #361</a></li>
+          <li>CI in diesem Lauf: 12 von 12 grün</li>
+          <li>Grenze: synthetischer Test-Baustein, kein echter Anbieter</li>
         </ul>
         <div style="margin-top:1.5rem">
           <a class="btn" href="https://github.com/happyhippovip/2026-courier" target="_blank" rel="noopener noreferrer">Inspect GitHub Repository</a>

@@ -45,6 +45,8 @@ def test_impressum_ddg_mstv_and_email_only_contact():
 
 def test_no_invented_company_vat_or_register():
     impressum = _read("impressum.html")
+    assert "Gründung in Vorbereitung" in impressum
+    assert "Privatperson" in impressum
     for word in ("GmbH", "UG (", "Geschäftsführer", "Umsatzsteuer", "USt-ID", "Handelsregister",
                  "Registergericht", "Kleinunternehmer"):
         assert word not in impressum, word
