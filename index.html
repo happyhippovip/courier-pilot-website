@@ -15,8 +15,22 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#070b16">
 <link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Courier Symphony",
+  "operatingSystem": "Windows 10, Windows 11, macOS, Linux",
+  "applicationCategory": "BusinessApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  },
+  "description": "Local-first continuity and orchestration layer for long-running AI work across providers, machines, and local execution environments."
+}
+</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -161,6 +175,7 @@
               <div class="pill-bar">
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-429">⚡ Inject Provider 429 Limit</button>
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
+                <button type="button" class="pill-btn" id="btn-fault-sleep">🌙 Laptop Sleep / Wake</button>
                 <button type="button" class="pill-btn" id="btn-fault-gate">✋ Trigger Human Decision Gate</button>
               </div>
             </div>
@@ -531,8 +546,11 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <textarea id="contact-notes" rows="3" placeholder="Tell us about your workload frequency, environment (Windows, Mac, Linux), and current failure bottlenecks..."></textarea>
           </div>
           <button type="submit" class="btn">Send Pilot Request (Direct to Founder)</button>
+          <div class="form-feedback" id="form-feedback" style="display:none;margin-top:.8rem;padding:.8rem;background:rgba(61,214,140,.1);border:1px solid rgba(61,214,140,.3);border-radius:8px;color:var(--green);font-size:.9rem">
+            Opening your email client... Alternatively, email us directly at <a href="mailto:founder@couriersymphony.de" style="color:var(--gold);font-weight:bold">founder@couriersymphony.de</a>.
+          </div>
         </form>
-        <p class="hero-note">Or reach us directly at <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. No tracking cookies used.</p>
+        <p class="hero-note">Or reach us directly at <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. Zero cookies or trackers used.</p>
       </div>
     </div>
   </section>
@@ -773,6 +791,30 @@ document.getElementById("btn-fault-crash").addEventListener("click", () => {
   journalContainer.scrollTop = journalContainer.scrollHeight;
 });
 
+document.getElementById("btn-fault-sleep").addEventListener("click", () => {
+  const nextSeq = logEntries.length + 1;
+  logEntries.push({
+    seq: nextSeq,
+    type: "HOST_SUSPENDED_SLEEP",
+    kind: "circuit",
+    desc: "Host suspended: Laptop lid closed mid-turn · Time-jump detected by monotonic watchdog",
+    hash: "sha256:cc88aa...1120",
+    data: { event: "LAPTOP_SLEEP", sleep_duration_s: 7200, lease_fencing_held: true }
+  });
+  logEntries.push({
+    seq: nextSeq + 1,
+    type: "KIRBY_WAKE_RECONCILED",
+    kind: "ckpt",
+    desc: "Host resumed: Clock skew reconciled · Single-writer lease refreshed without ghost duplication",
+    hash: "sha256:44bb22...9901",
+    data: { wake_reconciled: true, ghost_writers_prevented: 1, duplicate_turns: 0 }
+  });
+  statusBadge.className = "demo-badge badge-active";
+  statusBadge.textContent = "Resumed Clean";
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
 document.getElementById("btn-fault-gate").addEventListener("click", () => {
   const nextSeq = logEntries.length + 1;
   logEntries.push({
@@ -870,6 +912,9 @@ Please send instructions for accessing the pilot build and technical architectur
 Best regards,
 ${name}`
   );
+
+  const feedback = document.getElementById("form-feedback");
+  if (feedback) feedback.style.display = "block";
 
   window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
 });
