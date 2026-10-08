@@ -130,6 +130,11 @@
               <div class="sim-player">
                 <button type="button" id="btn-play-sim">▶ Auto Play</button>
                 <button type="button" id="btn-step-sim">⏭ Step Next</button>
+                <select id="sim-speed" class="sim-speed-select" aria-label="Simulation playback speed">
+                  <option value="450">Speed: 1x</option>
+                  <option value="200">Speed: 2x</option>
+                  <option value="60">Speed: Fast</option>
+                </select>
                 <div class="chain-status" id="chain-status">
                   <span>✓ Hash Chain Verified</span>
                 </div>
@@ -143,6 +148,19 @@
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
                 <button type="button" class="pill-btn" id="btn-fault-sleep">🌙 Laptop Sleep / Wake</button>
                 <button type="button" class="pill-btn" id="btn-fault-gate">✋ Trigger Human Decision Gate</button>
+              </div>
+
+              <!-- Interactive Human Decision Prompt Card -->
+              <div class="human-gate-prompt" id="human-gate-prompt" style="display:none">
+                <div class="gate-prompt-head">
+                  <span class="gate-icon" aria-hidden="true">✋</span>
+                  <span>Consequential Action Gate Paused</span>
+                </div>
+                <p class="gate-desc">Outbound email / monetary charge / workbook mutation paused for explicit human sign-off (§ 41 VwVfG &amp; financial policy). State is preserved in SQLite WAL journal.</p>
+                <div class="gate-actions">
+                  <button type="button" class="btn-sm btn-gate-approve" id="btn-gate-approve">✓ Authorize Action &amp; Resume</button>
+                  <button type="button" class="btn-sm btn-gate-reject" id="btn-gate-reject">✕ Reject &amp; Abort Safely</button>
+                </div>
               </div>
             </div>
 
@@ -176,8 +194,14 @@
           <!-- Right Journal Output -->
           <div class="demo-terminal" id="demo-terminal" role="region" aria-label="Cryptographic event log" tabindex="0">
             <div class="term-head">
-              <span>LEDGER EVENT STREAM (Click row to inspect payload)</span>
-              <span id="journal-count">4 Events Recorded</span>
+              <span>LEDGER EVENT STREAM</span>
+              <div class="log-filters" role="group" aria-label="Filter events by type">
+                <button type="button" class="filter-btn active" data-filter="all">All</button>
+                <button type="button" class="filter-btn" data-filter="ckpt">Checkpoints</button>
+                <button type="button" class="filter-btn" data-filter="verified">Verified</button>
+                <button type="button" class="filter-btn" data-filter="chaos">Chaos/Gates</button>
+              </div>
+              <span id="journal-count" aria-live="polite">4 Events Recorded</span>
             </div>
             <div class="journal-log" id="journal-log">
               <!-- Rendered via JS -->
@@ -267,7 +291,9 @@
         <div class="tab-panel active" id="tab-journal">
           <h3>Append-Only Journal: The Single Source of Truth</h3>
           <p>Unlike conventional agent runtimes that store state in memory or raw prompt context windows, Courier Symphony persists every state transition as a cryptographically linked event in <code>courier.db</code>. If power drops, replaying the sequence produces the exact identical projection.</p>
-          <div class="code-sample">
+          <div class="code-sample-wrap">
+            <button type="button" class="copy-code-btn">Copy Code</button>
+            <div class="code-sample">
 -- Canonical Event Schema (courier_core/journal.py)
 CREATE TABLE events (
     seq INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -280,13 +306,16 @@ CREATE TABLE events (
     prev_hash TEXT NOT NULL, -- SHA-256 chain
     hash TEXT NOT NULL
 );
+            </div>
           </div>
         </div>
 
         <div class="tab-panel" id="tab-verifier">
           <h3>Never Trust Worker Self-Reports: Independent Verifier Path</h3>
           <p>A worker process reporting "SUCCESS" is never trusted by the controller. All outcome evaluations route through independent verifier modules that inspect the disk artifacts, check cryptographic hash deltas, and fail closed if anything raises.</p>
-          <div class="code-sample">
+          <div class="code-sample-wrap">
+            <button type="button" class="copy-code-btn">Copy Code</button>
+            <div class="code-sample">
 # Verifier Contract (courier_core/verification.py)
 def run_verifier(resolve, task: TaskState, result: Event, home: Path) -> Verdict:
     if result.payload.get("outcome") != "success":
@@ -295,31 +324,38 @@ def run_verifier(resolve, task: TaskState, result: Event, home: Path) -> Verdict
     if verify_fn is None:
         return Verdict(accepted=False, reason="no verifier registered; fail closed")
     return verify_fn(task, result, home)
+            </div>
           </div>
         </div>
 
         <div class="tab-panel" id="tab-governor">
           <h3>Kirby Engine: Preventing EMFILE Storms & Thermal Throttle</h3>
           <p>Unbounded parallel subagents quickly exhaust operating system file descriptors (EMFILE) and consume all swap RAM. The Kirby engine dynamically monitors host health and coalesces wakeups so the host remains quiet, responsive, and bounded.</p>
-          <div class="code-sample">
+          <div class="code-sample-wrap">
+            <button type="button" class="copy-code-btn">Copy Code</button>
+            <div class="code-sample">
 # Host Resource Governor (courier_runtime/continuity.py)
 def evaluate_admission(host_snapshot: dict) -> bool:
     if host_snapshot["ram_used_pct"] > 85 or host_snapshot["swap_used_pct"] > 40:
         return False # Park background workers, coalesce wakeups
     return True
+            </div>
           </div>
         </div>
 
         <div class="tab-panel" id="tab-fencing">
           <h3>One-Writer Principle: Eliminating Race Conditions by Construction</h3>
           <p>Two agents must never attempt to modify the same file or database concurrently. Courier enforces strict lease fencing on work packets. If a lease expires, the token invalidates instantly, preventing late outbox writes from corrupting data.</p>
-          <div class="code-sample">
+          <div class="code-sample-wrap">
+            <button type="button" class="copy-code-btn">Copy Code</button>
+            <div class="code-sample">
 # Work Packet Queue (courier_core/work_packet.py)
 def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[WorkPacket]:
     currents = [p for p in self.packets.values() if p.state == PacketState.CURRENT]
     if currents:
         return currents[0] # Retain lock, single writer guaranteed
     # Promote next only if host is safe
+            </div>
           </div>
         </div>
       </div>
@@ -544,8 +580,11 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
 <!-- Modal for Inspecting Journal Log Event -->
 <div class="inspect-modal" id="inspect-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-content">
+    <div class="modal-head">
+      <h3 id="modal-title" style="margin:0">Ledger Event Details</h3>
+      <button type="button" class="pill-btn" id="btn-copy-modal-json">Copy JSON</button>
+    </div>
     <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
-    <h3 id="modal-title">Ledger Event Details</h3>
     <pre id="modal-json"></pre>
   </div>
 </div>
@@ -595,6 +634,9 @@ const modal = document.getElementById("inspect-modal");
 const modalJson = document.getElementById("modal-json");
 const modalClose = document.getElementById("modal-close");
 
+let currentFilter = "all";
+const gatePrompt = document.getElementById("human-gate-prompt");
+
 function updatePipelineStatus(lastType) {
   const steps = ["pipe-ingest", "pipe-route", "pipe-execute", "pipe-verify", "pipe-complete"];
   steps.forEach(id => {
@@ -607,7 +649,7 @@ function updatePipelineStatus(lastType) {
   } else if (lastType === "TASK_CLAIMED") {
     document.getElementById("pipe-ingest").className = "pipe-step done";
     document.getElementById("pipe-route").className = "pipe-step current";
-  } else if (lastType === "CHECKPOINT_SAVED" || lastType === "CIRCUIT_TRIPPED_429" || lastType === "HOST_CRASH_DETECTED") {
+  } else if (lastType === "CHECKPOINT_SAVED" || lastType === "CIRCUIT_TRIPPED_429" || lastType === "HOST_CRASH_DETECTED" || lastType === "HUMAN_GATE_REQUIRED") {
     document.getElementById("pipe-ingest").className = "pipe-step done";
     document.getElementById("pipe-route").className = "pipe-step done";
     document.getElementById("pipe-execute").className = "pipe-step current";
@@ -616,7 +658,7 @@ function updatePipelineStatus(lastType) {
     document.getElementById("pipe-route").className = "pipe-step done";
     document.getElementById("pipe-execute").className = "pipe-step done";
     document.getElementById("pipe-verify").className = "pipe-step current";
-  } else if (lastType === "RESULT_ACCEPTED" || lastType === "TASK_COMPLETE") {
+  } else if (lastType === "RESULT_ACCEPTED" || lastType === "TASK_COMPLETE" || lastType === "HUMAN_DECISION_AUTHORIZED") {
     steps.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.className = "pipe-step done";
@@ -624,9 +666,20 @@ function updatePipelineStatus(lastType) {
   }
 }
 
+function matchesFilter(entry, filter) {
+  if (filter === "all") return true;
+  if (filter === "ckpt") return entry.kind === "ckpt";
+  if (filter === "verified") return entry.kind === "verified";
+  if (filter === "chaos") return entry.kind === "circuit" || entry.kind === "paused";
+  return true;
+}
+
 function renderJournal() {
   journalContainer.innerHTML = "";
+  let visibleCount = 0;
   logEntries.forEach(entry => {
+    if (!matchesFilter(entry, currentFilter)) return;
+    visibleCount++;
     const row = document.createElement("div");
     row.className = `log-row kind-${entry.kind}`;
     row.setAttribute("role", "button");
@@ -651,13 +704,25 @@ function renderJournal() {
     });
     journalContainer.appendChild(row);
   });
-  journalCount.textContent = `${logEntries.length} Events Recorded`;
+  journalCount.textContent = currentFilter === "all"
+    ? `${logEntries.length} Events Recorded`
+    : `${visibleCount} of ${logEntries.length} Events (${currentFilter.toUpperCase()})`;
   if (logEntries.length > 0) {
     updatePipelineStatus(logEntries[logEntries.length - 1].type);
   }
 }
 
 renderJournal();
+
+// Filter buttons
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    renderJournal();
+  });
+});
 
 // Workflow switching
 document.querySelectorAll("[data-flow]").forEach(btn => {
@@ -669,6 +734,7 @@ document.querySelectorAll("[data-flow]").forEach(btn => {
     logEntries = [...WORKFLOWS[currentFlow]];
     statusBadge.className = "demo-badge badge-active";
     statusBadge.textContent = "Engine Active";
+    if (gatePrompt) gatePrompt.style.display = "none";
     renderJournal();
   });
 });
@@ -694,6 +760,12 @@ document.getElementById("btn-step-sim").addEventListener("click", () => {
   journalContainer.scrollTop = journalContainer.scrollHeight;
 });
 
+// Auto Play speed helper
+function getPlaySpeed() {
+  const sel = document.getElementById("sim-speed");
+  return sel ? parseInt(sel.value, 10) || 450 : 450;
+}
+
 // Auto Play
 document.getElementById("btn-play-sim").addEventListener("click", () => {
   if (playInterval) {
@@ -718,7 +790,7 @@ document.getElementById("btn-play-sim").addEventListener("click", () => {
       playInterval = null;
       document.getElementById("btn-play-sim").textContent = "▶ Auto Play";
     }
-  }, 450);
+  }, getPlaySpeed());
 });
 
 // Export JSON
@@ -736,6 +808,7 @@ document.getElementById("btn-reset-sim").addEventListener("click", () => {
   logEntries = [...WORKFLOWS[currentFlow]];
   statusBadge.className = "demo-badge badge-active";
   statusBadge.textContent = "Engine Active";
+  if (gatePrompt) gatePrompt.style.display = "none";
   renderJournal();
 });
 
@@ -822,9 +895,82 @@ document.getElementById("btn-fault-gate").addEventListener("click", () => {
   });
   statusBadge.className = "demo-badge badge-paused";
   statusBadge.textContent = "Awaiting Approval";
+  if (gatePrompt) gatePrompt.style.display = "block";
   renderJournal();
   journalContainer.scrollTop = journalContainer.scrollHeight;
 });
+
+// Human Decision Gate Actions
+const btnApprove = document.getElementById("btn-gate-approve");
+const btnReject = document.getElementById("btn-gate-reject");
+
+if (btnApprove) {
+  btnApprove.addEventListener("click", () => {
+    const nextSeq = logEntries.length + 1;
+    logEntries.push({
+      seq: nextSeq,
+      type: "HUMAN_DECISION_AUTHORIZED",
+      kind: "verified",
+      desc: "Operator approved consequential action · Journal receipt stamped with human authorization token",
+      hash: "sha256:1a2b3c...8899",
+      data: { decision: "AUTHORIZED", signer: "OPERATOR_LOCAL", timestamp: new Date().toISOString() }
+    });
+    statusBadge.className = "demo-badge badge-active";
+    statusBadge.textContent = "Action Authorized";
+    if (gatePrompt) gatePrompt.style.display = "none";
+    renderJournal();
+    journalContainer.scrollTop = journalContainer.scrollHeight;
+  });
+}
+
+if (btnReject) {
+  btnReject.addEventListener("click", () => {
+    const nextSeq = logEntries.length + 1;
+    logEntries.push({
+      seq: nextSeq,
+      type: "TASK_CANCELLED_BY_OPERATOR",
+      kind: "circuit",
+      desc: "Operator rejected action · Transaction rolled back safely · Zero external side-effects produced",
+      hash: "sha256:44ee11...9912",
+      data: { decision: "REJECTED", rollback_verified: true, side_effects_aborted: 1 }
+    });
+    statusBadge.className = "demo-badge badge-hibernating";
+    statusBadge.textContent = "Safely Aborted";
+    if (gatePrompt) gatePrompt.style.display = "none";
+    renderJournal();
+    journalContainer.scrollTop = journalContainer.scrollHeight;
+  });
+}
+
+// Copy Code Button Handlers
+document.querySelectorAll(".copy-code-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const wrap = btn.closest(".code-sample-wrap");
+    const codeEl = wrap ? wrap.querySelector(".code-sample") : null;
+    if (codeEl) {
+      navigator.clipboard.writeText(codeEl.textContent.trim()).then(() => {
+        const origText = btn.textContent;
+        btn.textContent = "✓ Copied!";
+        setTimeout(() => { btn.textContent = origText; }, 1800);
+      }).catch(() => {
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy Code"; }, 1800);
+      });
+    }
+  });
+});
+
+// Copy Modal JSON Button Handler
+const btnCopyModalJson = document.getElementById("btn-copy-modal-json");
+if (btnCopyModalJson) {
+  btnCopyModalJson.addEventListener("click", () => {
+    navigator.clipboard.writeText(modalJson.textContent).then(() => {
+      const orig = btnCopyModalJson.textContent;
+      btnCopyModalJson.textContent = "✓ Copied!";
+      setTimeout(() => { btnCopyModalJson.textContent = orig; }, 1800);
+    });
+  });
+}
 
 // Modal close
 modalClose.addEventListener("click", () => modal.classList.remove("open"));
