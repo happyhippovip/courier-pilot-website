@@ -547,8 +547,14 @@ button.btn:disabled,.btn.is-disabled{
 .duo-card h2{font-size:1.3rem;margin:.7rem 0 .4rem}
 .duo-card>p{color:var(--muted);font-size:.95rem;margin:0 0 .6rem}
 .duo-fig{position:relative;margin:0}
-.duo-fig img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
+.duo-fig img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
 .duo-fig figcaption{position:absolute;top:.5rem;left:.5rem}
 .duo-fig .soon{background:rgba(7,11,22,.75)}
 .duo-card .order-slot{margin-top:auto}
 @media (max-width:759px){.duo-fig img{aspect-ratio:21/9}}
+@media (max-width:759px){
+  .hero .hero-visual{display:none}
+  .hero{padding-bottom:1rem}
+  .duo-fig{order:0}.duo-card h2{order:1}.duo-card .order-slot{order:2;margin-top:0}.duo-card>p{order:3}
+  .duo-fig img{aspect-ratio:21/9}
+}
