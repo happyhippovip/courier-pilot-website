@@ -45,6 +45,14 @@ ORDER_CONTACT_EMAIL = "founder@couriersymphony.de"
 PAYMENT_LINK_PLACEHOLDER = "TODO_PAYMENT_LINK"
 ORDER_EMAIL_PLACEHOLDER = "TODO_ORDER_EMAIL"
 EMAIL_RE = re.compile(r"^[^@\s<>\"]+@[^@\s<>\"]+\.[^@\s<>\"]+$")
+LEGAL_PAGES = ["impressum.html", "datenschutz.html", "widerruf.html"]
+# Public contact is e-mail only: no phone numbers, private mailboxes or bank data on any page.
+PRIVATE_DATA_RES = [
+    ("IBAN-like account number", re.compile(r"\b[A-Z]{2}\d{2}(?:\s?[0-9A-Z]{4}){3,7}")),
+    ("tel: link", re.compile(r"href=[\"']tel:", re.I)),
+    ("mobile phone number", re.compile(r"(?:\+49[\s/-]?|\b0)1[5-7]\d[\s/-]?\d{3,4}[\s/-]?\d{3,5}\b")),
+    ("private GMX/web.de mailbox", re.compile(r"@(?:gmx|web)\.(?:de|net|com)\b", re.I)),
+]
 
 
 class Links(HTMLParser):
@@ -176,6 +184,10 @@ def main() -> int:
             errors.append("internal: placeholder payment must not render a live payment URL")
     elif pay == "live" and html.escape(PAYMENT_LINK_REPO_REALITY, quote=True) not in rendered:
         errors.append("internal: live payment URL missing from Sofort bezahlen")
+    if pay == "live":
+        warnings.append(
+            "PAYMENT_LINK_REPO_REALITY is live: name that payment provider in datenschutz.html section 6 before release"
+        )
     if mail == "live":
         if f"mailto:{html.escape(ORDER_CONTACT_EMAIL, quote=True)}" not in rendered:
             errors.append("internal: ORDER_CONTACT_EMAIL missing from the order block")
@@ -212,6 +224,9 @@ def main() -> int:
         parsed[page] = (text, p)
         if 'data-placeholder="true"' in text or 'class="ph"' in text:
             (errors if release else warnings).append(f"{page}: legal placeholders still present (fill before launch)")
+        for label, rx in PRIVATE_DATA_RES:
+            if rx.search(text):
+                errors.append(f"{page}: {label} must not appear on the public site")
     for page, (text, p) in parsed.items():
         for ref in p.refs:
             if re.match(r"^(https?:|mailto:|tel:)", ref):

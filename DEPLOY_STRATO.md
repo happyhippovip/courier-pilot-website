@@ -15,12 +15,12 @@ Node.js läuft auf STRATO-Webhosting nicht (nur V-Server/Dedicated). Diese Seite
 
 ```bash
 python3 build.py            # baut dist/ und courier-site-dist.zip, prüft Links/Anker/Assets
-python3 build.py --release  # wie oben, schlägt aber fehl, solange Impressum/Datenschutz-Platzhalter oder PAYMENT_LINK_REPO_REALITY = TODO_PAYMENT_LINK bleiben
+python3 build.py --release  # wie oben, schlägt aber fehl bei Rechts-Platzhaltern oder privaten Daten (Kontonummern, Telefon, private Postfächer); fehlender optionaler Zahlungslink ist nur WARN
 ```
 
 Ergebnis: Ordner `dist/` (13 Dateien inkl. `.htaccess`). Den fertigen Ordner gibt es auch als CI-Artefakt `courier-site-dist` im Workflow **site-check**.
 
-**Vor dem Go-live:** in `impressum.html` und `datenschutz.html` alle gelben `[…]`-Platzhalter ersetzen (einschließlich Abschnitt 6 zu Bestelldaten und Zahlungsanbieter), den gestrichelten Hinweiskasten (`data-placeholder="true"`) löschen, und in `build.py` `PAYMENT_LINK_REPO_REALITY` von `TODO_PAYMENT_LINK` auf die echte https-Zahlungs-URL setzen. Danach `python3 build.py --sync`, damit der Bestellbutton auf `repo-reality-check.html` den Link übernimmt, und `python3 build.py --release` muss `RESULT OK` zeigen. `ORDER_CONTACT_EMAIL` ist `founder@couriersymphony.de`.
+**Vor dem Go-live:** Impressum, Datenschutz und Widerruf sind ausgefüllt (Stand 8. Oktober 2026). `python3 build.py --release` muss `RESULT OK` zeigen. Optional später: `PAYMENT_LINK_REPO_REALITY` in `build.py` auf eine echte https-Zahlungs-URL setzen, dann `python3 build.py --sync` und den Zahlungsanbieter in `datenschutz.html` Abschnitt 6 ergänzen. `ORDER_CONTACT_EMAIL` ist `founder@couriersymphony.de`.
 
 ## Weg A – STRATO Hosting-Paket (SFTP-Upload)
 
@@ -48,4 +48,4 @@ Die Seite wird bereits von GitHub Pages aus dem Branch `main` dieses Repos ausge
 ## Was nicht automatisch passiert
 
 - Kein Upload, kein DNS-Wechsel, kein Kauf. Login, 2FA, Passwörter und DNS-Änderungen macht Dennis selbst oder gibt sie ausdrücklich frei.
-- Ein Merge nach `main` veröffentlicht über GitHub Pages sofort – deshalb erst Platzhalter füllen, dann mergen.
+- Ein Merge nach `main` veröffentlicht über GitHub Pages sofort – deshalb erst nach Dennis' Freigabe mergen.
