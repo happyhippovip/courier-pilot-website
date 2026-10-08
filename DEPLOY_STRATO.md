@@ -15,19 +15,19 @@ Node.js läuft auf STRATO-Webhosting nicht (nur V-Server/Dedicated). Diese Seite
 
 ```bash
 python3 build.py            # baut dist/ und courier-site-dist.zip, prüft Links/Anker/Assets
-python3 build.py --release  # wie oben, schlägt aber fehl, solange Impressum/Datenschutz Platzhalter enthalten
+python3 build.py --release  # wie oben, schlägt aber fehl, solange Impressum/Datenschutz-Platzhalter oder PAYMENT_LINK_REPO_REALITY = TODO_PAYMENT_LINK bleiben
 ```
 
-Ergebnis: Ordner `dist/` (12 Dateien inkl. `.htaccess`). Den fertigen Ordner gibt es auch als CI-Artefakt `courier-site-dist` im Workflow **site-check**.
+Ergebnis: Ordner `dist/` (13 Dateien inkl. `.htaccess`). Den fertigen Ordner gibt es auch als CI-Artefakt `courier-site-dist` im Workflow **site-check**.
 
-**Vor dem Go-live:** in `impressum.html` und `datenschutz.html` alle gelben `[…]`-Platzhalter ersetzen, den gestrichelten Hinweiskasten (`data-placeholder="true"`) löschen, dann `python3 build.py --release` muss `RESULT OK` zeigen.
+**Vor dem Go-live:** in `impressum.html` und `datenschutz.html` alle gelben `[…]`-Platzhalter ersetzen (einschließlich Abschnitt 6 zu Bestelldaten und Zahlungsanbieter), den gestrichelten Hinweiskasten (`data-placeholder="true"`) löschen, und in `build.py` `PAYMENT_LINK_REPO_REALITY` von `TODO_PAYMENT_LINK` auf die echte https-Zahlungs-URL setzen. Danach `python3 build.py --sync`, damit der Bestellbutton auf `repo-reality-check.html` den Link übernimmt, und `python3 build.py --release` muss `RESULT OK` zeigen. `ORDER_CONTACT_EMAIL` ist `founder@couriersymphony.de`.
 
 ## Weg A – STRATO Hosting-Paket (SFTP-Upload)
 
 1. STRATO-Login → Paket → **Datenbanken und Webspace → SFTP & SSH** → Zugang anlegen oder vorhandenen nutzen. Notiere Server (Form `5xxxxxxxx.ssh.w2.strato.hosting`), Benutzername, Port 22. Passwort nur im Passwortmanager, **nie** ins Repo.
 2. STRATO-Login → **Domains → Domainverwaltung**: prüfen, auf welches Zielverzeichnis `couriersymphony.de` zeigt (z. B. `/` oder `/couriersymphony`). Dieses Verzeichnis ist der Web-Root.
 3. FileZilla (Protokoll **SFTP**, nicht FTP) verbinden, in den Web-Root wechseln.
-4. **Den Inhalt** von `dist/` hochladen (nicht den Ordner selbst): `index.html`, `impressum.html`, `datenschutz.html`, `privacy.html`, `404.html`, `styles.css`, `favicon.svg`, `apple-touch-icon.png`, `og-cover.png`, `robots.txt`, `sitemap.xml` **und `.htaccess`** (in FileZilla „Versteckte Dateien anzeigen“ aktivieren).
+4. **Den Inhalt** von `dist/` hochladen (nicht den Ordner selbst): `index.html`, `repo-reality-check.html`, `impressum.html`, `datenschutz.html`, `privacy.html`, `404.html`, `styles.css`, `favicon.svg`, `apple-touch-icon.png`, `og-cover.png`, `robots.txt`, `sitemap.xml` **und `.htaccess`** (in FileZilla „Versteckte Dateien anzeigen“ aktivieren).
 5. HTTPS: STRATO-Login → **SSL** → Zertifikat der Domain zuweisen (inklusive www) → **„SSL erzwingen“ → permanente Weiterleitung (301)**. Die `.htaccess` leitet zusätzlich http→https und www→ohne www um.
 6. Prüfen: `https://couriersymphony.de/` lädt, `http://` und `https://www.` leiten auf `https://couriersymphony.de/` um, `/gibtsnicht` zeigt die 404-Seite.
 7. Erst wenn alles über HTTPS funktioniert: in `.htaccess` die HSTS-Zeile einkommentieren und erneut hochladen.
