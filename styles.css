@@ -393,3 +393,11 @@ button.btn:disabled,.btn.is-disabled{
 .mitmachen-teaser p{margin:0;color:var(--muted)}
 @media (min-width:760px){.mitmachen-teaser{grid-template-columns:1fr auto}}
 .mm-fig{margin:1.4rem 0 0;max-width:520px}
+
+/* Mitmachen: Gemeinsames Ziel (Vorschau) - non-binding pledges by mail only */
+.ziel-note{color:var(--ink)}
+.ziel-tiers{display:grid;gap:1.2rem;margin:1.4rem 0}
+@media (min-width:860px){.ziel-tiers{grid-template-columns:repeat(3,1fr)}}
+.ziel-tier{border-color:rgba(217,164,65,.45)}
+.ziel-tier .card-num{font-size:.78rem}
+.ziel-rules li{font-size:.95rem}

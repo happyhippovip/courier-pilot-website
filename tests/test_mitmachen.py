@@ -57,6 +57,8 @@ def test_lfg_and_lfm_mailtos_valid():
         parts = urlsplit(href)
         if parts.path != EMAIL or not parts.query:
             continue
+        if not parse_qs(parts.query)["subject"][0].startswith(("LFG:", "LFM:")):
+            continue  # e.g. the ZIEL: pledge mailto, covered in test_ziel.py
         q = parse_qs(parts.query)
         subj = q["subject"][0]
         body = q["body"][0]
