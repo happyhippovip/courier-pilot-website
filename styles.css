@@ -12,7 +12,7 @@
   --max:1080px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{
   margin:0;
   background:var(--bg);
@@ -345,7 +345,7 @@ button.btn:disabled,.btn.is-disabled{
 #contact .btn-ghost{margin-left:0}
 
 /* Konzept-Vorschau gallery + :target lightbox */
-.konzept{padding:2.2rem 0 2.6rem}
+.konzept{padding:2.2rem 0 2.6rem;scroll-margin-top:72px}
 .konzept .section-lede{max-width:46rem}
 .konzept-note{margin:.6rem 0 1.2rem;padding:.75rem 1rem;border-left:3px solid var(--gold);background:rgba(217,164,65,.08);border-radius:0 10px 10px 0;color:var(--muted);font-size:.92rem;line-height:1.5}
 .gal{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
@@ -353,7 +353,7 @@ button.btn:disabled,.btn.is-disabled{
 @media (min-width:1100px){.gal{grid-template-columns:repeat(4,1fr)}}
 .gal-item{display:block;position:relative;border:1px solid rgba(217,164,65,.35);border-radius:14px;overflow:hidden;background:rgba(10,15,32,.9);text-decoration:none;color:inherit;box-shadow:inset 0 2px 0 rgba(56,214,230,.25)}
 .gal-item:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-.gal-item img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#0a0f20}
+.gal-item img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0a0f20}
 .gal-cap{display:block;padding:.55rem .7rem .7rem;font-size:.84rem;color:var(--ink);font-weight:600}
 .gal-item .soon{position:absolute;top:.5rem;left:.5rem;background:rgba(7,11,22,.72)}
 .gal-clip{grid-column:1 / -1}
