@@ -629,15 +629,25 @@ function renderJournal() {
   logEntries.forEach(entry => {
     const row = document.createElement("div");
     row.className = `log-row kind-${entry.kind}`;
+    row.setAttribute("role", "button");
+    row.setAttribute("tabindex", "0");
+    row.setAttribute("aria-label", `Inspect event ${entry.seq}: ${entry.type}`);
     row.innerHTML = `
       <span class="log-seq">#${String(entry.seq).padStart(2, "0")}</span>
       <span class="log-type">${entry.type}</span>
       <span class="log-desc">${entry.desc}</span>
       <span class="log-hash">${entry.hash}</span>
     `;
-    row.addEventListener("click", () => {
+    const openInspect = () => {
       modalJson.textContent = JSON.stringify(entry, null, 2);
       modal.classList.add("open");
+    };
+    row.addEventListener("click", openInspect);
+    row.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openInspect();
+      }
     });
     journalContainer.appendChild(row);
   });
@@ -820,6 +830,11 @@ document.getElementById("btn-fault-gate").addEventListener("click", () => {
 modalClose.addEventListener("click", () => modal.classList.remove("open"));
 modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.classList.remove("open");
+});
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modal.classList.contains("open")) {
+    modal.classList.remove("open");
+  }
 });
 
 // --- ARCHITECTURE TABS ---
