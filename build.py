@@ -15,6 +15,9 @@ DIST = ROOT / "dist"
 PAGES = [
     "index.html",
     "repo-reality-check.html",
+    "architecture.html",
+    "security.html",
+    "widerruf.html",
     "impressum.html",
     "datenschutz.html",
     "privacy.html",
@@ -96,7 +99,7 @@ def replace_order_blocks(text: str) -> tuple[str, int]:
         re.DOTALL,
     )
     count = len(pattern.findall(text))
-    return pattern.sub(marked_order_block(), text), count
+    return pattern.sub(lambda _: marked_order_block(), text), count
 
 
 def main() -> int:

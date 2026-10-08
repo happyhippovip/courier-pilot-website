@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture — Courier Symphony</title>
+<meta name="description" content="Technical architecture of Courier Symphony: auditable execution ledger, capability routing, admission gates, and crash-resilient recovery.">
+<link rel="canonical" href="https://couriersymphony.de/architecture.html">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Architecture — Courier Symphony">
+<meta property="og:description" content="Auditable execution ledger, capability routing, and crash-resilient recovery for autonomous AI operations.">
+<meta property="og:url" content="https://couriersymphony.de/architecture.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/architecture.html" class="is-active" aria-current="page">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/repo-reality-check.html">Beta</a>
+      <a class="nav-cta" href="/#waitlist">Waitlist</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="tag">System Design</p>
+      <h1>Architecture of Courier Symphony</h1>
+      <p class="section-lede">Courier Symphony coordinates autonomous agents, workers, and tools into a single auditable execution graph. Every task runs under strict admission, writes to an append-only ledger, and resumes safely from checkpoints after failures.</p>
+    </div>
+  </section>
+
+  <section class="section" id="pipeline">
+    <div class="wrap">
+      <h2>The Execution Pipeline</h2>
+      <p class="section-lede">Every unit of work progresses through an explicit, fail-closed state machine.</p>
+
+      <div class="report" role="region" aria-label="Execution Flow Diagram">
+        <div class="arch-chain">
+          <div class="arch-node">
+            <span class="arch-badge">01</span>
+            <strong>Task Intake</strong>
+            <p class="fine">User goal, API dispatch, or mission seed</p>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">→</div>
+          <div class="arch-node">
+            <span class="arch-badge">02</span>
+            <strong>Admission Gate</strong>
+            <p class="fine">Host lock &amp; resource capacity check</p>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">→</div>
+          <div class="arch-node">
+            <span class="arch-badge">03</span>
+            <strong>Provider Router</strong>
+            <p class="fine">Qualified runner &amp; cost guardrails</p>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">→</div>
+          <div class="arch-node">
+            <span class="arch-badge">04</span>
+            <strong>Execution Ledger</strong>
+            <p class="fine">Durable lease &amp; append-only receipts</p>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">→</div>
+          <div class="arch-node">
+            <span class="arch-badge">05</span>
+            <strong>Verification</strong>
+            <p class="fine">Independent hashes &amp; output assertions</p>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">→</div>
+          <div class="arch-node">
+            <span class="arch-badge">06</span>
+            <strong>Reconciliation</strong>
+            <p class="fine">Verified result or clean resume point</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pillars">
+    <div class="wrap">
+      <h2>Core Architectural Pillars</h2>
+      <dl class="caplist">
+        <div>
+          <dt>1. Admission Control &amp; Host Isolation</dt>
+          <dd>Heavy tasks require explicit admission tokens. A host never runs more than one heavy builder simultaneously, preventing out-of-memory crashes and thrashing.</dd>
+        </div>
+        <div>
+          <dt>2. Append-Only Execution Ledger</dt>
+          <dd>State transitions are recorded in an immutable journal. Claims are leased with timeouts. If a worker process halts or crashes, the ledger state remains intact and uncorrupted.</dd>
+        </div>
+        <div>
+          <dt>3. Pluggable Provider Abstraction</dt>
+          <dd>Work units can execute across heterogeneous providers (Cursor, Codex, Muse, Antigravity, or local worker scripts). Providers must qualify via automated probes before receiving production tasks.</dd>
+        </div>
+        <div>
+          <dt>4. Verification &amp; Result Receipts</dt>
+          <dd>A task is not marked complete because a process exited with zero; completion requires cryptographically hashed result artifacts read back and validated by an independent verifier.</dd>
+        </div>
+        <div>
+          <dt>5. Zero Duplicate Side Effects</dt>
+          <dd>Retry storms and repeated API calls are strictly avoided through idempotency keys derived from claim event IDs and specification fingerprints.</dd>
+        </div>
+        <div>
+          <dt>6. Cross-Platform Runtime</dt>
+          <dd>Designed to coordinate local development nodes (macOS, Windows, Linux) alongside transient burst cloud compute on AWS, keeping local hosts responsive.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="evidence">
+    <div class="wrap narrow">
+      <h2>Evidence &amp; Reproducibility</h2>
+      <p>Courier Symphony adheres to an evidence-first rule: no technical capability is claimed on this site without an automated test suite, an immutable Git SHA, and a reproducible verification record.</p>
+      <div class="order-slot">
+        <a class="btn btn-ghost" href="/security.html">View Security Model</a>
+        <a class="btn" href="/repo-reality-check.html">See Repo Reality Check</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <p class="fbrand">Courier Symphony — ideas travel further.</p>
+    <p class="fmeta"><a href="/">Home</a> · <a href="/architecture.html">Architecture</a> · <a href="/security.html">Security</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerruf</a> · <a href="/privacy.html">Privacy</a> · © 2026 Courier Symphony</p>
+  </div>
+</footer>
+</body>
+</html>

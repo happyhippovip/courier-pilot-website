@@ -229,3 +229,25 @@ button.btn:disabled,.btn.is-disabled{
   .nav.nav-static a{border:0;padding:.35rem 0}
   .nav.nav-static .nav-cta{padding:.35rem .95rem}
 }
+
+/* Architecture chain and utility components */
+.tag{display:inline-block;color:var(--cyan);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
+.arch-chain{display:grid;gap:1rem;margin:1rem 0}
+.arch-node{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.2rem}
+.arch-node strong{display:block;margin:.3rem 0 .2rem;color:var(--ink);font-size:1.05rem}
+.arch-badge{display:inline-block;background:rgba(56,214,230,.15);color:var(--cyan);font-weight:700;font-size:.78rem;padding:.2rem .55rem;border-radius:6px;letter-spacing:.04em}
+.arch-arrow{display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:1.3rem;font-weight:700}
+.code-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:1.2rem;margin:1.2rem 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.7}
+.code-box p{margin:0 0 .5rem}
+.code-box p:last-child{margin:0}
+.rule{border:0;border-top:1px solid var(--line);margin:2rem 0}
+.nav a.is-active{color:var(--ink);font-weight:600}
+
+@media (min-width:760px){
+  .arch-chain{grid-template-columns:repeat(6,1fr) repeat(5,auto);align-items:center}
+  .arch-arrow{padding:0 .2rem}
+}
+@media (max-width:759px){
+  .arch-arrow{transform:rotate(90deg);margin:-.4rem 0}
+}
+

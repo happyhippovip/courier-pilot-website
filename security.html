@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security &amp; Trust — Courier Symphony</title>
+<meta name="description" content="Security architecture of Courier Symphony: fail-closed gates, salted zero-PII storage, least privilege, and auditable proof.">
+<link rel="canonical" href="https://couriersymphony.de/security.html">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Security &amp; Trust — Courier Symphony">
+<meta property="og:description" content="Fail-closed by construction: zero-PII hashing, ephemeral workspaces, and verified evidence receipts.">
+<meta property="og:url" content="https://couriersymphony.de/security.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <nav class="nav nav-static" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html" class="is-active" aria-current="page">Security</a>
+      <a href="/repo-reality-check.html">Beta</a>
+      <a class="nav-cta" href="/#waitlist">Waitlist</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="tag">Security Model</p>
+      <h1>Security by Construction</h1>
+      <p class="section-lede">Autonomous software should never operate with unchecked authority. Courier Symphony is engineered from the ground up with fail-closed safety, strict isolation, and cryptographic auditing.</p>
+    </div>
+  </section>
+
+  <section class="section" id="tenets">
+    <div class="wrap">
+      <h2>Five Non-Negotiable Tenets</h2>
+      <dl class="caplist">
+        <div>
+          <dt>1. Fail-Closed on Unknown Outcomes</dt>
+          <dd>When an external API times out, a provider disconnects, or evidence is missing, the system never assumes success. It enters a BLOCKED or UNKNOWN state and awaits verification rather than blind retries.</dd>
+        </div>
+        <div>
+          <dt>2. Zero Autonomous Spending</dt>
+          <dd>Courier Symphony has no authority to make unauthorized financial commitments or automatically charge credit cards. Hard spend limits, budget alarms, and human approval gates protect every cloud resource.</dd>
+        </div>
+        <div>
+          <dt>3. Zero Raw PII in Ledgers</dt>
+          <dd>Customer contact details and sensitive identifiers are never committed in plaintext. Orders use salted SHA-256 cryptographic hashes for lookups, ensuring git histories and state dumps remain clean.</dd>
+        </div>
+        <div>
+          <dt>4. Least Privilege &amp; Ephemeral Scopes</dt>
+          <dd>Workers never receive long-lived root credentials. Tasks execute in isolated git worktrees or throwaway containers with short-lived tokens scoped only to the exact files being modified.</dd>
+        </div>
+        <div>
+          <dt>5. Verifiable Receipts &amp; Clean Deletion</dt>
+          <dd>Every completed delivery records an immutable SHA-256 digest of the output file. When auditing customer repositories, copies are purged within 48 hours after report delivery.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="data-handling">
+    <div class="wrap narrow">
+      <h2>Repository Data Protection</h2>
+      <p>For services such as the Repo Reality Check:</p>
+      <ul class="checks">
+        <li><strong>Read-Only Access:</strong> We only inspect public repositories or ZIP archives. We never request write permissions, deploy keys, or private user passwords.</li>
+        <li><strong>No Code Execution:</strong> Static analysis is performed safely without executing untrusted test scripts or installing arbitrary third-party package dependencies.</li>
+        <li><strong>Strict Retention Limit:</strong> Repository working trees are completely deleted after the verification report is generated and delivered.</li>
+      </ul>
+      <p class="fine">For privacy notices, see our <a href="/datenschutz.html">Datenschutzerklärung (DE)</a> and <a href="/privacy.html">Privacy Policy (EN)</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <p class="fbrand">Courier Symphony — ideas travel further.</p>
+    <p class="fmeta"><a href="/">Home</a> · <a href="/architecture.html">Architecture</a> · <a href="/security.html">Security</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerruf</a> · <a href="/privacy.html">Privacy</a> · © 2026 Courier Symphony</p>
+  </div>
+</footer>
+</body>
+</html>
