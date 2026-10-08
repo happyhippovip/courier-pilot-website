@@ -114,7 +114,7 @@ def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = OR
     mail = email_state(email)
     copy = (
         f'<p class="order-pay">{PAY_COPY} Lieferung des Reports innerhalb von 48&nbsp;Stunden '
-        'nach Zahlungseingang. Bezahlung per Überweisung.</p>'
+        'nach Zahlungseingang.</p>'
     )
     if mail == "live":
         esc = html.escape(email, quote=True)
@@ -161,6 +161,10 @@ def render_video_block(email: str = ORDER_CONTACT_EMAIL, price: str = VIDEO_PRIC
         "Plattform (YouTube Shorts / Instagram Reels / TikTok): \n"
         "Wünsche zum Stil (optional): \n"
         "Mein Name: \n\n"
+        "Ich bestätige, dass ich die Rechte am Videomaterial habe und die gezeigten Personen einverstanden sind.\n\n"
+        "Ich stimme ausdrücklich zu, dass ihr vor Ablauf der Widerrufsfrist mit dem Schnitt beginnt, "
+        "und weiß, dass ich mit Beginn der Ausführung mein Widerrufsrecht verliere "
+        "(siehe Widerrufsbelehrung auf couriersymphony.de).\n\n"
         "Bitte bestätigt den Auftrag mit Lieferzeit und schickt mir dann die Bankverbindung.\n\n"
         "Danke"
     )

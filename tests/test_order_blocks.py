@@ -71,3 +71,18 @@ def test_video_block_price_single_source_and_no_bank_data():
     assert "79" not in block
     assert "IBAN" not in block and "nur in dieser Antwort-Mail" in block
     assert "mailto:founder@couriersymphony.de" in block
+
+
+def test_golive_blockers_fixed():
+    from urllib.parse import unquote
+    index = (ROOT / "index.html").read_text(encoding="utf-8")
+    offer = (ROOT / "repo-reality-check.html").read_text(encoding="utf-8")
+    privacy = (ROOT / "datenschutz.html").read_text(encoding="utf-8")
+    assert "Dr. Dennis Schmidt" not in index and "Tech Systems GmbH" not in index
+    for page in ROOT.glob("*.html"):
+        assert "99–149" not in page.read_text(encoding="utf-8"), page.name
+    assert "Video-Schnitt (Shorts-Paket)" in privacy and "nach der Lieferung" in privacy
+    video = unquote(build.render_video_block())
+    assert "Rechte am Videomaterial" in video and "Widerrufsfrist" in video
+    repo = build.render_order_block()
+    assert repo.count("Bezahlung per Überweisung") == 1
