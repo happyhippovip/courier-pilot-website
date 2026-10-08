@@ -496,8 +496,11 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <textarea id="contact-notes" rows="3" placeholder="Tell us about your workload frequency, environment (Windows, Mac, Linux), and current failure bottlenecks..."></textarea>
           </div>
           <button type="submit" class="btn">Send Pilot Request (Direct to Founder)</button>
+          <div class="form-feedback" id="form-feedback" style="display:none;margin-top:.8rem;padding:.8rem;background:rgba(61,214,140,.1);border:1px solid rgba(61,214,140,.3);border-radius:8px;color:var(--green);font-size:.9rem">
+            Opening your email client... Alternatively, email us directly at <a href="mailto:founder@couriersymphony.de" style="color:var(--gold);font-weight:bold">founder@couriersymphony.de</a>.
+          </div>
         </form>
-        <p class="hero-note">Or reach us directly at <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. No tracking cookies used.</p>
+        <p class="hero-note">Or reach us directly at <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. Zero cookies or trackers used.</p>
       </div>
     </div>
   </section>
@@ -835,6 +838,9 @@ Please send instructions for accessing the pilot build and technical architectur
 Best regards,
 ${name}`
   );
+
+  const feedback = document.getElementById("form-feedback");
+  if (feedback) feedback.style.display = "block";
 
   window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
 });
