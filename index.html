@@ -36,9 +36,9 @@
     <nav class="nav" aria-label="Primary">
       <a href="#demo">Live Demo</a>
       <a href="#use-cases">Use Cases</a>
-      <a href="#product">Architecture</a>
+      <a href="#architecture">Architecture</a>
       <a href="#calculator">Value Calculator</a>
-      <a href="#safety">Safety</a>
+      <a href="#faq">FAQ</a>
       <a class="nav-cta" href="#contact">Request Pilot</a>
     </nav>
   </div>
@@ -92,6 +92,7 @@
             <span class="demo-badge badge-active" id="demo-status-badge">Engine Active</span>
           </div>
           <div class="demo-actions">
+            <button type="button" class="pill-btn" id="btn-export-log">Export JSON</button>
             <button type="button" class="pill-btn" id="btn-reset-sim">Reset Journal</button>
           </div>
         </div>
@@ -109,7 +110,18 @@
             </div>
 
             <div class="ctrl-group">
-              <h4>2. Inject Chaos / Edge Cases</h4>
+              <h4>2. Simulation Execution Controls</h4>
+              <div class="sim-player">
+                <button type="button" id="btn-play-sim">▶ Auto Play</button>
+                <button type="button" id="btn-step-sim">⏭ Step Next</button>
+                <div class="chain-status" id="chain-status">
+                  <span>✓ Hash Chain Verified</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrl-group">
+              <h4>3. Inject Chaos / Edge Cases</h4>
               <div class="pill-bar">
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-429">⚡ Inject Provider 429 Limit</button>
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
@@ -207,40 +219,81 @@
     </div>
   </section>
 
-  <!-- Core Architecture -->
-  <section class="section" id="product">
+  <!-- Interactive Architecture Deep-Dive -->
+  <section class="section" id="architecture">
     <div class="wrap">
       <div class="section-head">
-        <h2>Architecture Guarantees</h2>
-        <p class="section-lede">A disciplined execution framework engineered for enterprise stability.</p>
+        <h2>Architecture Deep-Dive</h2>
+        <p class="section-lede">Explore the four engineering pillars that provide mathematical guarantees for autonomous workflow execution.</p>
       </div>
 
-      <dl class="caplist">
-        <div>
-          <dt>Durable SQLite Event Journal</dt>
-          <dd>All mutations, state shifts, and task outcomes are appended to a local <code>courier.db</code> database. Replay yields identical state byte-for-byte.</dd>
+      <div class="arch-box">
+        <nav class="tabs-nav" aria-label="Architecture tabs">
+          <button type="button" class="tab-btn active" data-tab="tab-journal">1. SQLite Journal & Pure Replay</button>
+          <button type="button" class="tab-btn" data-tab="tab-verifier">2. Fail-Closed Verifiers</button>
+          <button type="button" class="tab-btn" data-tab="tab-governor">3. Host Resource Governor</button>
+          <button type="button" class="tab-btn" data-tab="tab-fencing">4. Single-Writer Fencing</button>
+        </nav>
+
+        <div class="tab-panel active" id="tab-journal">
+          <h3>Append-Only Journal: The Single Source of Truth</h3>
+          <p>Unlike conventional agent runtimes that store state in memory or raw prompt context windows, Courier Symphony persists every state transition as a cryptographically linked event in <code>courier.db</code>. If power drops, replaying the sequence produces the exact identical projection.</p>
+          <div class="code-sample">
+-- Canonical Event Schema (courier_core/journal.py)
+CREATE TABLE events (
+    seq INTEGER PRIMARY KEY AUTOINCREMENT,
+    event_id TEXT UNIQUE NOT NULL,
+    type TEXT NOT NULL,
+    task_id TEXT,
+    attempt INTEGER,
+    dispatch_id TEXT,
+    payload TEXT NOT NULL,  -- Canonical sorted JSON
+    prev_hash TEXT NOT NULL, -- SHA-256 chain
+    hash TEXT NOT NULL
+);
+          </div>
         </div>
-        <div>
-          <dt>Capability-Aware Dispatch</dt>
-          <dd>Tasks route exclusively to execution adapters matching declared capabilities. Local deterministic work executes locally without spending paid API tokens.</dd>
+
+        <div class="tab-panel" id="tab-verifier">
+          <h3>Never Trust Worker Self-Reports: Independent Verifier Path</h3>
+          <p>A worker process reporting "SUCCESS" is never trusted by the controller. All outcome evaluations route through independent verifier modules that inspect the disk artifacts, check cryptographic hash deltas, and fail closed if anything raises.</p>
+          <div class="code-sample">
+# Verifier Contract (courier_core/verification.py)
+def run_verifier(resolve, task: TaskState, result: Event, home: Path) -> Verdict:
+    if result.payload.get("outcome") != "success":
+        return Verdict(accepted=False, reason="worker reported failure")
+    verify_fn = resolve(task.adapter)
+    if verify_fn is None:
+        return Verdict(accepted=False, reason="no verifier registered; fail closed")
+    return verify_fn(task, result, home)
+          </div>
         </div>
-        <div>
-          <dt>Host Resource Governor</dt>
-          <dd>Monitors host memory, swap rate, and CPU load. Automatically coalesces wakeups to prevent EMFILE handle exhaustion or system freezing.</dd>
+
+        <div class="tab-panel" id="tab-governor">
+          <h3>Kirby Engine: Preventing EMFILE Storms & Thermal Throttle</h3>
+          <p>Unbounded parallel subagents quickly exhaust operating system file descriptors (EMFILE) and consume all swap RAM. The Kirby engine dynamically monitors host health and coalesces wakeups so the host remains quiet, responsive, and bounded.</p>
+          <div class="code-sample">
+# Host Resource Governor (courier_runtime/continuity.py)
+def evaluate_admission(host_snapshot: dict) -> bool:
+    if host_snapshot["ram_used_pct"] > 85 or host_snapshot["swap_used_pct"] > 40:
+        return False # Park background workers, coalesce wakeups
+    return True
+          </div>
         </div>
-        <div>
-          <dt>One-Writer Distributed Fencing</dt>
-          <dd>Strict lock leasing prevents concurrent worker instances from colliding on shared files, repositories, or external services.</dd>
+
+        <div class="tab-panel" id="tab-fencing">
+          <h3>One-Writer Principle: Eliminating Race Conditions by Construction</h3>
+          <p>Two agents must never attempt to modify the same file or database concurrently. Courier enforces strict lease fencing on work packets. If a lease expires, the token invalidates instantly, preventing late outbox writes from corrupting data.</p>
+          <div class="code-sample">
+# Work Packet Queue (courier_core/work_packet.py)
+def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[WorkPacket]:
+    currents = [p for p in self.packets.values() if p.state == PacketState.CURRENT]
+    if currents:
+        return currents[0] # Retain lock, single writer guaranteed
+    # Promote next only if host is safe
+          </div>
         </div>
-        <div>
-          <dt>Independent Verifier Path</dt>
-          <dd>Workers never judge their own work. The controller queries independent verifier modules that reject invalid artifacts fail-closed.</dd>
-        </div>
-        <div>
-          <dt>Human Authorization Gates</dt>
-          <dd>Consequential external effects (sending emails, modifying ledgers, purchasing credits) pause in <code>NEEDS_USER</code> state until signed approval.</dd>
-        </div>
-      </dl>
+      </div>
     </div>
   </section>
 
@@ -293,6 +346,58 @@
             <span class="val" id="res-money">2.880 €</span>
           </div>
           <p style="margin:0;font-size:0.85rem;color:var(--muted)">Assumes average 30 minutes of developer debugging and manual context rebuild per interrupted run.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Technical Due Diligence FAQ</h2>
+        <p class="section-lede">Answers to architectural and integration questions for technical leaders.</p>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-item">
+          <button type="button" class="acc-header">
+            <span>How does Courier Symphony differ from LangChain, CrewAI, or AutoGen?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-content">
+            <p>LangChain and CrewAI are prompt-chaining libraries designed for conversational flows. Courier Symphony is an infrastructure-level execution coordinator: it enforces durable append-only SQLite persistence, fail-closed independent verification, single-writer lock fencing, and graceful circuit breaker hibernation. It does not replace your model providers; it ensures their execution is durable, bounded, and recoverable.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-header">
+            <span>Can Courier run in an entirely air-gapped / offline environment?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-content">
+            <p>Yes. All core adapters (spreadsheet reconciliation, filesystem housekeeping, rule verification, Bescheid calculations) operate with standard-library Python and local binaries without external internet access. Cloud model providers are optional external adapters that can be enabled or disabled per policy.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-header">
+            <span>How does Courier protect against catastrophic duplicate actions?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-content">
+            <p>Every external action carries a stable, deterministic idempotency key derived from the task ID. If an agent crashes while awaiting an HTTP response, subsequent retries submit the identical effect key, allowing downstream APIs to deduplicate cleanly instead of double-billing or double-sending.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-header">
+            <span>What are the platform requirements for the V1 build?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-content">
+            <p>Courier Symphony is engineered for Windows 10/11 desktop environments as a self-contained executable (EXE), with support for background worker daemons on macOS and headless Linux servers.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -394,6 +499,7 @@ const WORKFLOWS = {
 
 let currentFlow = "email";
 let logEntries = [...WORKFLOWS[currentFlow]];
+let playInterval = null;
 
 const journalContainer = document.getElementById("journal-log");
 const journalCount = document.getElementById("journal-count");
@@ -401,6 +507,35 @@ const statusBadge = document.getElementById("demo-status-badge");
 const modal = document.getElementById("inspect-modal");
 const modalJson = document.getElementById("modal-json");
 const modalClose = document.getElementById("modal-close");
+
+function updatePipelineStatus(lastType) {
+  const steps = ["pipe-ingest", "pipe-route", "pipe-execute", "pipe-verify", "pipe-complete"];
+  steps.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.className = "pipe-step";
+  });
+
+  if (lastType === "TASK_CREATED") {
+    document.getElementById("pipe-ingest").className = "pipe-step current";
+  } else if (lastType === "TASK_CLAIMED") {
+    document.getElementById("pipe-ingest").className = "pipe-step done";
+    document.getElementById("pipe-route").className = "pipe-step current";
+  } else if (lastType === "CHECKPOINT_SAVED" || lastType === "CIRCUIT_TRIPPED_429" || lastType === "HOST_CRASH_DETECTED") {
+    document.getElementById("pipe-ingest").className = "pipe-step done";
+    document.getElementById("pipe-route").className = "pipe-step done";
+    document.getElementById("pipe-execute").className = "pipe-step current";
+  } else if (lastType === "RESULT_READY") {
+    document.getElementById("pipe-ingest").className = "pipe-step done";
+    document.getElementById("pipe-route").className = "pipe-step done";
+    document.getElementById("pipe-execute").className = "pipe-step done";
+    document.getElementById("pipe-verify").className = "pipe-step current";
+  } else if (lastType === "RESULT_ACCEPTED" || lastType === "TASK_COMPLETE") {
+    steps.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.className = "pipe-step done";
+    });
+  }
+}
 
 function renderJournal() {
   journalContainer.innerHTML = "";
@@ -420,6 +555,9 @@ function renderJournal() {
     journalContainer.appendChild(row);
   });
   journalCount.textContent = `${logEntries.length} Events Recorded`;
+  if (logEntries.length > 0) {
+    updatePipelineStatus(logEntries[logEntries.length - 1].type);
+  }
 }
 
 renderJournal();
@@ -427,6 +565,7 @@ renderJournal();
 // Workflow switching
 document.querySelectorAll("[data-flow]").forEach(btn => {
   btn.addEventListener("click", () => {
+    if (playInterval) clearInterval(playInterval);
     document.querySelectorAll("[data-flow]").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentFlow = btn.dataset.flow;
@@ -437,8 +576,66 @@ document.querySelectorAll("[data-flow]").forEach(btn => {
   });
 });
 
+// Step Next
+document.getElementById("btn-step-sim").addEventListener("click", () => {
+  const full = WORKFLOWS[currentFlow];
+  if (logEntries.length < full.length) {
+    logEntries.push(full[logEntries.length]);
+  } else {
+    // Generate synthetic subsequent turn
+    const n = logEntries.length + 1;
+    logEntries.push({
+      seq: n,
+      type: "CHECKPOINT_SAVED",
+      kind: "ckpt",
+      desc: `Subsequent turn executed on host mac-1 (turn ${n})`,
+      hash: "sha256:" + Math.random().toString(16).slice(2, 8) + "...fade",
+      data: { turn: n, state: "WORKING", hash_verified: true }
+    });
+  }
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
+// Auto Play
+document.getElementById("btn-play-sim").addEventListener("click", () => {
+  if (playInterval) {
+    clearInterval(playInterval);
+    playInterval = null;
+    document.getElementById("btn-play-sim").textContent = "▶ Auto Play";
+    return;
+  }
+  document.getElementById("btn-play-sim").textContent = "⏸ Pause";
+  logEntries = [];
+  renderJournal();
+  let idx = 0;
+  const full = WORKFLOWS[currentFlow];
+  playInterval = setInterval(() => {
+    if (idx < full.length) {
+      logEntries.push(full[idx]);
+      renderJournal();
+      journalContainer.scrollTop = journalContainer.scrollHeight;
+      idx++;
+    } else {
+      clearInterval(playInterval);
+      playInterval = null;
+      document.getElementById("btn-play-sim").textContent = "▶ Auto Play";
+    }
+  }, 450);
+});
+
+// Export JSON
+document.getElementById("btn-export-log").addEventListener("click", () => {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(logEntries, null, 2));
+  const dlAnchor = document.createElement("a");
+  dlAnchor.setAttribute("href", dataStr);
+  dlAnchor.setAttribute("download", `courier_journal_${currentFlow}.json`);
+  dlAnchor.click();
+});
+
 // Reset simulation
 document.getElementById("btn-reset-sim").addEventListener("click", () => {
+  if (playInterval) clearInterval(playInterval);
   logEntries = [...WORKFLOWS[currentFlow]];
   statusBadge.className = "demo-badge badge-active";
   statusBadge.textContent = "Engine Active";
@@ -512,6 +709,25 @@ document.getElementById("btn-fault-gate").addEventListener("click", () => {
 modalClose.addEventListener("click", () => modal.classList.remove("open"));
 modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.classList.remove("open");
+});
+
+// --- ARCHITECTURE TABS ---
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    const target = document.getElementById(btn.dataset.tab);
+    if (target) target.classList.add("active");
+  });
+});
+
+// --- FAQ ACCORDION ---
+document.querySelectorAll(".acc-header").forEach(hdr => {
+  hdr.addEventListener("click", () => {
+    const item = hdr.parentElement;
+    item.classList.toggle("open");
+  });
 });
 
 // --- CALCULATOR LOGIC ---
