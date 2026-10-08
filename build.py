@@ -32,8 +32,9 @@ PAGES = [
 ASSETS = ["styles.css", "favicon.svg", "apple-touch-icon.png", "og-cover.png", "robots.txt", "sitemap.xml"]
 ASSET_DIRS = ["assets"]
 OFFER_PAGE = "repo-reality-check.html"
-# Every page here must carry at least one synced order block (same button everywhere).
-ORDER_PAGES = [OFFER_PAGE, "index.html"]
+# Paid order slots are off. Early Access is a mailto only; nothing on the public pages
+# may render a price or a checkout. Re-enable ORDER_PAGES only with the founder's approval.
+ORDER_PAGES = []
 ORDER_BLOCK_BEGIN = "<!-- BEGIN:order-block -->"
 ORDER_BLOCK_END = "<!-- END:order-block -->"
 
@@ -87,9 +88,10 @@ def email_state(email: str) -> str:
 
 
 REPO_PRICE_LABEL = "5 €"
-# Shorts-Paket price: single source, change here and run python3 build.py --sync.
+# Shorts-Paket price: single source, kept for the unused renderer. No public page lists it.
+# VIDEO_PAGES stays empty until the founder turns payments back on.
 VIDEO_PRICE_LABEL = "79 €"
-VIDEO_PAGES = ["index.html"]
+VIDEO_PAGES = []
 VIDEO_BLOCK_BEGIN = "<!-- BEGIN:video-block -->"
 VIDEO_BLOCK_END = "<!-- END:video-block -->"
 
@@ -185,6 +187,20 @@ def replace_video_blocks(text: str) -> tuple[str, int]:
     pattern = re.compile(re.escape(VIDEO_BLOCK_BEGIN) + r".*?" + re.escape(VIDEO_BLOCK_END), re.DOTALL)
     count = len(pattern.findall(text))
     return pattern.sub(lambda _: marked_video_block(), text), count
+
+
+# Activation of the hardware-support section requires the founder's explicit approval and a tax check.
+# The block stays in source (hidden, not linked). Release HTML drops it so it is not a rendered page.
+DRAFT_SUPPORT_BEGIN = "<!-- BEGIN:draft-support -->"
+DRAFT_SUPPORT_END = "<!-- END:draft-support -->"
+
+
+def strip_draft_support(text: str) -> str:
+    pattern = re.compile(
+        re.escape(DRAFT_SUPPORT_BEGIN) + r".*?" + re.escape(DRAFT_SUPPORT_END) + r"\n?",
+        re.DOTALL,
+    )
+    return pattern.sub("", text)
 
 
 def marked_order_block() -> str:
@@ -286,6 +302,8 @@ def main() -> int:
         p = Links()
         p.feed(text)
         parsed[page] = (text, p)
+        if 'href="#support-development"' in text or 'href="/#support-development"' in text:
+            errors.append(f"{page}: support draft must not be linked")
         if 'data-placeholder="true"' in text or 'class="ph"' in text:
             (errors if release else warnings).append(f"{page}: legal placeholders still present (fill before launch)")
         for label, rx in PRIVATE_DATA_RES:
@@ -313,7 +331,11 @@ def main() -> int:
     DIST.mkdir()
     for name in PAGES + ASSETS:
         src = ROOT / name
-        if src.is_file():
+        if not src.is_file():
+            continue
+        if name.endswith(".html"):
+            (DIST / name).write_text(strip_draft_support(src.read_text(encoding="utf-8")), encoding="utf-8")
+        else:
             shutil.copy2(src, DIST / name)
     for adir in ASSET_DIRS:
         src = ROOT / adir

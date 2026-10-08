@@ -34,7 +34,7 @@
       <a href="/developers.html">Developers</a>
       <a href="/company.html">Company</a>
       <a href="/repo-reality-check.html">Beta</a>
-      <a class="nav-cta" href="/#bestellen">Bestellen</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
     </nav>
   </div>
 </header>
@@ -105,7 +105,7 @@
         </div>
         <div>
           <dt>2. Append-Only Execution Ledger</dt>
-          <dd>State transitions are recorded in an immutable journal. Claims are leased with timeouts. If a worker process halts or crashes, the ledger state remains intact and uncorrupted.</dd>
+          <dd>State transitions are recorded in an immutable journal. Leases are time-bounded. If a worker process halts or crashes, the ledger state remains intact and uncorrupted.</dd>
         </div>
         <div>
           <dt>3. Pluggable Provider Abstraction</dt>
@@ -117,7 +117,7 @@
         </div>
         <div>
           <dt>5. Zero Duplicate Side Effects</dt>
-          <dd>Retry storms and repeated API calls are strictly avoided through idempotency keys derived from claim event IDs and specification fingerprints.</dd>
+          <dd>Retry storms and repeated API calls are strictly avoided through idempotency keys derived from lease event IDs and specification fingerprints.</dd>
         </div>
         <div>
           <dt>6. Cross-Platform Runtime</dt>
@@ -130,7 +130,7 @@
   <section class="section" id="evidence">
     <div class="wrap narrow">
       <h2>Evidence &amp; Reproducibility</h2>
-      <p>Courier Symphony adheres to an evidence-first rule: no technical capability is claimed on this site without an automated test suite, an immutable Git SHA, and a reproducible verification record.</p>
+      <p>Courier Symphony adheres to an evidence-first rule: this site does not present a technical capability as done without an automated test suite, an immutable Git SHA, and a reproducible verification record.</p>
       <div class="order-slot">
         <a class="btn btn-ghost" href="/security.html">View Security Model</a>
         <a class="btn" href="/repo-reality-check.html">See Repo Reality Check</a>
