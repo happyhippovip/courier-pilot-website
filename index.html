@@ -140,6 +140,7 @@
               <div class="pill-bar">
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-429">⚡ Inject Provider 429 Limit</button>
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
+                <button type="button" class="pill-btn" id="btn-fault-sleep">🌙 Laptop Sleep / Wake</button>
                 <button type="button" class="pill-btn" id="btn-fault-gate">✋ Trigger Human Decision Gate</button>
               </div>
             </div>
@@ -751,6 +752,30 @@ document.getElementById("btn-fault-crash").addEventListener("click", () => {
     hash: "sha256:77bb00...3341",
     data: { replay_verified: true, duplicate_side_effects: 0 }
   });
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
+document.getElementById("btn-fault-sleep").addEventListener("click", () => {
+  const nextSeq = logEntries.length + 1;
+  logEntries.push({
+    seq: nextSeq,
+    type: "HOST_SUSPENDED_SLEEP",
+    kind: "circuit",
+    desc: "Host suspended: Laptop lid closed mid-turn · Time-jump detected by monotonic watchdog",
+    hash: "sha256:cc88aa...1120",
+    data: { event: "LAPTOP_SLEEP", sleep_duration_s: 7200, lease_fencing_held: true }
+  });
+  logEntries.push({
+    seq: nextSeq + 1,
+    type: "KIRBY_WAKE_RECONCILED",
+    kind: "ckpt",
+    desc: "Host resumed: Clock skew reconciled · Single-writer lease refreshed without ghost duplication",
+    hash: "sha256:44bb22...9901",
+    data: { wake_reconciled: true, ghost_writers_prevented: 1, duplicate_turns: 0 }
+  });
+  statusBadge.className = "demo-badge badge-active";
+  statusBadge.textContent = "Resumed Clean";
   renderJournal();
   journalContainer.scrollTop = journalContainer.scrollHeight;
 });
