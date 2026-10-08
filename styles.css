@@ -196,6 +196,7 @@ button.btn:disabled,.btn.is-disabled{
 
 /* Privacy page */
 .page{padding:2.5rem 0}
+.page-konzept{padding-top:1.25rem}
 .page h1{font-size:2rem;margin-bottom:1rem}
 .page p,.page li{color:var(--muted)}
 .page strong{color:var(--ink)}
