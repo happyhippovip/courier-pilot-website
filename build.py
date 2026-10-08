@@ -14,6 +14,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 DIST = ROOT / "dist"
 PAGES = [
     "index.html",
+    "konzept.html",
     "repo-reality-check.html",
     "architecture.html",
     "security.html",
@@ -27,6 +28,7 @@ PAGES = [
     "404.html",
 ]
 ASSETS = ["styles.css", "favicon.svg", "apple-touch-icon.png", "og-cover.png", "robots.txt", "sitemap.xml"]
+ASSET_DIRS = ["assets"]
 OFFER_PAGE = "repo-reality-check.html"
 # Every page here must carry at least one synced order block (same button everywhere).
 ORDER_PAGES = [OFFER_PAGE, "index.html"]
@@ -182,6 +184,9 @@ def main() -> int:
     for asset in ASSETS:
         if not (ROOT / asset).is_file():
             errors.append(f"missing asset {asset}")
+    for adir in ASSET_DIRS:
+        if not (ROOT / adir).is_dir():
+            errors.append(f"missing asset dir {adir}")
 
     if DIST.exists():
         shutil.rmtree(DIST)
@@ -190,6 +195,10 @@ def main() -> int:
         src = ROOT / name
         if src.is_file():
             shutil.copy2(src, DIST / name)
+    for adir in ASSET_DIRS:
+        src = ROOT / adir
+        if src.is_dir():
+            shutil.copytree(src, DIST / adir)
     shutil.copy2(ROOT / "deploy" / "strato" / "htaccess", DIST / ".htaccess")
     zpath = ROOT / "courier-site-dist.zip"
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
