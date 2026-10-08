@@ -16,6 +16,7 @@ DIST = ROOT / "dist"
 PAGES = [
     "index.html",
     "konzept.html",
+    "mitmachen.html",
     "repo-reality-check.html",
     "architecture.html",
     "security.html",
