@@ -28,6 +28,8 @@ PAGES = [
 ]
 ASSETS = ["styles.css", "favicon.svg", "apple-touch-icon.png", "og-cover.png", "robots.txt", "sitemap.xml"]
 OFFER_PAGE = "repo-reality-check.html"
+# Every page here must carry at least one synced order block (same button everywhere).
+ORDER_PAGES = [OFFER_PAGE, "index.html"]
 ORDER_BLOCK_BEGIN = "<!-- BEGIN:order-block -->"
 ORDER_BLOCK_END = "<!-- END:order-block -->"
 
@@ -137,20 +139,21 @@ def main() -> int:
     if mail == "live" and f"mailto:{html.escape(ORDER_CONTACT_EMAIL, quote=True)}" not in rendered:
         errors.append("internal: ORDER_CONTACT_EMAIL missing from the order block")
 
-    offer_path = ROOT / OFFER_PAGE
-    if not offer_path.is_file():
-        errors.append(f"missing page {OFFER_PAGE}")
-    else:
+    for order_page in ORDER_PAGES:
+        offer_path = ROOT / order_page
+        if not offer_path.is_file():
+            errors.append(f"missing page {order_page}")
+            continue
         offer_text = offer_path.read_text(encoding="utf-8")
         updated, count = replace_order_blocks(offer_text)
         if count < 1:
-            errors.append(f"{OFFER_PAGE}: missing order-block markers")
+            errors.append(f"{order_page}: missing order-block markers")
         elif sync and updated != offer_text:
             offer_path.write_text(updated, encoding="utf-8")
-            print(f"SYNC  {OFFER_PAGE}: wrote {count} order block(s) from build.py")
+            print(f"SYNC  {order_page}: wrote {count} order block(s) from build.py")
         elif updated != offer_text:
             errors.append(
-                f"{OFFER_PAGE}: order block out of sync with PAYMENT_LINK_REPO_REALITY / "
+                f"{order_page}: order block out of sync with PAYMENT_LINK_REPO_REALITY / "
                 "ORDER_CONTACT_EMAIL (run python3 build.py --sync)"
             )
 

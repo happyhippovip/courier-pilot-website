@@ -45,21 +45,47 @@
 </header>
 
 <main id="main">
-  <section class="hero">
+  <section class="hero hero-city" aria-labelledby="hero-title">
+    <div class="city" aria-hidden="true"><span class="city-sky"></span><span class="city-far"></span><span class="city-near"></span></div>
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="livedot"><span class="pulse" aria-hidden="true"></span>In active development — early access by waitlist</p>
-        <h1>Ideas travel further.</h1>
+        <p class="livedot"><span class="pulse" aria-hidden="true"></span>In active development — Hub beta by waitlist</p>
+        <h1 id="hero-title">Ideas travel further.</h1>
         <p class="lede">Courier Symphony carries AI work to a verified finish — across providers, machines, and sessions. A session ends, a laptop sleeps, a rate limit hits: the work keeps moving instead of starting over.</p>
+        <div class="offer-card" id="order">
+          <p class="offer-kicker">Available now · Beta</p>
+          <p class="offer-title">Repo Reality Check <strong>5 EUR</strong></p>
+          <p class="offer-text">An honest report on a public GitHub repo within 48 hours. Details on the <a href="/repo-reality-check.html">offer page (German)</a>.</p>
+          <div class="order-slot">
+<!-- BEGIN:order-block -->
+<button type="button" class="btn is-disabled" disabled>Bald verfügbar</button>
+<p class="fine">Die Bestellung ist noch nicht freigeschaltet.</p>
+<p class="fine">Fragen zur Bestellung: <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a></p>
+<!-- END:order-block -->
+          </div>
+        </div>
         <div class="hero-actions">
-          <a class="btn" href="#waitlist">Join the waitlist</a>
+          <a class="btn btn-ghost" href="#waitlist">Join the Hub beta</a>
           <a class="btn btn-ghost" href="#hub">See the hub</a>
         </div>
         <p class="hero-note">No account, no cookies, no tracking on this site.</p>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="orbit"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="orb"></span></div>
+      <div class="talk" role="group" aria-label="Talk to Courier (preview, not yet available)">
+        <p class="talk-title">Talk to Courier</p>
+        <p class="talk-sub">Your AI teammate, always here.</p>
+        <div class="talk-orb" aria-hidden="true"><span class="halo"></span><span class="halo h2"></span><span class="core"><svg class="mic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M8.5 21h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span></div>
+        <p class="talk-state"><span class="dot" aria-hidden="true"></span>Voice preview · coming soon</p>
+        <ul class="talk-tools" aria-hidden="true"><li>Mic</li><li>Settings</li><li>Share screen</li><li>File upload</li></ul>
       </div>
+    </div>
+    <div class="wrap">
+      <ul class="feature-row" aria-label="Hub features in development">
+        <li class="feature-card"><svg class="card-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="16.5" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c.6-3 2.6-4.6 5-4.6s4.4 1.6 5 4.6M14 15.2c2.6-.5 4.8.8 5.6 3.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><h3>Find Group</h3><p>Join a group or a raid and fill an open role.</p><span class="soon">Coming soon</span></li>
+        <li class="feature-card"><svg class="card-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.5 9a2.5 2.5 0 1 1 3.4 2.3c-.6.3-.9.7-.9 1.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><h3>Ask for Help</h3><p>Get support from people, agents, and Courier.</p><span class="soon">Coming soon</span></li>
+        <li class="feature-card"><svg class="card-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6v10H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><h3>Project Base</h3><p>Keep goals, checkpoints, and verified results together.</p><span class="soon">Coming soon</span></li>
+        <li class="feature-card"><svg class="card-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3.5c2.6 2.6 2.6 14.4 0 17M12 3.5c-2.6 2.6-2.6 14.4 0 17" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><h3>Explore Worlds</h3><p>Browse spaces built around topics and crafts.</p><span class="soon">Coming soon</span></li>
+        <li class="feature-card"><svg class="card-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><h3>Create Automation</h3><p>Turn a solved task into a repeatable workflow.</p><span class="soon">Coming soon</span></li>
+      </ul>
     </div>
   </section>
 
@@ -145,7 +171,7 @@
     <div class="wrap narrow">
       <h2>Repo Reality Check</h2>
       <p class="section-lede">First product, in beta. The offer page is in German.</p>
-      <p>Send a public Git link or a ZIP. Within 48 hours you get an honest report: test coverage, CI status, TODO debt, dependencies, risk patterns, a Reality Score from 0 to 100, and the five most useful next steps.</p>
+      <p>Send a public GitHub link (https://github.com/owner/repo); ZIP files are not accepted in the beta. Within 48 hours you get an honest report: tests, CI configuration, TODO debt, dependencies, risk patterns, a Reality Score from 0 to 100, and the five most useful next steps.</p>
       <p>Introductory price for the first testers: 5 EUR. A later regular price is planned at 99–149 EUR. The number of beta slots is limited. Ordering stays switched off until the payment link is set.</p>
       <p><a class="btn" href="/repo-reality-check.html">Tester-Angebot ansehen</a></p>
     </div>
@@ -153,10 +179,19 @@
 
   <section class="section" id="waitlist">
     <div class="wrap narrow waitlist">
-      <h2>Join the waitlist</h2>
-      <p>Early access opens in small groups. Send one email and you are on the list — tell us your role (builder, planner, reviewer, compute) and what you would like to get done.</p>
-      <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20waitlist&amp;body=Hi%2C%20please%20add%20me%20to%20the%20waitlist.%0A%0ARole%20(builder%20%2F%20planner%20%2F%20reviewer%20%2F%20compute)%3A%20%0AWhat%20I%20want%20to%20get%20done%3A%20%0A">Join by email</a>
-      <p class="fine">We use your email only to answer you and to tell you when early access opens. Write to us any time to be removed. Details: <a href="/datenschutz.html">Datenschutz</a> · <a href="/privacy.html">Privacy (EN)</a>.</p>
+      <h2>Join the Hub beta</h2>
+      <p>The hub opens in small groups. Send one email and you are on the list — tell us your role (builder, planner, reviewer, compute) and what you would like to get done.</p>
+      <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20Hub%20beta&amp;body=Hi%2C%20please%20add%20me%20to%20the%20Hub%20beta%20waitlist.%0A%0ARole%20(builder%20%2F%20planner%20%2F%20reviewer%20%2F%20compute)%3A%20%0AWhat%20I%20want%20to%20get%20done%3A%20%0A">Join the Hub beta by email</a>
+      <p class="fine">This opens your own email program. There is no form on this site and nothing is stored here. We use your email only to answer you and to tell you when the hub opens. Write to us any time to be removed. Details: <a href="/datenschutz.html">Datenschutz</a> · <a href="/privacy.html">Privacy (EN)</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap narrow waitlist">
+      <h2>Support &amp; contact</h2>
+      <p>Questions about an order, a report, or the hub? Write to us. We answer by email.</p>
+      <a class="btn btn-ghost" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20support">founder@couriersymphony.de</a>
+      <p class="fine">No contact form, no chat widget, no third-party service. Your message goes only to our mailbox. Details: <a href="/datenschutz.html">Datenschutz</a>.</p>
     </div>
   </section>
 </main>

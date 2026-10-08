@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Repo Reality Check (Beta) — Courier Symphony</title>
-<meta name="description" content="Beta-Angebot: öffentliches Git-Repo oder ZIP schicken, innerhalb von 48 Stunden einen ehrlichen Report mit Reality-Score bekommen. Einführungspreis 5 EUR für die ersten Tester.">
+<meta name="description" content="Beta-Angebot: öffentlichen GitHub-Link schicken, innerhalb von 48 Stunden einen ehrlichen Report mit Reality-Score bekommen. Einführungspreis 5 EUR für die ersten Tester.">
 <link rel="canonical" href="https://couriersymphony.de/repo-reality-check.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Courier Symphony">
 <meta property="og:title" content="Repo Reality Check (Beta) — Courier Symphony">
-<meta property="og:description" content="Git-Repo schicken, innerhalb von 48 Stunden einen ehrlichen Report bekommen. Einführungspreis 5 EUR für die ersten Tester.">
+<meta property="og:description" content="Öffentlichen GitHub-Link schicken, innerhalb von 48 Stunden einen ehrlichen Report bekommen. Einführungspreis 5 EUR für die ersten Tester.">
 <meta property="og:url" content="https://couriersymphony.de/repo-reality-check.html">
 <meta property="og:image" content="https://couriersymphony.de/og-cover.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -43,7 +43,7 @@
       <div class="hero-copy">
         <p class="livedot"><span class="pulse" aria-hidden="true"></span>Beta · begrenzte Tester-Plätze</p>
         <h1>Repo Reality Check</h1>
-        <p class="lede">Du schickst uns dein Git-Repo (öffentlicher Link oder ZIP), du bekommst innerhalb von 48 Stunden einen ehrlichen Report: Testabdeckung, CI-Status, TODO-Schulden, Abhängigkeiten, Risiko-Muster, Reality-Score 0–100 und die 5 wichtigsten nächsten Schritte.</p>
+        <p class="lede">Du schickst uns den öffentlichen GitHub-Link deines Repos (https://github.com/owner/repo), du bekommst innerhalb von 48 Stunden einen ehrlichen Report: Tests, CI-Konfiguration, TODO-Schulden, Abhängigkeiten, Risiko-Muster, Reality-Score 0–100 und die 5 wichtigsten nächsten Schritte.</p>
         <p class="price-line"><strong>5 EUR</strong> Einführungspreis für die ersten Tester. Regulär später 99–149 EUR.</p>
         <div class="order-slot">
 <!-- BEGIN:order-block -->
@@ -70,10 +70,10 @@
   <section class="section" id="lieferumfang">
     <div class="wrap">
       <h2>Was im Report steht</h2>
-      <p class="section-lede">Ein Report pro Repo, innerhalb von 48 Stunden nach Eingang eines lesbaren öffentlichen Links oder einer ZIP-Datei.</p>
+      <p class="section-lede">Ein Report pro Repo, innerhalb von 48 Stunden nach Eingang eines lesbaren öffentlichen GitHub-Links. ZIP-Dateien nehmen wir in der Beta nicht an.</p>
       <dl class="caplist">
-        <div><dt>Testabdeckung</dt><dd>Wie viel des Codes von Tests erfasst ist, soweit sich das aus dem Repo ablesen lässt.</dd></div>
-        <div><dt>CI-Status</dt><dd>Ob eine Pipeline existiert und was ihr letzter Stand auf dem betrachteten Branch ist.</dd></div>
+        <div><dt>Tests</dt><dd>Testdateien und Testfunktionen, statisch gezählt. Der Code wird nicht ausgeführt.</dd></div>
+        <div><dt>CI-Konfiguration</dt><dd>Ob eine Pipeline konfiguriert ist und wie viele Jobs sie hat.</dd></div>
         <div><dt>TODO-Schulden</dt><dd>Offene TODO- und FIXME-Kommentare, gezählt und nach Lage im Repo sortiert.</dd></div>
         <div><dt>Abhängigkeiten</dt><dd>Direkte Abhängigkeiten und ob Versionen nachvollziehbar festgehalten sind.</dd></div>
         <div><dt>Risiko-Muster</dt><dd>Wiederkehrende Muster, zum Beispiel Tests, die in der CI nicht laufen, oder fehlende Lock-Dateien.</dd></div>
@@ -99,8 +99,8 @@
           </div>
         </div>
         <dl class="report-metrics">
-          <div><dt>Testabdeckung</dt><dd>18 % der Zeilen (Beispielrechnung)</dd></div>
-          <div><dt>CI-Status</dt><dd>Letzter Lauf auf main: fehlgeschlagen (Beispiel)</dd></div>
+          <div><dt>Tests</dt><dd>12 Testdateien, 58 Testfunktionen (Beispiel)</dd></div>
+          <div><dt>CI-Konfiguration</dt><dd>1 Workflow, 2 Jobs (Beispiel)</dd></div>
           <div><dt>TODO-Schulden</dt><dd>37 offene TODO/FIXME (Beispiel)</dd></div>
           <div><dt>Abhängigkeiten</dt><dd>64 direkte Einträge, 4 ohne feste Version (Beispiel)</dd></div>
           <div><dt>Risiko-Muster</dt><dd>3 Muster im Beispiel, siehe unten</dd></div>
@@ -114,7 +114,7 @@
         <h3>Die 5 wichtigsten nächsten Schritte (Beispiel)</h3>
         <ol class="report-steps">
           <li>Die vorhandenen Tests bei jedem Push in der CI ausführen.</li>
-          <li>Den fehlgeschlagenen Workflow auf main reparieren.</li>
+          <li>Die 4 Abhängigkeiten ohne feste Version festschreiben.</li>
           <li>Eine Lock-Datei committen, damit die Beispiel-Abhängigkeiten festliegen.</li>
           <li>Die 11 TODO-Kommentare im Beispielmodul <code>billing</code> schließen oder in Tickets überführen.</li>
           <li>Den Beispielpfad <code>refund</code> mit einem Test abdecken.</li>
@@ -129,7 +129,7 @@
       <h2>Ablauf</h2>
       <ol class="steps">
         <li><span class="step-n">1</span><div><h3>Bestellen</h3><p>Einführungspreis 5 EUR für die ersten Tester. Die Anzahl der Beta-Plätze ist begrenzt. Der Bestellbutton führt auf den Zahlungslink, sobald er hinterlegt ist.</p></div></li>
-        <li><span class="step-n">2</span><div><h3>Repo schicken</h3><p>Öffentlicher Git-Link mit Lesezugriff oder eine ZIP-Datei. Kein Schreibzugriff und keine Zugangsdaten.</p></div></li>
+        <li><span class="step-n">2</span><div><h3>Repo schicken</h3><p>Öffentlicher GitHub-Link (https://github.com/owner/repo). Keine ZIP-Dateien, kein Schreibzugriff und keine Zugangsdaten.</p></div></li>
         <li><span class="step-n">3</span><div><h3>Report</h3><p>Innerhalb von 48 Stunden bekommst du den Report. Danach löschen wir die Repo-Kopie.</p></div></li>
       </ol>
     </div>
@@ -141,7 +141,7 @@
       <div class="faq">
         <details>
           <summary>Was braucht ihr von mir?</summary>
-          <p>Einen öffentlichen Git-Link mit Lesezugriff oder eine ZIP-Datei des Repos. Schreibzugriff, Passwörter und Tokens brauchen wir nicht.</p>
+          <p>Einen öffentlichen GitHub-Link zum Repo, also https://github.com/owner/repo. ZIP-Dateien und private Repos nehmen wir in der Beta nicht an. Schreibzugriff, Passwörter und Tokens brauchen wir nicht.</p>
         </details>
         <details>
           <summary>Was passiert mit dem Repo?</summary>
@@ -167,7 +167,7 @@
     <div class="wrap narrow waitlist">
       <h2>Als Beta-Tester bestellen</h2>
       <p class="price-line"><strong>5 EUR</strong> Einführungspreis für die ersten Tester. Regulär später 99–149 EUR. Die Anzahl der Beta-Plätze ist begrenzt.</p>
-      <p>Nach der Zahlung schickst du den öffentlichen Git-Link oder die ZIP an die Bestelladresse. Den Report gibt es innerhalb von 48 Stunden.</p>
+      <p>Nach der Zahlung schickst du den öffentlichen GitHub-Link an die Bestelladresse. Den Report gibt es innerhalb von 48 Stunden.</p>
       <div class="order-slot">
 <!-- BEGIN:order-block -->
 <button type="button" class="btn is-disabled" disabled>Bald verfügbar</button>
