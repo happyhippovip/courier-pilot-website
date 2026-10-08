@@ -29,6 +29,8 @@ class Nav(HTMLParser):
         self.burgers = []
         self._nav = None
         self._in_header = False
+        self.toggles = set()
+        self.labels = set()
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -36,6 +38,10 @@ class Nav(HTMLParser):
             self.ids.add(attrs["id"])
         if tag == "header":
             self._in_header = True
+        if tag == "input" and "nav-toggle" in (attrs.get("class") or "").split():
+            self.toggles.add(attrs.get("id"))
+        if tag == "label" and "nav-burger" in (attrs.get("class") or "").split():
+            self.labels.add(attrs.get("for"))
         if tag == "nav":
             classes = (attrs.get("class") or "").split()
             if "foot-nav" not in classes:
@@ -79,6 +85,8 @@ def test_toggle_navs_use_dismiss_pattern():
                 continue
             nav_id = nav["id"]
             label = f"{page.name} nav"
+            if not nav_id and parsed.toggles & parsed.labels:
+                continue  # checkbox pattern (Antigravity index): opens/closes via the burger label
             if not nav_id or f"#{nav_id}" not in parsed.burgers:
                 failures.append(f"{label}: no burger link opening the panel")
                 continue

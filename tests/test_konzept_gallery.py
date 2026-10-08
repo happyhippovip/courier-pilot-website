@@ -10,7 +10,9 @@ DISCLAIMER = (
 
 
 def test_disclaimer_on_gallery_pages():
-    for name in ("index.html", "konzept.html"):
+    # index.html is Antigravity's page now; it carries the disclaimer next to our two concept images.
+    assert DISCLAIMER in (ROOT / "index.html").read_text(encoding="utf-8")
+    for name in ("konzept.html",):
         text = (ROOT / name).read_text(encoding="utf-8")
         assert DISCLAIMER in text, f"{name} missing gallery disclaimer"
         assert 'id="konzept"' in text, f"{name} missing #konzept section"
@@ -31,8 +33,8 @@ def test_gallery_assets_exist_and_stay_small():
     assert total < 6_000_000, f"konzept assets {total} bytes >= 6 MB"
 
 
-def test_new_x_concept_images_listed_on_both_pages():
-    for name in ("index.html", "konzept.html"):
+def test_new_x_concept_images_listed_on_konzept_page():
+    for name in ("konzept.html",):
         text = (ROOT / name).read_text(encoding="utf-8")
         for slug in ("hub-launch", "so-funktionierts"):
             assert f'href="#lb-{slug}"' in text, (name, slug)

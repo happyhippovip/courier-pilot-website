@@ -86,56 +86,101 @@ def email_state(email: str) -> str:
     return "invalid"
 
 
-def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = ORDER_CONTACT_EMAIL) -> str:
-    """Order slot: Überweisung via mailto (primary) + optional Sofort-bezahlen link.
+REPO_PRICE_LABEL = "5 €"
+# Shorts-Paket price: single source, change here and run python3 build.py --sync.
+VIDEO_PRICE_LABEL = "79 €"
+VIDEO_PAGES = ["index.html"]
+VIDEO_BLOCK_BEGIN = "<!-- BEGIN:video-block -->"
+VIDEO_BLOCK_END = "<!-- END:video-block -->"
 
-    Bank details are never inlined; the reply mail carries them. A missing
-    PAYMENT_LINK_REPO_REALITY keeps Sofort bezahlen disabled for later.
+PAY_COPY = (
+    "Bezahlung per Überweisung erst nach unserer Bestätigung per Mail. "
+    "Die Bankverbindung steht nur in dieser Antwort-Mail – nie auf der Website."
+)
+
+
+def _mailto(email: str, subject: str, body: str) -> str:
+    esc = html.escape(email, quote=True)
+    return f"mailto:{esc}?subject={quote(subject)}&amp;body={quote(body)}"
+
+
+def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = ORDER_CONTACT_EMAIL) -> str:
+    """Repo-Check order slot: mailto (primary), bank transfer after confirmation.
+
+    Bank details are never inlined; the reply mail carries them. No checkout:
+    the optional Sofort-bezahlen link renders only when PAYMENT_LINK_REPO_REALITY is live.
     """
     pay = payment_state(payment)
     mail = email_state(email)
-
     copy = (
-        '<p class="order-pay">Bezahlung per Überweisung (5&nbsp;€). '
-        'Bestelle per Mail an <strong>founder@couriersymphony.de</strong> mit deinem '
-        'öffentlichen GitHub-Link – du bekommst die Bankverbindung in der Antwort. '
-        'Der Report startet nach Zahlungseingang, Lieferung innerhalb von 48&nbsp;Stunden.</p>'
+        f'<p class="order-pay">{PAY_COPY} Lieferung des Reports innerhalb von 48&nbsp;Stunden '
+        'nach Zahlungseingang. Bezahlung per Überweisung.</p>'
     )
-
     if mail == "live":
         esc = html.escape(email, quote=True)
-        subject = quote("Repo Reality Check bestellen")
-        body = quote(
+        body = (
             "Hallo Courier Symphony,\n\n"
             "ich möchte einen Repo Reality Check (Beta, 5 EUR per Überweisung) bestellen.\n\n"
-            "Öffentlicher GitHub-Link: https://github.com/OWNER/REPO\n\n"
-            "Bitte schickt mir die Bankverbindung zur Überweisung.\n\n"
+            "Öffentlicher GitHub-Link: https://github.com/OWNER/REPO\n"
+            "Was soll geprüft werden (optional): \n"
+            "Mein Name: \n\n"
+            "Ich stimme ausdrücklich zu, dass ihr vor Ablauf der Widerrufsfrist mit dem Report beginnt, "
+            "und weiß, dass ich mit Beginn der Ausführung mein Widerrufsrecht verliere "
+            "(siehe Widerrufsbelehrung auf couriersymphony.de).\n\n"
+            "Bitte bestätigt die Bestellung und schickt mir die Bankverbindung.\n\n"
             "Danke"
         )
         mailto_cta = (
-            f'<a class="btn" href="mailto:{esc}?subject={subject}&amp;body={body}">'
-            'Per Mail bestellen — 5&nbsp;EUR</a>'
+            f'<a class="btn" href="{_mailto(email, "Repo Reality Check bestellen", body)}">'
+            f'Repo-Check bestellen – {REPO_PRICE_LABEL}</a>'
         )
         contact = f'<p class="fine">Fragen: <a href="mailto:{esc}">{esc}</a></p>'
     elif mail == "placeholder":
-        mailto_cta = '<button type="button" class="btn is-disabled" disabled>Per Mail bestellen — 5&nbsp;EUR</button>'
+        mailto_cta = f'<button type="button" class="btn is-disabled" disabled>Repo-Check bestellen – {REPO_PRICE_LABEL}</button>'
         contact = '<p class="fine">Fragen zur Bestellung: die Kontaktadresse ist noch nicht hinterlegt.</p>'
     else:
         mailto_cta = "<!-- invalid ORDER_CONTACT_EMAIL -->"
         contact = "<!-- invalid ORDER_CONTACT_EMAIL -->"
+    parts = [copy, mailto_cta]
+    if pay == "live":
+        parts.append(f'<a class="btn btn-ghost" href="{html.escape(payment, quote=True)}">Sofort bezahlen</a>')
+    elif pay == "invalid":
+        parts.append("<!-- invalid PAYMENT_LINK_REPO_REALITY -->")
+    parts.append(contact)
+    return "\n".join(parts)
 
-    if pay == "placeholder":
-        instant = (
-            '<button type="button" class="btn btn-ghost is-disabled" disabled>Sofort bezahlen</button>\n'
-            '<p class="fine">Sofort bezahlen (Zahlungslink) ist optional und später verfügbar.</p>'
-        )
-    elif pay == "live":
-        href = html.escape(payment, quote=True)
-        instant = f'<a class="btn btn-ghost" href="{href}">Sofort bezahlen</a>'
-    else:
-        instant = "<!-- invalid PAYMENT_LINK_REPO_REALITY -->"
 
-    return "\n".join([copy, mailto_cta, instant, contact])
+def render_video_block(email: str = ORDER_CONTACT_EMAIL, price: str = VIDEO_PRICE_LABEL) -> str:
+    """Video-Schnitt (Shorts-Paket) request slot: mailto only, same payment rule."""
+    price_txt = price.replace("\u00a0", " ").replace("€", "EUR")
+    body = (
+        "Hallo Courier Symphony,\n\n"
+        f"ich möchte das Shorts-Paket anfragen (10 Clips aus einem Langvideo, {price_txt}, Überweisung nach Bestätigung).\n\n"
+        "Link zum langen Video (z. B. YouTube, Cloud-Ordner): \n"
+        "Länge des Videos: \n"
+        "Plattform (YouTube Shorts / Instagram Reels / TikTok): \n"
+        "Wünsche zum Stil (optional): \n"
+        "Mein Name: \n\n"
+        "Bitte bestätigt den Auftrag mit Lieferzeit und schickt mir dann die Bankverbindung.\n\n"
+        "Danke"
+    )
+    return "\n".join([
+        f'<p class="order-pay">{price} pro Paket, verbindlich erst mit unserer Bestätigung per Mail; '
+        f'die Lieferzeit nennen wir in der Bestätigung. {PAY_COPY}</p>',
+        f'<a class="btn" href="{_mailto(email, f"Video-Schnitt anfragen (Shorts-Paket {price_txt})", body)}">'
+        f'Shorts-Paket – 10 Clips aus einem Langvideo: {price}</a>',
+        '<p class="fine">Erster Probe-Clip kostenlos.</p>',
+    ])
+
+
+def marked_video_block() -> str:
+    return f"{VIDEO_BLOCK_BEGIN}\n{render_video_block()}\n{VIDEO_BLOCK_END}"
+
+
+def replace_video_blocks(text: str) -> tuple[str, int]:
+    pattern = re.compile(re.escape(VIDEO_BLOCK_BEGIN) + r".*?" + re.escape(VIDEO_BLOCK_END), re.DOTALL)
+    count = len(pattern.findall(text))
+    return pattern.sub(lambda _: marked_video_block(), text), count
 
 
 def marked_order_block() -> str:
@@ -177,8 +222,8 @@ def main() -> int:
     if "IBAN" in rendered or "iban" in rendered:
         errors.append("internal: bank/IBAN data must never appear in the order block")
     if pay == "placeholder":
-        if "Sofort bezahlen" not in rendered or "disabled" not in rendered:
-            errors.append("internal: placeholder payment must render a disabled Sofort bezahlen control")
+        if "Sofort bezahlen" in rendered:
+            errors.append("internal: no checkout/payment control may render without a live payment link")
         if "TODO_PAYMENT_LINK" in rendered:
             errors.append("internal: placeholder payment must not leak TODO_PAYMENT_LINK into HTML")
         if 'href="https://' in rendered:
@@ -212,6 +257,20 @@ def main() -> int:
                 f"{order_page}: order block out of sync with PAYMENT_LINK_REPO_REALITY / "
                 "ORDER_CONTACT_EMAIL (run python3 build.py --sync)"
             )
+
+    for vpage in VIDEO_PAGES:
+        vpath = ROOT / vpage
+        vtext = vpath.read_text(encoding="utf-8") if vpath.is_file() else ""
+        vupd, vcount = replace_video_blocks(vtext)
+        if vcount < 1:
+            errors.append(f"{vpage}: missing video-block markers")
+        elif sync and vupd != vtext:
+            vpath.write_text(vupd, encoding="utf-8")
+            print(f"SYNC  {vpage}: wrote {vcount} video block(s) from build.py")
+        elif vupd != vtext:
+            errors.append(f"{vpage}: video block out of sync with VIDEO_PRICE_LABEL (run python3 build.py --sync)")
+        if "IBAN" in render_video_block():
+            errors.append("internal: bank data must never appear in the video block")
 
     parsed = {}
     for page in PAGES:
