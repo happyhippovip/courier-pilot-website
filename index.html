@@ -37,6 +37,7 @@
       <a href="#demo">Live Demo</a>
       <a href="#use-cases">Use Cases</a>
       <a href="#architecture">Architecture</a>
+      <a href="#platforms">Platforms</a>
       <a href="#calculator">Value Calculator</a>
       <a href="#faq">FAQ</a>
       <a class="nav-cta" href="#contact">Request Pilot</a>
@@ -416,6 +417,54 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
         <li><strong>Zero duplicate side effects:</strong> Idempotency keys protect external webhooks from repeated execution.</li>
         <li><strong>Fail-closed verification:</strong> Missing or raising verifier functions result in rejection; no default PASS.</li>
       </ul>
+    </div>
+  </section>
+
+  <!-- Supported Platforms & Deployment Matrix -->
+  <section class="section" id="platforms">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Deployment Targets & Operating Matrix</h2>
+        <p class="section-lede">Architected for production stability across desktop and server operating systems without Docker dependencies or cloud vendor lock-in.</p>
+      </div>
+
+      <div class="matrix-grid">
+        <div class="matrix-card">
+          <div class="matrix-badge">Primary Desktop</div>
+          <h3>Windows 10 / 11</h3>
+          <p class="matrix-sub">Single Self-Contained Executable (EXE)</p>
+          <ul class="matrix-list">
+            <li>Zero Python runtime installation required</li>
+            <li>Embedded SQLite WAL journal engine</li>
+            <li>Desktop Hub UI with visual activity replay</li>
+            <li>Clean background tray hibernation</li>
+          </ul>
+        </div>
+
+        <div class="matrix-card">
+          <div class="matrix-badge">Autonomous Daemon</div>
+          <h3>macOS (Apple Silicon & Intel)</h3>
+          <p class="matrix-sub">Local Background Worker Daemon</p>
+          <ul class="matrix-list">
+            <li>Low-overhead background process</li>
+            <li>Automatic laptop sleep / wake reconciliation</li>
+            <li>Built-in thermal and swap memory throttling</li>
+            <li>Local POSIX file lock fencing</li>
+          </ul>
+        </div>
+
+        <div class="matrix-card">
+          <div class="matrix-badge">Enterprise Infrastructure</div>
+          <h3>Headless Linux</h3>
+          <p class="matrix-sub">Systemd Service / Air-Gapped Appliance</p>
+          <ul class="matrix-list">
+            <li>100% offline air-gapped network execution</li>
+            <li>Zero external telemetry outbound connections</li>
+            <li>Deterministic shell and script adapters</li>
+            <li>Multi-user audit receipt generation</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
