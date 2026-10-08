@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repo Reality Check (Beta) — Courier Symphony</title>
+<meta name="description" content="Beta-Angebot: öffentlichen GitHub-Link schicken, innerhalb von 48 Stunden einen ehrlichen Report mit Reality-Score bekommen. Einführungspreis 5 EUR für die ersten Tester.">
+<link rel="canonical" href="https://couriersymphony.de/repo-reality-check.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Repo Reality Check (Beta) — Courier Symphony">
+<meta property="og:description" content="Öffentlichen GitHub-Link schicken, innerhalb von 48 Stunden einen ehrlichen Report bekommen. Einführungspreis 5 EUR für die ersten Tester.">
+<meta property="og:url" content="https://couriersymphony.de/repo-reality-check.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Zum Inhalt springen</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony Startseite">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <a class="nav-burger" href="#offer-nav" aria-label="Menü öffnen"><span></span><span></span><span></span></a>
+    <nav class="nav" id="offer-nav" aria-label="Primary">
+      <a class="nav-close" href="#angebot">Schließen</a>
+      <a href="#lieferumfang">Bericht</a>
+      <a href="#beispiel">Beispiel</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-cta" href="#bestellen">Bestellen</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="angebot">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="livedot"><span class="pulse" aria-hidden="true"></span>Beta · begrenzte Tester-Plätze</p>
+        <h1>Repo Reality Check</h1>
+        <p class="lede">Du schickst uns den öffentlichen GitHub-Link deines Repos (https://github.com/owner/repo), du bekommst innerhalb von 48 Stunden einen ehrlichen Report: Tests, CI-Konfiguration, TODO-Schulden, Abhängigkeiten, Risiko-Muster, Reality-Score 0–100 und die 5 wichtigsten nächsten Schritte.</p>
+        <p class="price-line"><strong>5 EUR</strong> Einführungspreis für die ersten Tester.</p>
+        <div class="order-slot">
+<!-- BEGIN:order-block -->
+<p class="order-pay">Bezahlung per Überweisung erst nach unserer Bestätigung per Mail. Die Bankverbindung steht nur in dieser Antwort-Mail – nie auf der Website. Lieferung des Reports innerhalb von 48&nbsp;Stunden nach Zahlungseingang.</p>
+<a class="btn" href="mailto:founder@couriersymphony.de?subject=Repo%20Reality%20Check%20bestellen&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Aich%20m%C3%B6chte%20einen%20Repo%20Reality%20Check%20%28Beta%2C%205%20EUR%20per%20%C3%9Cberweisung%29%20bestellen.%0A%0A%C3%96ffentlicher%20GitHub-Link%3A%20https%3A//github.com/OWNER/REPO%0AWas%20soll%20gepr%C3%BCft%20werden%20%28optional%29%3A%20%0AMein%20Name%3A%20%0A%0AIch%20stimme%20ausdr%C3%BCcklich%20zu%2C%20dass%20ihr%20vor%20Ablauf%20der%20Widerrufsfrist%20mit%20dem%20Report%20beginnt%2C%20und%20wei%C3%9F%2C%20dass%20ich%20mit%20Beginn%20der%20Ausf%C3%BChrung%20mein%20Widerrufsrecht%20verliere%20%28siehe%20Widerrufsbelehrung%20auf%20couriersymphony.de%29.%0A%0ABitte%20best%C3%A4tigt%20die%20Bestellung%20und%20schickt%20mir%20die%20Bankverbindung.%0A%0ADanke">Repo-Check bestellen – 5 €</a>
+<p class="fine">Fragen: <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a></p>
+<!-- END:order-block -->
+        </div>
+        <p class="hero-note">Beta-Angebot auf couriersymphony.de. Keine Cookies, kein Tracking auf dieser Seite.</p>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="orb"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip" aria-label="Für wen das Angebot ist">
+    <div class="wrap strip-grid">
+      <p><strong>Für Maintainer, die eine zweite Meinung wollen.</strong> Der Report beschreibt, was im Repo steht: Tests, CI, offene TODOs, Abhängigkeiten und ein paar wiederkehrende Risiko-Muster.</p>
+      <p>Er ist kein Sicherheitsaudit, kein Penetrationstest und keine Zertifizierung. Der Reality-Score fasst die Checks des Reports auf einer Skala von 0 bis 100 zusammen.</p>
+    </div>
+  </section>
+
+  <section class="section" id="lieferumfang">
+    <div class="wrap">
+      <h2>Was im Report steht</h2>
+      <p class="section-lede">Ein Report pro Repo, innerhalb von 48 Stunden nach Eingang eines lesbaren öffentlichen GitHub-Links. ZIP-Dateien nehmen wir in der Beta nicht an.</p>
+      <dl class="caplist">
+        <div><dt>Tests</dt><dd>Testdateien und Testfunktionen, statisch gezählt. Der Code wird nicht ausgeführt.</dd></div>
+        <div><dt>CI-Konfiguration</dt><dd>Ob eine Pipeline konfiguriert ist und wie viele Jobs sie hat.</dd></div>
+        <div><dt>TODO-Schulden</dt><dd>Offene TODO- und FIXME-Kommentare, gezählt und nach Lage im Repo sortiert.</dd></div>
+        <div><dt>Abhängigkeiten</dt><dd>Direkte Abhängigkeiten und ob Versionen nachvollziehbar festgehalten sind.</dd></div>
+        <div><dt>Risiko-Muster</dt><dd>Wiederkehrende Muster, zum Beispiel Tests, die in der CI nicht laufen, oder fehlende Lock-Dateien.</dd></div>
+        <div><dt>Reality-Score und nächste Schritte</dt><dd>Ein Score von 0 bis 100 und die fünf wichtigsten nächsten Schritte für genau dieses Repo.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="beispiel">
+    <div class="wrap">
+      <h2>Beispielreport, Demo-Daten</h2>
+      <p class="section-lede">Synthetische Beispieldaten zur Illustration. Kein echtes Repository und keine Messung aus einem Kundenprojekt.</p>
+      <article class="report" aria-labelledby="demo-title">
+        <p class="demo-flag">Beispielreport, Demo-Daten</p>
+        <div class="report-top">
+          <div>
+            <h3 id="demo-title">demo-org/widget-api</h3>
+            <p class="quest-meta">Erfundenes Beispiel · Branch main · Commit demo000</p>
+          </div>
+          <div class="score">
+            <span class="score-n">42</span>
+            <span class="score-l">Reality-Score 0–100<br>Beispielwert, keine Messung</span>
+          </div>
+        </div>
+        <dl class="report-metrics">
+          <div><dt>Tests</dt><dd>12 Testdateien, 58 Testfunktionen (Beispiel)</dd></div>
+          <div><dt>CI-Konfiguration</dt><dd>1 Workflow, 2 Jobs (Beispiel)</dd></div>
+          <div><dt>TODO-Schulden</dt><dd>37 offene TODO/FIXME (Beispiel)</dd></div>
+          <div><dt>Abhängigkeiten</dt><dd>64 direkte Einträge, 4 ohne feste Version (Beispiel)</dd></div>
+          <div><dt>Risiko-Muster</dt><dd>3 Muster im Beispiel, siehe unten</dd></div>
+        </dl>
+        <h3>Risiko-Muster im Beispiel</h3>
+        <ul class="report-list">
+          <li>Vorhandene Tests laufen in der Beispiel-CI nicht.</li>
+          <li>Im Beispiel liegt keine Lock-Datei.</li>
+          <li>Das Beispielmodul <code>billing</code> hat keinen Test.</li>
+        </ul>
+        <h3>Die 5 wichtigsten nächsten Schritte (Beispiel)</h3>
+        <ol class="report-steps">
+          <li>Die vorhandenen Tests bei jedem Push in der CI ausführen.</li>
+          <li>Die 4 Abhängigkeiten ohne feste Version festschreiben.</li>
+          <li>Eine Lock-Datei committen, damit die Beispiel-Abhängigkeiten festliegen.</li>
+          <li>Die 11 TODO-Kommentare im Beispielmodul <code>billing</code> schließen oder in Tickets überführen.</li>
+          <li>Den Beispielpfad <code>refund</code> mit einem Test abdecken.</li>
+        </ol>
+        <p class="hub-foot">Alle Zahlen und Dateinamen in diesem Kasten sind Demo-Daten. Ein echter Report bezieht sich nur auf das Repo, das du schickst.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="ablauf">
+    <div class="wrap">
+      <h2>Ablauf</h2>
+      <ol class="steps">
+        <li><span class="step-n">1</span><div><h3>Bestellen</h3><p>Einführungspreis 5 EUR für die ersten Tester. Die Anzahl der Beta-Plätze ist begrenzt. Bestellung per Mail (Überweisung); die Bankverbindung kommt in der Antwort.</p></div></li>
+        <li><span class="step-n">2</span><div><h3>Repo schicken</h3><p>Öffentlicher GitHub-Link (https://github.com/owner/repo). Keine ZIP-Dateien, kein Schreibzugriff und keine Zugangsdaten.</p></div></li>
+        <li><span class="step-n">3</span><div><h3>Report</h3><p>Innerhalb von 48 Stunden bekommst du den Report. Danach löschen wir die Repo-Kopie.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap narrow">
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details>
+          <summary>Was braucht ihr von mir?</summary>
+          <p>Einen öffentlichen GitHub-Link zum Repo, also https://github.com/owner/repo. ZIP-Dateien und private Repos nehmen wir in der Beta nicht an. Schreibzugriff, Passwörter und Tokens brauchen wir nicht.</p>
+        </details>
+        <details>
+          <summary>Was passiert mit dem Repo?</summary>
+          <p>Die Repo-Kopie wird nach dem Report gelöscht. Wir verwenden den Code nicht weiter und kopieren keine Secrets. Hinweise zu Bestelldaten und zur Zahlung per Überweisung stehen in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</p>
+        </details>
+        <details>
+          <summary>Was, wenn der Report nicht nützlich ist?</summary>
+          <p>Wenn dir der Report nicht nützt, erstatten wir den gezahlten Einführungspreis von 5 EUR. Dafür reicht eine kurze E-Mail an die Bestelladresse.</p>
+        </details>
+        <details>
+          <summary>Was gilt in der Beta?</summary>
+          <p>Repo Reality Check ist ein Testangebot mit begrenzter Anzahl an Plätzen. Der Einführungspreis von 5 EUR gilt für die ersten Tester. Umfang und Ablauf können sich in der Beta noch ändern. Der Report ist keine Zertifizierung.</p>
+        </details>
+        <details>
+          <summary>Habe ich als Verbraucher ein Widerrufsrecht?</summary>
+          <p>Ja. Gesetzliche Einzelheiten und das Muster-Widerrufsformular finden Sie in der <a href="/widerruf.html">Widerrufsbelehrung</a>. Wenn Sie wünschen, dass wir vor Ablauf der 14-tägigen Frist mit der Erstellung des Reports beginnen, bestätigen Sie dies im Bestellprozess.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="bestellen">
+    <div class="wrap narrow waitlist">
+      <h2>Als Beta-Tester bestellen</h2>
+      <p class="price-line"><strong>5 EUR</strong> Einführungspreis für die ersten Tester. Die Anzahl der Beta-Plätze ist begrenzt.</p>
+      <p>Bestelle per Mail mit deinem öffentlichen GitHub-Link. Nach Zahlungseingang starten wir den Report; Lieferung innerhalb von 48 Stunden.</p>
+      <div class="order-slot">
+<!-- BEGIN:order-block -->
+<p class="order-pay">Bezahlung per Überweisung erst nach unserer Bestätigung per Mail. Die Bankverbindung steht nur in dieser Antwort-Mail – nie auf der Website. Lieferung des Reports innerhalb von 48&nbsp;Stunden nach Zahlungseingang.</p>
+<a class="btn" href="mailto:founder@couriersymphony.de?subject=Repo%20Reality%20Check%20bestellen&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Aich%20m%C3%B6chte%20einen%20Repo%20Reality%20Check%20%28Beta%2C%205%20EUR%20per%20%C3%9Cberweisung%29%20bestellen.%0A%0A%C3%96ffentlicher%20GitHub-Link%3A%20https%3A//github.com/OWNER/REPO%0AWas%20soll%20gepr%C3%BCft%20werden%20%28optional%29%3A%20%0AMein%20Name%3A%20%0A%0AIch%20stimme%20ausdr%C3%BCcklich%20zu%2C%20dass%20ihr%20vor%20Ablauf%20der%20Widerrufsfrist%20mit%20dem%20Report%20beginnt%2C%20und%20wei%C3%9F%2C%20dass%20ich%20mit%20Beginn%20der%20Ausf%C3%BChrung%20mein%20Widerrufsrecht%20verliere%20%28siehe%20Widerrufsbelehrung%20auf%20couriersymphony.de%29.%0A%0ABitte%20best%C3%A4tigt%20die%20Bestellung%20und%20schickt%20mir%20die%20Bankverbindung.%0A%0ADanke">Repo-Check bestellen – 5 €</a>
+<p class="fine">Fragen: <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a></p>
+<!-- END:order-block -->
+      </div>
+      <p class="fine">Beta-Hinweis: begrenzte Plätze, der Report ist eine ehrliche Einschätzung der genannten Punkte und kein Audit. <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerrufsbelehrung</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <p class="fbrand">Courier Symphony — ideas travel further.</p>
+    <p class="fmeta"><a href="/">Start</a> · <a href="/architecture.html">Architecture</a> · <a href="/security.html">Security</a> · <a href="/use-cases.html">Use Cases</a> · <a href="/developers.html">Developers</a> · <a href="/company.html">Company</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerruf</a> · <a href="/privacy.html">Privacy</a> · Keine Cookies, keine Tracker. · © 2026 Courier Symphony</p>
+  </div>
+</footer>
+</body>
+</html>
