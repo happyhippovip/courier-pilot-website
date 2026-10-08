@@ -156,6 +156,7 @@
                 <button type="button" class="pill-btn active" data-flow="email">Invoice & Email Triage</button>
                 <button type="button" class="pill-btn" data-flow="workbook">Spreadsheet Cell Reconciliation</button>
                 <button type="button" class="pill-btn" data-flow="deadlines">German Bescheid Deadline Calc</button>
+                <button type="button" class="pill-btn" data-flow="repo">Repo Reality Sweep</button>
               </div>
             </div>
 
@@ -264,6 +265,18 @@
             <li>Auto-detects bounces and vacation notices</li>
             <li>Strict human gate for monetary transactions</li>
             <li>Zero outbound emails without authorization</li>
+          </ul>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="usecase-card">
+          <div class="card-icon">04</div>
+          <h3>Autonomous Repository Reality Sweep</h3>
+          <p>Performs background codebase integrity audits, monitors git worktrees for orphaned locks, and verifies SHA-256 commit chains without human oversight.</p>
+          <ul class="card-metrics">
+            <li>Single-writer concurrency lock enforcement</li>
+            <li>Self-healing crash recovery from SQLite WAL</li>
+            <li>Zero hallucinated changes or forced merges</li>
           </ul>
         </div>
       </div>
@@ -596,6 +609,13 @@ const WORKFLOWS = {
     { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "1-Month legal period computed · Shifted for weekend to Monday", hash: "sha256:456cde...99ff", data: { raw_end: "2026-08-24", legal_deadline: "2026-08-24" } },
     { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Target safety alert set 7 calendar days before deadline: 2026-08-17", hash: "sha256:119acd...3322", data: { target_date: "2026-08-17", status: "VERIFIED" } },
     { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Calendar dispatch confirmed · Zero hallucinated dates", hash: "sha256:ff0132...ee55", data: { status: "COMPLETE" } }
+  ],
+  repo: [
+    { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Repository scan initiated: Audit active branches and locks", hash: "sha256:7a81dd...1142", data: { task_id: "task-repo-audit", adapter: "repo_reality", scope: "locked_route" } },
+    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Fenced L4 worker claimed audit token · Lock valid for 60s", hash: "sha256:3e44fa...7781", data: { worker_id: "worker-l4-verifier", fencing_token: "fence-8812" } },
+    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Worktree scan complete: 0 orphaned locks · Clean machine verified", hash: "sha256:bb0122...3344", data: { clean_worktrees: 12, stale_locks_purged: 0 } },
+    { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Cryptographic SHA chain intact: 100% test coverage verified", hash: "sha256:99ff11...00aa", data: { head_sha: "f425d3285", ledger_valid: true, outcome: "success" } },
+    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Audit receipt committed to journal · Zero architecture drift", hash: "sha256:88ee99...dd44", data: { status: "COMPLETE", drift_detected: false } }
   ]
 };
 

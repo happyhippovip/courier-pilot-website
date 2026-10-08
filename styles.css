@@ -337,7 +337,7 @@ button.btn:disabled,.btn.is-disabled{
   .strip-grid{grid-template-columns:1fr 1fr;gap:2rem}
   .demo-body{grid-template-columns:1.1fr .9fr}
   .demo-controls{border-bottom:none;border-right:1px solid var(--line)}
-  .usecase-grid{grid-template-columns:repeat(3,1fr)}
+  .usecase-grid{grid-template-columns:repeat(auto-fit, minmax(250px, 1fr))}
   .matrix-grid{grid-template-columns:repeat(3,1fr)}
   .caplist{grid-template-columns:1fr 1fr;gap:0 2.5rem}
   .steps{grid-template-columns:1fr 1fr 1fr}
