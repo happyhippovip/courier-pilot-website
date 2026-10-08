@@ -51,8 +51,12 @@ def test_release_still_fails_on_address_and_payment_placeholders():
     )
     out = proc.stdout + proc.stderr
     assert proc.returncode == 1, out
-    assert "TODO_PAYMENT_LINK" in out
+    # Überweisung mailto is live; optional Sofort-bezahlen link may still warn.
     assert "impressum.html: legal placeholders still present" in out
     assert "datenschutz.html: legal placeholders still present" in out
     assert "widerruf.html: legal placeholders still present" in out
+    assert "Straße und Hausnummer" in (ROOT / "impressum.html").read_text(encoding="utf-8")
     assert "RESULT FAIL" in out
+    # Must not fail solely for missing payment link once legal TODOs are gone:
+    # payment placeholder is a WARN, not an ERROR line.
+    assert "ERROR PAYMENT_LINK_REPO_REALITY" not in out

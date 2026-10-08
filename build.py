@@ -8,6 +8,7 @@
 Output: dist/  -> upload the CONTENTS of this folder to the web root (see DEPLOY_STRATO.md).
 """
 import html, pathlib, re, shutil, sys, zipfile
+from urllib.parse import quote
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -36,7 +37,7 @@ ORDER_BLOCK_BEGIN = "<!-- BEGIN:order-block -->"
 ORDER_BLOCK_END = "<!-- END:order-block -->"
 
 # Single source for the Repo Reality Check order button and contact line.
-# TODO_PAYMENT_LINK disables the button ("Bald verfügbar") and fails --release.
+# TODO_PAYMENT_LINK keeps optional "Sofort bezahlen" disabled; Überweisung mailto is the live path.
 PAYMENT_LINK_REPO_REALITY = "TODO_PAYMENT_LINK"
 # Strato alias on couriersymphony.de. TODO_ORDER_EMAIL would fail --release.
 ORDER_CONTACT_EMAIL = "founder@couriersymphony.de"
@@ -77,23 +78,55 @@ def email_state(email: str) -> str:
 
 
 def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = ORDER_CONTACT_EMAIL) -> str:
-    """HTML for one order slot. Placeholder payment renders a disabled button, no href."""
-    if payment_state(payment) == "placeholder":
-        action = '<button type="button" class="btn is-disabled" disabled>Bald verfügbar</button>\n<p class="fine">Die Bestellung ist noch nicht freigeschaltet.</p>'
-    elif payment_state(payment) == "live":
-        href = html.escape(payment, quote=True)
-        action = f'<a class="btn" href="{href}">Als Beta-Tester bestellen — 5 EUR</a>'
-    else:
-        action = "<!-- invalid PAYMENT_LINK_REPO_REALITY -->"
+    """Order slot: Überweisung via mailto (primary) + optional Sofort-bezahlen link.
 
-    if email_state(email) == "placeholder":
-        contact = "<p class=\"fine\">Fragen zur Bestellung: die Kontaktadresse ist noch nicht hinterlegt.</p>"
-    elif email_state(email) == "live":
+    Bank details are never inlined; the reply mail carries them. A missing
+    PAYMENT_LINK_REPO_REALITY keeps Sofort bezahlen disabled for later.
+    """
+    pay = payment_state(payment)
+    mail = email_state(email)
+
+    copy = (
+        '<p class="order-pay">Bezahlung per Überweisung (5&nbsp;€). '
+        'Bestelle per Mail an <strong>founder@couriersymphony.de</strong> mit deinem '
+        'öffentlichen GitHub-Link – du bekommst die Bankverbindung in der Antwort. '
+        'Der Report startet nach Zahlungseingang, Lieferung innerhalb von 48&nbsp;Stunden.</p>'
+    )
+
+    if mail == "live":
         esc = html.escape(email, quote=True)
-        contact = f'<p class="fine">Fragen zur Bestellung: <a href="mailto:{esc}">{esc}</a></p>'
+        subject = quote("Repo Reality Check bestellen")
+        body = quote(
+            "Hallo Courier Symphony,\n\n"
+            "ich möchte einen Repo Reality Check (Beta, 5 EUR per Überweisung) bestellen.\n\n"
+            "Öffentlicher GitHub-Link: https://github.com/OWNER/REPO\n\n"
+            "Bitte schickt mir die Bankverbindung zur Überweisung.\n\n"
+            "Danke"
+        )
+        mailto_cta = (
+            f'<a class="btn" href="mailto:{esc}?subject={subject}&amp;body={body}">'
+            'Per Mail bestellen — 5&nbsp;EUR</a>'
+        )
+        contact = f'<p class="fine">Fragen: <a href="mailto:{esc}">{esc}</a></p>'
+    elif mail == "placeholder":
+        mailto_cta = '<button type="button" class="btn is-disabled" disabled>Per Mail bestellen — 5&nbsp;EUR</button>'
+        contact = '<p class="fine">Fragen zur Bestellung: die Kontaktadresse ist noch nicht hinterlegt.</p>'
     else:
+        mailto_cta = "<!-- invalid ORDER_CONTACT_EMAIL -->"
         contact = "<!-- invalid ORDER_CONTACT_EMAIL -->"
-    return action + "\n" + contact
+
+    if pay == "placeholder":
+        instant = (
+            '<button type="button" class="btn btn-ghost is-disabled" disabled>Sofort bezahlen</button>\n'
+            '<p class="fine">Sofort bezahlen (Zahlungslink) ist optional und später verfügbar.</p>'
+        )
+    elif pay == "live":
+        href = html.escape(payment, quote=True)
+        instant = f'<a class="btn btn-ghost" href="{href}">Sofort bezahlen</a>'
+    else:
+        instant = "<!-- invalid PAYMENT_LINK_REPO_REALITY -->"
+
+    return "\n".join([copy, mailto_cta, instant, contact])
 
 
 def marked_order_block() -> str:
@@ -119,8 +152,8 @@ def main() -> int:
     if pay == "invalid":
         errors.append("PAYMENT_LINK_REPO_REALITY must be TODO_PAYMENT_LINK or an https:// URL")
     elif pay == "placeholder":
-        (errors if release else warnings).append(
-            "PAYMENT_LINK_REPO_REALITY is still TODO_PAYMENT_LINK (set the payment URL in build.py before release)"
+        warnings.append(
+            "PAYMENT_LINK_REPO_REALITY is still TODO_PAYMENT_LINK (optional Sofort-bezahlen link; Überweisung via mailto is live)"
         )
     if mail == "invalid":
         errors.append("ORDER_CONTACT_EMAIL must be TODO_ORDER_EMAIL or a plain email address")
@@ -130,16 +163,24 @@ def main() -> int:
         )
 
     rendered = render_order_block()
+    if "Bezahlung per Überweisung" not in rendered:
+        errors.append("internal: order block must state Überweisung payment")
+    if "IBAN" in rendered or "iban" in rendered:
+        errors.append("internal: bank/IBAN data must never appear in the order block")
     if pay == "placeholder":
-        button_line = rendered.splitlines()[0]
-        if button_line != '<button type="button" class="btn is-disabled" disabled>Bald verfügbar</button>':
-            errors.append("internal: placeholder payment must render a disabled Bald verfügbar button")
-        if "TODO_PAYMENT_LINK" in rendered or "href=" in button_line:
-            errors.append("internal: placeholder payment must not render a payment URL")
+        if "Sofort bezahlen" not in rendered or "disabled" not in rendered:
+            errors.append("internal: placeholder payment must render a disabled Sofort bezahlen control")
+        if "TODO_PAYMENT_LINK" in rendered:
+            errors.append("internal: placeholder payment must not leak TODO_PAYMENT_LINK into HTML")
+        if 'href="https://' in rendered:
+            errors.append("internal: placeholder payment must not render a live payment URL")
     elif pay == "live" and html.escape(PAYMENT_LINK_REPO_REALITY, quote=True) not in rendered:
-        errors.append("internal: live payment URL missing from the order button")
-    if mail == "live" and f"mailto:{html.escape(ORDER_CONTACT_EMAIL, quote=True)}" not in rendered:
-        errors.append("internal: ORDER_CONTACT_EMAIL missing from the order block")
+        errors.append("internal: live payment URL missing from Sofort bezahlen")
+    if mail == "live":
+        if f"mailto:{html.escape(ORDER_CONTACT_EMAIL, quote=True)}" not in rendered:
+            errors.append("internal: ORDER_CONTACT_EMAIL missing from the order block")
+        if "Repo%20Reality%20Check%20bestellen" not in rendered and "Repo Reality Check bestellen" not in rendered:
+            errors.append("internal: mailto subject for order missing")
 
     for order_page in ORDER_PAGES:
         offer_path = ROOT / order_page
