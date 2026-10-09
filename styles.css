@@ -27,6 +27,7 @@ body{
 }
 .skip{position:absolute;left:-999px;top:0;background:var(--gold);color:#111;padding:.5rem 1rem;z-index:99}
 .skip:focus{left:0}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
 a{color:var(--cyan);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -307,4 +308,15 @@ h3{font-size:1.15rem;font-weight:650}
   .nav a:last-child{border-bottom:0}
   .nav-toggle:checked~.nav{display:flex}
   .pipeline-diagram{grid-template-columns:1fr 1fr}
+}
+
+/* Print optimization for enterprise evaluation whitepaper export */
+@media print{
+  body{background:#fff !important;color:#111 !important}
+  .topbar, .nav-burger, .sim-player, .sim-speed-select, .sim-controls, .sim-btn-chaos, .sim-btn-restart, .sim-btn-step, .sim-btn-export, .copy-code-btn, #btn-copy-contact-text, .modal, .topbar-status-badge{display:none !important}
+  .wrap{max-width:100% !important;padding:0 !important}
+  .hero-card, .matrix-card, .price-card, .briefing-card, .tab-panel, .acc-item, .code-sample{border:1px solid #ccc !important;background:#fff !important;color:#111 !important;box-shadow:none !important;page-break-inside:avoid}
+  h1, h2, h3, strong{color:#000 !important}
+  a{color:#000 !important;text-decoration:underline !important}
+  .section{padding:1.5rem 0 !important}
 }
