@@ -707,6 +707,8 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
         <li><strong>No secret exfiltration:</strong> API keys remain in local environment variables and are scrubbed from diagnostic packages.</li>
         <li><strong>Zero duplicate side effects:</strong> Idempotency keys protect external webhooks from repeated execution.</li>
         <li><strong>Fail-closed verification:</strong> Missing or raising verifier functions result in rejection; no default PASS.</li>
+        <li><strong>Zero name-based process kills:</strong> Subprocesses are bounded by exact PID and Windows Job Objects; never uses <code>taskkill /IM</code> or <code>pkill</code> that could kill unrelated IDE or python sessions.</li>
+        <li><strong>Strict loopback network binding:</strong> All local daemon endpoints bind strictly to <code>127.0.0.1</code>, eliminating Windows Firewall warnings and preventing local area network exposure.</li>
       </ul>
     </div>
   </section>
