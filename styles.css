@@ -144,8 +144,8 @@ h3{font-size:1.15rem;font-weight:650}
 .filter-btn:hover{color:var(--ink);border-color:var(--muted)}
 .filter-btn.active{background:var(--cyan-soft);color:var(--cyan);border-color:var(--cyan);font-weight:600}
 .journal-log{display:grid;gap:.5rem}
-.log-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem .75rem;padding:.38rem .55rem;border-radius:5px;background:rgba(255,255,255,.02);border-left:3px solid var(--line);transition:background .15s}
-.log-row:hover{background:rgba(255,255,255,.06);cursor:pointer}
+.log-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem .75rem;padding:.38rem .55rem;border-radius:5px;background:rgba(255,255,255,.02);border-left:3px solid var(--line);transition:background .15s,transform .1s,box-shadow .15s}
+.log-row:hover{background:rgba(255,255,255,.06);cursor:pointer;transform:translateX(2px)}
 .log-row:focus{outline:2px solid var(--cyan);outline-offset:1px}
 .log-row.kind-created{border-left-color:var(--muted)}
 .log-row.kind-claimed{border-left-color:var(--cyan)}
