@@ -202,6 +202,11 @@ h3{font-size:1.15rem;font-weight:650}
 /* Interactive ROI Calculator */
 .calc-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:1.8rem;display:grid;gap:2rem}
 .calc-inputs{display:grid;gap:1.2rem}
+.calc-presets{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-bottom:.2rem}
+.calc-presets-label{font-size:.82rem;color:var(--muted);font-weight:600}
+.preset-btn{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.3rem .65rem;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
+.preset-btn:hover{background:rgba(255,255,255,.12);border-color:var(--cyan);color:var(--cyan)}
+.preset-btn.active{background:var(--cyan-soft);border-color:var(--cyan);color:var(--cyan)}
 .calc-field label{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem;color:var(--ink);margin-bottom:.4rem}
 .calc-field input[type="range"]{width:100%;accent-color:var(--gold);cursor:pointer}
 .calc-summary{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:1.4rem;display:grid;gap:1rem}

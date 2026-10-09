@@ -422,6 +422,13 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
 
       <div class="calc-box">
         <div class="calc-inputs">
+          <div class="calc-presets" aria-label="Team Scale Presets">
+            <span class="calc-presets-label">Team Profile:</span>
+            <button type="button" class="preset-btn" data-wf="30" data-rate="110" data-fail="25">Agency (30 runs/wk)</button>
+            <button type="button" class="preset-btn active" data-wf="60" data-rate="120" data-fail="20">Scaleup (60 runs/wk)</button>
+            <button type="button" class="preset-btn" data-wf="200" data-rate="160" data-fail="15">Enterprise (200 runs/wk)</button>
+          </div>
+
           <div class="calc-field">
             <label for="range-workflows">
               <span>Automated Workflows / Week:</span>
@@ -1217,7 +1224,22 @@ function updateCalculator() {
   resMoney.textContent = moneySaved.toLocaleString("de-DE") + " €";
 }
 
-[rangeWf, rangeRate, rangeFail].forEach(el => el.addEventListener("input", updateCalculator));
+[rangeWf, rangeRate, rangeFail].forEach(el => el.addEventListener("input", () => {
+  document.querySelectorAll(".preset-btn").forEach(b => b.classList.remove("active"));
+  updateCalculator();
+}));
+
+document.querySelectorAll(".preset-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".preset-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    rangeWf.value = btn.dataset.wf;
+    rangeRate.value = btn.dataset.rate;
+    rangeFail.value = btn.dataset.fail;
+    updateCalculator();
+  });
+});
+
 updateCalculator();
 
 // --- CONTACT FORM BUILDER ---
