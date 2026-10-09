@@ -12,9 +12,12 @@
 <meta property="og:description" content="Start with a goal. Let verified AI workflows continue your work safely across interruptions.">
 <meta property="og:url" content="https://couriersymphony.de/">
 <meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://couriersymphony.de/og-cover.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">
 {
@@ -76,14 +79,17 @@
         </div>
         <p class="hero-note">Lokal auf deinem Rechner gedacht. Nur anhängbares Journal. Kein Tracking, keine Cookies.</p>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="orbit">
-          <span class="ring r1"></span>
-          <span class="ring r2"></span>
-          <span class="ring r3"></span>
-          <span class="orb"></span>
-        </div>
-      </div>
+      <figure class="hero-visual">
+        <img
+          class="hero-cover"
+          src="/og-cover.png"
+          alt="Courier Symphony — AI work that continues. Dark gold-and-cyan brand cover."
+          width="1200"
+          height="630"
+          decoding="async"
+          fetchpriority="high">
+        <figcaption class="visually-hidden">Official Courier Symphony Open Graph cover image.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -126,6 +132,40 @@
         <span role="listitem">Verified continuation</span>
       </p>
       <p class="en-line" lang="en">Public product chain: anything → understanding → action → automation → verified continuation.</p>
+      <ul class="state-strip" aria-label="Courier run states">
+        <li><span class="state state-working">Working</span><span class="state-desc">Aufgabe läuft</span></li>
+        <li><span class="state state-waiting">Waiting</span><span class="state-desc">Wartet auf Freigabe oder Eingabe</span></li>
+        <li><span class="state state-blocked">Blocked</span><span class="state-desc">Fehlende Voraussetzung</span></li>
+        <li><span class="state state-unknown">Unknown</span><span class="state-desc">Ausgang unklar — fail-closed</span></li>
+        <li><span class="state state-verified">Verified</span><span class="state-desc">Beleg geprüft</span></li>
+      </ul>
+      <p class="fine en-line" lang="en">Prototype status language for runs — not a live status dashboard.</p>
+    </div>
+  </section>
+
+  <section class="section" id="visuals" aria-label="Konzept visuals">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="duo-kicker">Konzeptbilder</p>
+        <h2>So könnte Courier aussehen</h2>
+        <p class="section-lede">Original Courier-Konzeptbilder. Keine Kundendaten, keine Umsatzzahlen, kein Live-Dashboard.</p>
+        <p class="en-line" lang="en">Original concept visuals — not customer metrics or a live product UI.</p>
+      </div>
+      <div class="visual-grid">
+        <a class="visual-tile" href="/konzept.html#lb-landing">
+          <img src="/assets/konzept/landing-thumb.webp" alt="Konzept: Courier Landing-Oberfläche mit dunklem Hub und goldenen Akzenten" width="640" height="360" loading="lazy" decoding="async">
+          <span>Landing</span>
+        </a>
+        <a class="visual-tile" href="/konzept.html#lb-workflows">
+          <img src="/assets/konzept/workflows-thumb.webp" alt="Konzept: Workflow-Übersicht mit verbundenen Aufgaben" width="640" height="360" loading="lazy" decoding="async">
+          <span>Workflows</span>
+        </a>
+        <a class="visual-tile" href="/konzept.html#lb-so-funktionierts">
+          <img src="/assets/konzept/so-funktionierts-thumb.webp" alt="Konzept: So funktioniert Courier — Schritte von Ziel bis Fortsetzung" width="640" height="360" loading="lazy" decoding="async">
+          <span>So funktioniert’s</span>
+        </a>
+      </div>
+      <p class="fine"><a href="/konzept.html">Alle Konzeptbilder und Clips</a></p>
     </div>
   </section>
 

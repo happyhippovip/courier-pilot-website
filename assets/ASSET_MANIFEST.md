@@ -19,10 +19,13 @@ No authorized Robfort/Grok artifact channel was available to this session.
 
 | Path | Used on | Rights |
 |---|---|---|
-| `assets/konzept/*.webp` | `konzept.html` gallery + thumbs | Courier Konzept / concept preview |
+| `og-cover.png` (1200×630) | Open Graph + homepage hero (`index.html`) | Courier site chrome |
+| `favicon.svg`, `apple-touch-icon.png` (180×180) | Site chrome / apple-touch | Courier site chrome |
+| `assets/konzept/landing-thumb.webp` | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
+| `assets/konzept/workflows-thumb.webp` | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
+| `assets/konzept/so-funktionierts-thumb.webp` | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
+| `assets/konzept/*.webp` (remaining) | `konzept.html` gallery + thumbs | Courier Konzept / concept preview |
 | `assets/konzept/*.mp4` + posters | `konzept.html` clips | Courier Konzept / concept preview |
-| `og-cover.png` | Open Graph | Courier site chrome |
-| `favicon.svg`, `apple-touch-icon.png` | Site chrome | Courier site chrome |
 
 Do not treat Konzept images as customer metrics, revenue proof, or shipped product UI.
 Originals stay under `assets/`; `python3 build.py --release` copies them into `dist/assets/`.
