@@ -84,6 +84,12 @@ a.nav-burger{text-decoration:none;color:inherit}
 .strip-grid{display:grid;gap:1.2rem}
 .strip p{margin:0;color:var(--muted);font-size:1.02rem}
 .strip strong{color:var(--ink)}
+.chain{margin:1.4rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.45rem;align-items:center}
+.chain [role="listitem"]{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.45rem .9rem;color:var(--ink);font-weight:650;font-size:.95rem}
+.chain-sep{color:var(--gold);font-weight:700;padding:0 .1rem}
+@media (prefers-reduced-motion:reduce){
+  .chain-sep{color:var(--muted)}
+}
 
 /* Sections general */
 .section{padding:3.8rem 0 1.5rem}

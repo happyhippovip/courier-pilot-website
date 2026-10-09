@@ -114,6 +114,18 @@
         <p class="section-lede">Courier merkt sich den letzten geprüften Stand und setzt dort fort. Erledigte Schritte laufen nicht noch einmal. Das ist der Prototyp, kein fertiges Produkt.</p>
         <p class="en-line" lang="en">Controlled continuation from the last verified checkpoint. Prototype, not a finished product.</p>
       </div>
+      <p class="chain" role="list" aria-label="Courier product chain">
+        <span role="listitem">Anything</span>
+        <span class="chain-sep" aria-hidden="true">→</span>
+        <span role="listitem">Understanding</span>
+        <span class="chain-sep" aria-hidden="true">→</span>
+        <span role="listitem">Action</span>
+        <span class="chain-sep" aria-hidden="true">→</span>
+        <span role="listitem">Automation</span>
+        <span class="chain-sep" aria-hidden="true">→</span>
+        <span role="listitem">Verified continuation</span>
+      </p>
+      <p class="en-line" lang="en">Public product chain: anything → understanding → action → automation → verified continuation.</p>
     </div>
   </section>
 
@@ -321,8 +333,9 @@
         </nav>
 
         <div class="tab-panel active" id="tab-journal">
-          <h3>Append-Only Journal: The Single Source of Truth</h3>
-          <p>Unlike conventional agent runtimes that store state in memory or raw prompt context windows, Courier Symphony persists every state transition as a cryptographically linked event in <code>courier.db</code>. If power drops, replaying the sequence produces the exact identical projection.</p>
+          <h3>Append-Only Journal (prototype sketch)</h3>
+          <p>Courier schreibt Zustandswechsel in ein anhängbares Journal (<code>courier.db</code>) statt nur in flüchtigen Speicher. Ziel: nach einem Abbruch am letzten geprüften Stand fortsetzen. Die Codekästen unten sind erläuternde Skizzen, kein fertiges Produktversprechen.</p>
+          <p class="en-line" lang="en">Prototype sketch: append-only journal for recoverable continuation — not a finished product claim.</p>
           <div class="code-sample">
 -- Canonical Event Schema (courier_core/journal.py)
 CREATE TABLE events (
@@ -457,11 +470,12 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
       <div class="accordion">
         <div class="acc-item">
           <button type="button" class="acc-header">
-            <span>How does Courier Symphony differ from LangChain, CrewAI, or AutoGen?</span>
+            <span>Worin unterscheidet sich Courier von LangChain, CrewAI oder AutoGen?</span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-content">
-            <p>LangChain and CrewAI are prompt-chaining libraries designed for conversational flows. Courier Symphony is an infrastructure-level execution coordinator: it enforces durable append-only SQLite persistence, fail-closed independent verification, single-writer lock fencing, and graceful circuit breaker hibernation. It does not replace your model providers; it ensures their execution is durable, bounded, and recoverable.</p>
+            <p>Viele Agent-Bibliotheken ketten Prompts. Courier arbeitet am Ausführungsrahmen: Journal, fail-closed Prüfung und ein Schreiber pro Aufgabe. Anbieter bleiben austauschbare Adapter. Stand: Prototyp mit belegtem synthetischem Lauf (PR #361), keine fertige Plattform.</p>
+            <p class="en-line" lang="en">Courier focuses on durable execution control, not prompt chaining. Prototype; evidenced synthetic run in PR #361.</p>
           </div>
         </div>
 
@@ -478,11 +492,12 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
 
         <div class="acc-item">
           <button type="button" class="acc-header">
-            <span>How does Courier protect against catastrophic duplicate actions?</span>
+            <span>Wie vermeidet Courier doppelte Aktionen?</span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-content">
-            <p>Every external action carries a stable, deterministic idempotency key derived from the task ID. If an agent crashes while awaiting an HTTP response, subsequent retries submit the identical effect key, allowing downstream APIs to deduplicate cleanly instead of double-billing or double-sending.</p>
+            <p>Im Prototyp trägt jede Aufgabe einen stabilen Effect-Key. Nach hartem Abbruch und Neustart zeigte der belegte Lauf (PR #361) 0 doppelte Aufgaben — mit synthetischem Test-Baustein, nicht mit einem echten Zahlungsanbieter.</p>
+            <p class="en-line" lang="en">Effect keys + evidenced 0 duplicates after hard kill/restart in PR #361 (synthetic adapter).</p>
           </div>
         </div>
 
@@ -504,14 +519,15 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
   <section class="section" id="safety">
     <div class="wrap narrow">
       <div class="section-head">
-        <h2>Safety by Construction</h2>
-        <p class="section-lede">Courier Symphony contains zero autonomous black-box behavior.</p>
+        <h2>Sicherheit und menschliche Freigabe</h2>
+        <p class="section-lede">Zielbild des Prototyps — keine unsichtbare Autonomie ohne Beleg.</p>
+        <p class="en-line" lang="en">Prototype safety goals. Not a finished certification.</p>
       </div>
       <ul class="checks">
-        <li><strong>Zero autonomous spending:</strong> Model call budgets and external financial actions stop at human gates.</li>
-        <li><strong>No secret exfiltration:</strong> API keys remain in local environment variables and are scrubbed from diagnostic packages.</li>
-        <li><strong>Zero duplicate side effects:</strong> Idempotency keys protect external webhooks from repeated execution.</li>
-        <li><strong>Fail-closed verification:</strong> Missing or raising verifier functions result in rejection; no default PASS.</li>
+        <li><strong>Menschliche Freigabe:</strong> Ausgaben und folgenreiche Aktionen sollen an Freigaben gebunden bleiben.</li>
+        <li><strong>Keine Secrets auf der Website:</strong> API-Schlüssel gehören in lokale Umgebung, nicht in öffentliche Seiten.</li>
+        <li><strong>Keine blinden Doppel-Läufe:</strong> Effect-Keys und Journal; belegt im synthetischen Lauf (PR #361).</li>
+        <li><strong>Fail-closed Prüfung:</strong> Fehlende oder fehlerhafte Prüfung bedeutet Ablehnung, kein stilles PASS.</li>
       </ul>
     </div>
   </section>

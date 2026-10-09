@@ -1,0 +1,151 @@
+{
+  "description": "Courier-owned website visuals recovered from PR #3/#5 stack",
+  "usage_rights": "Courier Symphony project originals (Konzept / concept preview). Not customer data.",
+  "source_branches": [
+    "site/repo-reality-beta",
+    "cursor/copy-truth-pass-f9b1"
+  ],
+  "provider_note": "Robfort/Grokbot export channel not accessible from this session; these are repo-resident assets only.",
+  "files": [
+    {
+      "path": "assets/konzept/choose-model-thumb.webp",
+      "bytes": 54832,
+      "sha256": "c1a86adda7bf9123a58ff880ad14ba561ebe484fad3f33b955956a153ebdc507"
+    },
+    {
+      "path": "assets/konzept/choose-model.webp",
+      "bytes": 136602,
+      "sha256": "b0f1ac0e015127c0ffb1eaedf7fcf78bd594aa72d5d29239d1c83d050ea73f63"
+    },
+    {
+      "path": "assets/konzept/city-overview-thumb.webp",
+      "bytes": 70746,
+      "sha256": "f70129f861722d8bc988065b3b67cab81722ebccf794cd335d0e1bb248e087ed"
+    },
+    {
+      "path": "assets/konzept/city-overview.webp",
+      "bytes": 180496,
+      "sha256": "70b594809f78b35de90601d6c73efbf073ba5cdb2ec9fc58a655f24c137299ac"
+    },
+    {
+      "path": "assets/konzept/clip-concept-poster.webp",
+      "bytes": 68976,
+      "sha256": "3c8b98d3f4ca287e630cab23e6c82b7b5c24580a24a0b9eb5f91141352649cad"
+    },
+    {
+      "path": "assets/konzept/clip-concept.mp4",
+      "bytes": 1499209,
+      "sha256": "9795939f8f5ed9b9a79dfb091ee2dd9e56421b92b0bfc21855b0a4ddb7e732f7"
+    },
+    {
+      "path": "assets/konzept/clip-teaser-poster.webp",
+      "bytes": 63508,
+      "sha256": "4424cfa1e9e0fafe483a25baa339d534f0e779c45d3db72a9576a78c3a07eb44"
+    },
+    {
+      "path": "assets/konzept/clip-teaser.mp4",
+      "bytes": 390400,
+      "sha256": "a42118a660119d73db4edf36d35eb354eb9c5edc97cbd273930c8d827a1ec595"
+    },
+    {
+      "path": "assets/konzept/community-collab-thumb.webp",
+      "bytes": 55020,
+      "sha256": "37cec54f002fce800f923d22967de2d3684048dec88792c8718bc693f035059f"
+    },
+    {
+      "path": "assets/konzept/community-collab.webp",
+      "bytes": 139568,
+      "sha256": "60e2ff6a13aff93d5bbe0f86c43a518f86a81b18e11ffecc01492a155260c99c"
+    },
+    {
+      "path": "assets/konzept/devices-thumb.webp",
+      "bytes": 58604,
+      "sha256": "d5f5f67bd28618152bbb23b443ceb1d356b97209d97f9f9c0ea520742f379f61"
+    },
+    {
+      "path": "assets/konzept/devices.webp",
+      "bytes": 148850,
+      "sha256": "8f434820df5ad937141003ce003e5d9d0f408559e667722ae9312c7ebf93a20a"
+    },
+    {
+      "path": "assets/konzept/full-hub-thumb.webp",
+      "bytes": 54046,
+      "sha256": "5cd078ee9845eb93059785aca43bdaa5fc0f6014cb6415a664a72448599354e8"
+    },
+    {
+      "path": "assets/konzept/full-hub.webp",
+      "bytes": 138950,
+      "sha256": "a48f0b1c3339ba5410e2d18d77677e86288ea28d6e198dc8ad59183e9fe935ac"
+    },
+    {
+      "path": "assets/konzept/hub-launch-thumb.webp",
+      "bytes": 50528,
+      "sha256": "85c934f1573815df17103a8072ebb976beb3d0616434f19b5e05100b50aa0074"
+    },
+    {
+      "path": "assets/konzept/hub-launch.webp",
+      "bytes": 171752,
+      "sha256": "2688a43cdbfca2b915a933f9fdf103265d42f787c4146104b9470b0ad5ed2441"
+    },
+    {
+      "path": "assets/konzept/landing-thumb.webp",
+      "bytes": 55142,
+      "sha256": "0fd1bf97a9911b9963e9c3950add7903113db53df0d614414ec2f2bd7f0bdb5a"
+    },
+    {
+      "path": "assets/konzept/landing.webp",
+      "bytes": 140328,
+      "sha256": "2e77dddce8198e94769dee5fe385281d5e7506b8f92d4c5f68e4366c52625c5a"
+    },
+    {
+      "path": "assets/konzept/project-base-thumb.webp",
+      "bytes": 52518,
+      "sha256": "d17f2e6fa5c1083bcb40f3ff854af2fde4e79aaa8c711cc905634d24e2df96b5"
+    },
+    {
+      "path": "assets/konzept/project-base.webp",
+      "bytes": 138466,
+      "sha256": "fcd340da010e9e7aaa74cdc4f7c9f041fccea7978f04e984cce21261b1db3e44"
+    },
+    {
+      "path": "assets/konzept/reality-check-thumb.webp",
+      "bytes": 56990,
+      "sha256": "fc08d97e929d39ec007d01b169b5e1266e2db1fd7b3fa2930709d290c8b959ed"
+    },
+    {
+      "path": "assets/konzept/reality-check.webp",
+      "bytes": 150536,
+      "sha256": "8bca8e1bed48d80ecf5fe7e6ca1d5ae593fd615a04968754d7379b9e949a1ded"
+    },
+    {
+      "path": "assets/konzept/so-funktionierts-thumb.webp",
+      "bytes": 69496,
+      "sha256": "ea3acee0687ed83dd37b4a8f9b501f88a2e0ab33531f6007befe5f1efba0d14b"
+    },
+    {
+      "path": "assets/konzept/so-funktionierts.webp",
+      "bytes": 273254,
+      "sha256": "5224ae840388273d2d634e1d463f36ef984c5b50f052f96eafa8358d206641f7"
+    },
+    {
+      "path": "assets/konzept/voice-lounge-thumb.webp",
+      "bytes": 62078,
+      "sha256": "d348444dfee2bd22e367055e35ea56a544da6439ca758934c9a51536b6181162"
+    },
+    {
+      "path": "assets/konzept/voice-lounge.webp",
+      "bytes": 164338,
+      "sha256": "8ffdbf1295b134b2cdb50ce9b73a788b9b42a8d9931d83fca7d5468e032eaf70"
+    },
+    {
+      "path": "assets/konzept/workflows-thumb.webp",
+      "bytes": 50614,
+      "sha256": "0d358182c35aab01052b031134ed3089b3585fa7576247670f3f067295189709"
+    },
+    {
+      "path": "assets/konzept/workflows.webp",
+      "bytes": 130178,
+      "sha256": "b7115d106ffb1272a5ef7dcc3d4d35f56b622fa08f91ec449fafae857acefcd9"
+    }
+  ]
+}
