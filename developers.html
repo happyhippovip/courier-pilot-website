@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developers — Courier Symphony</title>
+<meta name="description" content="Developer documentation and core contracts for Courier Symphony: append-only execution ledgers, atomic work queues, and verifiable receipts.">
+<link rel="canonical" href="https://couriersymphony.de/developers.html">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Developers — Courier Symphony">
+<meta property="og:description" content="Technical specifications, ledger contracts, and queue primitives for Courier Symphony.">
+<meta property="og:url" content="https://couriersymphony.de/developers.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <a class="nav-burger" href="#dev-nav" aria-label="Open menu"><span></span><span></span><span></span></a>
+    <nav class="nav" id="dev-nav" aria-label="Primary">
+      <a class="nav-close" href="#main">Close</a>
+      <a href="/">Home</a>
+      <a href="/mitmachen.html">Mitmachen</a>
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/developers.html" class="is-active" aria-current="page">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/repo-reality-check.html">Beta</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="tag">Prototype · developer notes</p>
+      <h1>Developer Primitives &amp; Core Contracts</h1>
+      <p class="section-lede">Building blocks the prototype aims for: durable journal records and verifiable receipts. Not a drop-in replacement for every workflow framework.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>1. The Append-Only Execution Ledger</h2>
+      <p class="section-lede">Goal: record state transitions as sequenced journal events. Example payload below is illustrative.</p>
+
+      <div class="report" role="region" aria-label="Event Log Example">
+        <pre><code>{
+  "event_id": "evt-01J9X8K7B1...",
+  "type": "WORK_ITEM_SEEDED",
+  "item_id": "P9",
+  "scope": "courier_core/work_queue_audit.py",
+  "created_at": "2026-10-08T09:20:00Z"
+}
+{
+  "event_id": "evt-01J9X8M2C4...",
+  "type": "LEASE_ACQUIRED",
+  "item_id": "P9",
+  "worker_id": "antigravity-worker-1",
+  "lease_seconds": 3600,
+  "expires_at": "2026-10-08T10:20:00Z"
+}
+{
+  "event_id": "evt-01J9X8N9D8...",
+  "type": "RECEIPT_PRODUCED",
+  "item_id": "P9",
+  "status": "SUCCESS",
+  "tests_passed": 9,
+  "artifact_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>2. Atomic Work Queue State Machine</h2>
+      <p class="section-lede">Prototype sketch: one writer per task, with a time-bounded lease and recovery after a crash. Exactly-once with a real provider is not yet shown.</p>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>SEEDED</h3>
+          <p class="fine">Work item registered with scope boundaries, dependencies, and required runtime capabilities.</p>
+        </article>
+        <article class="card">
+          <h3>LEASED</h3>
+          <p class="fine">Goal: exclusive, time-bounded lease so a second writer on the same scope is rejected.</p>
+        </article>
+        <article class="card">
+          <h3>COMPLETED</h3>
+          <p class="fine">Goal: retire an item only after a verification receipt — never treat unverified success as done.</p>
+        </article>
+        <article class="card">
+          <h3>EXPIRED / RELEASED</h3>
+          <p class="fine">Goal: if a worker crashes or misses heartbeats, expire the lease and keep failure evidence.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>3. Fail-Closed CLI &amp; Audit Engine</h2>
+      <p class="section-lede">Prototype direction: local/CI verification tools without requiring paid cloud APIs on this site.</p>
+
+      <div class="report">
+        <h3>Work Queue Audit Engine (<code>work_queue_audit.py</code>)</h3>
+        <p>Audits ledger files for cryptographic and state machine consistency:</p>
+        <ul class="checks">
+          <li><strong>Chronological Monotonicity:</strong> Rejects timestamps moving backwards in time (<code>TIME_TRAVEL</code>).</li>
+          <li><strong>Scope Collision Detection:</strong> Verifies no two concurrent workers held intersecting codebase files (<code>CONCURRENT_SCOPE_CONFLICT</code>).</li>
+          <li><strong>State Invariant Auditing:</strong> Catches a second writer, an unheld release, or an expired lease extension.</li>
+        </ul>
+        <pre><code>python -m courier_core.work_queue_audit --ledger /path/to/ledger.jsonl
+# Output: {"ok": true, "events_audited": 142, "items": 9, "violations": []}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="repo-link">
+    <div class="wrap">
+      <div class="report">
+        <h2>Open Architecture &amp; Repository</h2>
+        <p>Explore the operational code, test suites, and documentation in the main Courier Symphony repository:</p>
+        <div class="stack-actions">
+          <a class="btn" href="https://github.com/happyhippovip/2026-courier" target="_blank" rel="noopener noreferrer">View happyhippovip/2026-courier on GitHub</a>
+          <a class="btn btn-ghost" href="/architecture.html">View Architecture Guide</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p class="foot-copy">&copy; 2026 Courier Symphony. Built for resilient, unattended AI work.</p>
+    <nav class="foot-nav" aria-label="Legal &amp; Information">
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/developers.html">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/widerruf.html">Widerruf</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/privacy.html">Privacy (EN)</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Cases — Courier Symphony</title>
+<meta name="description" content="Concept use cases for Courier Symphony: verification, continuation, cross-platform execution — prototype direction, not shipped product proof.">
+<link rel="canonical" href="https://couriersymphony.de/use-cases.html">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Use Cases — Courier Symphony">
+<meta property="og:description" content="Concept use cases for Courier Symphony. Evidenced path so far: synthetic PR #361 — not a finished product catalog.">
+<meta property="og:url" content="https://couriersymphony.de/use-cases.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <a class="nav-burger" href="#cases-nav" aria-label="Open menu"><span></span><span></span><span></span></a>
+    <nav class="nav" id="cases-nav" aria-label="Primary">
+      <a class="nav-close" href="#main">Close</a>
+      <a href="/">Home</a>
+      <a href="/mitmachen.html">Mitmachen</a>
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/use-cases.html" class="is-active" aria-current="page">Use Cases</a>
+      <a href="/developers.html">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/repo-reality-check.html">Beta</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="tag">Konzept / Prototyp</p>
+      <h1>Concept use cases</h1>
+      <p class="section-lede">Target picture for ledger, admission gates, and crash recovery. Not a catalog of finished products. The evidenced path so far is the synthetic controller/worker run in PR #361.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="card-grid">
+        <article class="card">
+          <span class="card-num">01</span>
+          <h2>Automated Codebase Verification &amp; Reality Audits</h2>
+          <p>Zielbild: catch hallucinated tests, broken imports, or forgotten file updates with an independent check — not a certified auditor product.</p>
+          <ul class="checks">
+            <li><strong>Repo Reality Check (goal):</strong> Inspect public Git trees and report measurable facts; beta offer is separate and unpaid on this site.</li>
+            <li><strong>Regression discipline (goal):</strong> Prefer tests that ratchet forward; not claimed as a universal CI product.</li>
+            <li><strong>Receipts (prototype):</strong> Aims for hashed audit reports tied to commit SHAs; demonstrated path is the synthetic receipt in PR #361.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="card-num">02</span>
+          <h2>Multi-Day Unattended Agent Runs</h2>
+          <p>Standard agent CLI tools often stop when a session disconnects. Courier aims to resume from the last verified checkpoint — prototype, not a finished unattended product.</p>
+          <ul class="checks">
+            <li><strong>Checkpointing (goal):</strong> Progress recorded event-by-event in an append-only journal on disk.</li>
+            <li><strong>Supervision (goal):</strong> Detect stalled work and resume safely without inventing success.</li>
+            <li><strong>Host capacity (goal):</strong> Bound heavy jobs so one machine is not overloaded — not proven for every OS here.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="card-num">03</span>
+          <h2>Cross-Platform Distributed Execution</h2>
+          <p>Zielbild: route work to capable hosts (e.g. Windows Job Objects). Packaging and clean-machine shipping are not claimed on this page.</p>
+          <ul class="checks">
+            <li><strong>Capability routing (goal):</strong> Dispatch only to hosts that can run the task.</li>
+            <li><strong>Process containment (goal):</strong> Prefer exact owned process trees; Windows Job Objects are the intended Windows path.</li>
+            <li><strong>Workspace isolation (goal):</strong> Keep task workspaces from corrupting a shared tree — direction, not a shipped matrix.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="card-num">04</span>
+          <h2>Heavy Media &amp; Asset Generation Pipelines</h2>
+          <p>Zielbild: heavy renders with admission control and integrity checks — concept only; not an evidenced media product run.</p>
+          <ul class="checks">
+            <li><strong>Admission (goal):</strong> One heavy pipeline per host at a time where enforced.</li>
+            <li><strong>Output checks (goal):</strong> Reject blank or corrupt outputs before calling work done.</li>
+            <li><strong>Artifact receipts (goal):</strong> Checksums and metadata with the result — not a public SLA.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="evidence">
+    <div class="wrap">
+      <div class="report">
+        <h2>Was belegt ist</h2>
+        <p>Die Seiten zu Anwendungsfällen sind Konzept und Prototyp. Belegt ist ein Controller- und Worker-Lauf mit synthetischem Test-Baustein: harter Abbruch, Neustart, 0 doppelte Aufgaben, nachrechenbarer Beleg, CI 12 von 12. Ein Lauf mit echtem Anbieter ist noch nicht nachgewiesen.</p>
+        <ul class="checks">
+          <li>Beleg: <a href="https://github.com/happyhippovip/2026-courier/pull/361">PR #361</a></li>
+          <li>CI in diesem Lauf: 12 von 12 grün</li>
+          <li>Grenze: synthetischer Test-Baustein, kein echter Anbieter</li>
+        </ul>
+        <div class="stack-actions">
+          <a class="btn" href="https://github.com/happyhippovip/2026-courier" target="_blank" rel="noopener noreferrer">Inspect GitHub Repository</a>
+          <a class="btn btn-ghost" href="/developers.html">Developer Documentation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p class="foot-copy">&copy; 2026 Courier Symphony. Built for resilient, unattended AI work.</p>
+    <nav class="foot-nav" aria-label="Legal &amp; Information">
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/developers.html">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/widerruf.html">Widerruf</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/privacy.html">Privacy (EN)</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

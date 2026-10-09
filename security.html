@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security &amp; Trust — Courier Symphony</title>
+<meta name="description" content="Courier Symphony security goals for the prototype: fail-closed checks, human approval, and verifiable receipts.">
+<link rel="canonical" href="https://couriersymphony.de/security.html">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Security &amp; Trust — Courier Symphony">
+<meta property="og:description" content="Prototype security goals: fail-closed checks, human approval, and verifiable receipts.">
+<meta property="og:url" content="https://couriersymphony.de/security.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <nav class="nav nav-static" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html" class="is-active" aria-current="page">Security</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/developers.html">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/repo-reality-check.html">Beta</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="tag">Prototype · security goals</p>
+      <h1>Security and human approval</h1>
+      <p class="section-lede">Autonomous software should not operate with unchecked authority. Courier aims for fail-closed checks, human gates for consequential actions, and re-verifiable receipts. This page describes goals and the evidenced prototype — not a finished certification.</p>
+    </div>
+  </section>
+
+  <section class="section" id="tenets">
+    <div class="wrap">
+      <h2>Five goals of the prototype</h2>
+      <dl class="caplist">
+        <div>
+          <dt>1. Fail-closed on unknown outcomes</dt>
+          <dd>When evidence is missing or a run is unclear, the system should not assume success. Blocked or unknown states are preferred over blind retries.</dd>
+        </div>
+        <div>
+          <dt>2. No autonomous spending on this site</dt>
+          <dd>This website has no checkout and no payment processing. Budget limits and human approval remain product goals for consequential cloud spend.</dd>
+        </div>
+        <div>
+          <dt>3. Keep personal data off public ledgers</dt>
+          <dd>Public pages and demos must not publish customer contact details or secrets. Legal notices live on Impressum and Datenschutz.</dd>
+        </div>
+        <div>
+          <dt>4. Least privilege where workers run</dt>
+          <dd>Workers should use short-lived, scoped credentials. Full isolation packaging is planned — not a shipped clean-machine product claim.</dd>
+        </div>
+        <div>
+          <dt>5. Verifiable receipts</dt>
+          <dd>Completed prototype runs should leave a receipt that can be re-checked from files (see PR #361). Retention for any future paid review service will be stated at booking time — no fixed public delivery SLA here.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="data-handling">
+    <div class="wrap narrow">
+      <h2>Repository data handling (concept)</h2>
+      <p>For a future Repo Reality Check style review of public repositories:</p>
+      <ul class="checks">
+        <li><strong>Read-only intent:</strong> Inspect public GitHub repositories without requesting write permissions or deploy keys.</li>
+        <li><strong>No blind code execution:</strong> Prefer static review over running untrusted project scripts.</li>
+        <li><strong>Delete working copies:</strong> Working trees should be removed after a report is delivered — exact retention stated per engagement.</li>
+      </ul>
+      <p class="fine">For privacy notices, see our <a href="/datenschutz.html">Datenschutzerklärung (DE)</a> and <a href="/privacy.html">Privacy Policy (EN)</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <p class="fbrand">Courier Symphony — ideas travel further.</p>
+    <p class="fmeta"><a href="/">Home</a> · <a href="/architecture.html">Architecture</a> · <a href="/security.html">Security</a> · <a href="/use-cases.html">Use Cases</a> · <a href="/developers.html">Developers</a> · <a href="/company.html">Company</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerruf</a> · <a href="/privacy.html">Privacy</a> · © 2026 Courier Symphony</p>
+  </div>
+</footer>
+</body>
+</html>
