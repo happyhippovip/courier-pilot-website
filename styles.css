@@ -247,6 +247,16 @@ h3{font-size:1.15rem;font-weight:650}
 .pricing-features li::before{content:"✓";color:var(--cyan);font-weight:bold}
 .pricing-card .btn{width:100%;text-align:center;margin-top:.5rem}
 
+/* Technical Whitepaper Box */
+.briefing-box{background:linear-gradient(135deg,rgba(56,214,230,.06) 0%,var(--panel) 100%);border:1px solid rgba(56,214,230,.3);border-radius:var(--radius);padding:2.2rem;display:grid;gap:1.8rem;align-items:center}
+.briefing-copy h3{margin:0 0 .6rem;font-size:1.4rem;color:var(--ink)}
+.briefing-copy p{color:var(--muted);font-size:.96rem;line-height:1.6;margin:0 0 .8rem}
+.briefing-bullets{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+.briefing-bullets li{font-size:.88rem;color:var(--ink);display:flex;align-items:flex-start;gap:.6rem}
+.briefing-bullets li::before{content:"→";color:var(--cyan);font-weight:bold}
+.briefing-action{display:flex;flex-direction:column;gap:.6rem;align-items:flex-start}
+.briefing-meta{font-size:.82rem;color:var(--muted);font-family:monospace}
+
 /* Contact & Pilot Inquiries */
 .contact-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:2rem;display:grid;gap:1.5rem}
 .contact-card h3{margin:0 0 .4rem}
@@ -281,6 +291,7 @@ h3{font-size:1.15rem;font-weight:650}
   .usecase-grid{grid-template-columns:repeat(auto-fit, minmax(250px, 1fr))}
   .matrix-grid{grid-template-columns:repeat(3,1fr)}
   .pricing-grid{grid-template-columns:repeat(3,1fr)}
+  .briefing-box{grid-template-columns:1.3fr .7fr}
   .caplist{grid-template-columns:1fr 1fr;gap:0 2.5rem}
   .steps{grid-template-columns:1fr 1fr 1fr}
   .steps li{flex-direction:column}
