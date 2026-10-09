@@ -130,6 +130,7 @@
                 <button type="button" class="pill-btn" data-flow="deadlines">German Bescheid Deadline Calc</button>
                 <button type="button" class="pill-btn" data-flow="research">Deterministic Claim &amp; Spider Fact</button>
                 <button type="button" class="pill-btn" data-flow="grants">Permission Broker &amp; Revocation</button>
+                <button type="button" class="pill-btn" data-flow="revenue">Lead Qualification &amp; Billing Ledger</button>
                 <button type="button" class="pill-btn" data-flow="repo">Repo Reality Sweep</button>
               </div>
             </div>
@@ -736,6 +737,14 @@ const WORKFLOWS = {
     { seq: 4, type: "TASK_CLAIMED", kind: "claimed", desc: "Worker resumed with active grant token", hash: "sha256:cc2288...6644", data: { active_grant: "grant-7712", lease_ttl_s: 30 } },
     { seq: 5, type: "GRANT_REVOKED", kind: "circuit", desc: "Security Policy Event: Grant revoked · Token invalidated immediately", hash: "sha256:dd3377...7755", data: { grant_id: "grant-7712", reason: "POLICY_AUDIT_EXPIRED" } },
     { seq: 6, type: "TASK_COMPLETE", kind: "verified", desc: "Worker fenced safely · Outbox writes rejected post-revocation", hash: "sha256:ee4466...8866", data: { status: "SAFELY_TERMINATED", leaks_prevented: 1 } }
+  ],
+  revenue: [
+    { seq: 1, type: "LEAD_INGESTED", kind: "created", desc: "Inbound B2B lead captured: 'AcroCorp Enterprise' · Budget cap €10,000", hash: "sha256:1a88bb...3321", data: { lead_id: "lead-acro-01", org: "AcroCorp", spend_grant_eur: 10000.0, status: "DISCOVERED" } },
+    { seq: 2, type: "TASK_CLAIMED", kind: "claimed", desc: "Revenue worker claimed lead on host mac-1 with isolated lease token", hash: "sha256:44cc11...99aa", data: { worker_id: "worker-revenue-01", lease_ttl_s: 45 } },
+    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Unit economics computed: Target gross margin 72% · Direct costs allocated", hash: "sha256:88ee00...22bb", data: { direct_costs_eur: 2800.0, gross_margin_pct: 72.0, state: "QUALIFIED" } },
+    { seq: 4, type: "INVOICE_GENERATED", kind: "verified", desc: "Pro-forma invoice INV-2026-REV-09 drafted with cryptographically sealed itemization", hash: "sha256:cc1144...88ee", data: { invoice_id: "INV-2026-REV-09", net_eur: 10000.0, vat_eur: 1900.0, total_eur: 11900.0 } },
+    { seq: 5, type: "RESULT_ACCEPTED", kind: "verified", desc: "Independent RevenueStore verified append-only JSONL accounting ledger", hash: "sha256:ee9922...0011", data: { ledger_verified: true, tampering_detected: false } },
+    { seq: 6, type: "TASK_COMPLETE", kind: "verified", desc: "Lead promoted to CONVERTED · Financial integrity sealed with zero double-billing", hash: "sha256:55aa33...7744", data: { status: "CONVERTED", total_duration_s: 1.1 } }
   ]
 };
 
