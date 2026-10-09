@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Cases — Courier Symphony</title>
+<meta name="description" content="Demonstrable use cases for Courier Symphony: autonomous codebase verification, unattended worker pools, cross-platform execution, and auditable pipelines.">
+<link rel="canonical" href="https://couriersymphony.de/use-cases.html">
+<meta property="og:site_name" content="Courier Symphony">
+<meta property="og:title" content="Use Cases — Courier Symphony">
+<meta property="og:description" content="Proven use cases for reliable, unattended AI operations and verifiable task execution.">
+<meta property="og:url" content="https://couriersymphony.de/use-cases.html">
+<meta property="og:image" content="https://couriersymphony.de/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#070b16">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/" aria-label="Courier Symphony home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="none" stroke="#d9a441" stroke-width="2"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="#38d6e6" stroke-width="2"/><circle cx="16" cy="16" r="1.8" fill="#eef2f7"/></svg>
+      <span>Courier <strong>Symphony</strong></span>
+    </a>
+    <a class="nav-burger" href="#cases-nav" aria-label="Open menu"><span></span><span></span><span></span></a>
+    <nav class="nav" id="cases-nav" aria-label="Primary">
+      <a class="nav-close" href="#main">Close</a>
+      <a href="/">Home</a>
+      <a href="/mitmachen.html">Mitmachen</a>
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/use-cases.html" class="is-active" aria-current="page">Use Cases</a>
+      <a href="/developers.html">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/repo-reality-check.html">Beta</a>
+      <a class="nav-cta" href="/#early-access">Early Access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="tag">Real-World Operations</p>
+      <h1>Proven Use Cases</h1>
+      <p class="section-lede">Courier Symphony is designed for operational reality. Here is where the execution ledger, admission gates, and crash recovery deliver immediate value.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="card-grid">
+        <article class="card">
+          <span class="card-num">01</span>
+          <h2>Automated Codebase Verification &amp; Reality Audits</h2>
+          <p>Autonomous AI agents frequently drift into hallucinated tests, broken imports, or forgotten file updates. Courier Symphony acts as an independent auditor.</p>
+          <ul class="checks">
+            <li><strong>Repo Reality Check:</strong> Scans real Git trees, measures lines of code, detects phantom imports, and calculates objective quality scores.</li>
+            <li><strong>Monotonic Regression Ratchets:</strong> Ensures test suites strictly advance without allowing new failures or untracked state mutations.</li>
+            <li><strong>Tamper-Evident Receipts:</strong> Produces cryptographically hashed markdown audit reports tied to exact commit SHAs.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="card-num">02</span>
+          <h2>Multi-Day Unattended Agent Runs</h2>
+          <p>Standard agent CLI tools stop when a terminal session disconnects or an OS process hangs. Courier Symphony supervises long-running workflows with zero babysitting.</p>
+          <ul class="checks">
+            <li><strong>Deterministic Checkpointing:</strong> Progress is committed event-by-event to an append-only ledger on disk.</li>
+            <li><strong>Watchdog Supervision:</strong> Daemon watchdogs detect stalled processes, re-run failed jobs, and restart safely without duplicate work.</li>
+            <li><strong>Host Capacity Relief:</strong> Enforces host locks so resource-intensive builds never overwhelm developer machines.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="card-num">03</span>
+          <h2>Cross-Platform Distributed Execution</h2>
+          <p>Workflows often require specialized OS capabilities—macOS for specific rendering or build tools, Windows for Job Objects and PowerShell scripting.</p>
+          <ul class="checks">
+            <li><strong>Capability-Aware Routing:</strong> Work items are dispatched exclusively to host nodes that advertise verified execution capabilities.</li>
+            <li><strong>Process Tree Governance:</strong> Uses POSIX process groups on macOS/Linux and Win32 Job Objects on Windows to prevent orphaned background tasks.</li>
+            <li><strong>Clean Workspace Isolation:</strong> Every task executes in dedicated, ephemeral git worktrees without corrupting shared working trees.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="card-num">04</span>
+          <h2>Heavy Media &amp; Asset Generation Pipelines</h2>
+          <p>Rendering Godot animations, video encoding, and multi-model synthesis demand strict resource admission and fault tolerance.</p>
+          <ul class="checks">
+            <li><strong>Admission Mutexes:</strong> The prototype aims for one heavy render pipeline per physical host at a time.</li>
+            <li><strong>Solid-Color &amp; Integrity Detection:</strong> Automatically validates media output (e.g., detecting blank frames or corrupted streams) before marking tasks complete.</li>
+            <li><strong>Atomic Artifact Delivery:</strong> Output files are verified, checksummed, and packaged with verifiable receipt metadata.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="evidence">
+    <div class="wrap">
+      <div class="report">
+        <h2>Was belegt ist</h2>
+        <p>Die Seiten zu Anwendungsfällen sind Konzept und Prototyp. Belegt ist ein Controller- und Worker-Lauf mit synthetischem Test-Baustein: harter Abbruch, Neustart, 0 doppelte Aufgaben, nachrechenbarer Beleg, CI 12 von 12. Ein Lauf mit echtem Anbieter ist noch nicht nachgewiesen.</p>
+        <ul class="checks">
+          <li>Beleg: <a href="https://github.com/happyhippovip/2026-courier/pull/361">PR #361</a></li>
+          <li>CI in diesem Lauf: 12 von 12 grün</li>
+          <li>Grenze: synthetischer Test-Baustein, kein echter Anbieter</li>
+        </ul>
+        <div style="margin-top:1.5rem">
+          <a class="btn" href="https://github.com/happyhippovip/2026-courier" target="_blank" rel="noopener noreferrer">Inspect GitHub Repository</a>
+          <a class="btn btn-ghost" href="/developers.html">Developer Documentation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p class="foot-copy">&copy; 2026 Courier Symphony. Built for resilient, unattended AI work.</p>
+    <nav class="foot-nav" aria-label="Legal &amp; Information">
+      <a href="/architecture.html">Architecture</a>
+      <a href="/security.html">Security</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/developers.html">Developers</a>
+      <a href="/company.html">Company</a>
+      <a href="/widerruf.html">Widerruf</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/privacy.html">Privacy (EN)</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+name: site-check
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build static site (links, anchors, assets)
+        run: python3 build.py
+      - name: Upload Strato-ready bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: courier-site-dist
+          path: dist/
+          include-hidden-files: true
+          retention-days: 30
