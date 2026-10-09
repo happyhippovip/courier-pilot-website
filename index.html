@@ -394,8 +394,8 @@ CREATE TABLE events (
         </div>
 
         <div class="tab-panel" id="tab-verifier">
-          <h3>Never Trust Worker Self-Reports: Independent Verifier Path</h3>
-          <p>A worker process reporting "SUCCESS" is never trusted by the controller. All outcome evaluations route through independent verifier modules that inspect the disk artifacts, check cryptographic hash deltas, and fail closed if anything raises.</p>
+          <h3>Independent verifier path (prototype sketch)</h3>
+          <p>Goal: a worker reporting "SUCCESS" is not enough. Outcome checks should go through a verifier that inspects artifacts and fails closed when evidence is missing. Evidenced with the synthetic path in PR #361 — not every adapter.</p>
           <div class="code-sample">
 # Verifier Contract (courier_core/verification.py)
 def run_verifier(resolve, task: TaskState, result: Event, home: Path) -> Verdict:
@@ -421,8 +421,8 @@ def evaluate_admission(host_snapshot: dict) -> bool:
         </div>
 
         <div class="tab-panel" id="tab-fencing">
-          <h3>One-Writer Principle: Eliminating Race Conditions by Construction</h3>
-          <p>Two agents must never attempt to modify the same file or database concurrently. Courier enforces strict lease fencing on work packets. If a lease expires, the token invalidates instantly, preventing late outbox writes from corrupting data.</p>
+          <h3>One-writer principle (prototype sketch)</h3>
+          <p>Goal: one writer per task scope via lease fencing. Late results after a lease expires should not be treated as success. This sketch is explanatory, not a universal concurrency certification.</p>
           <div class="code-sample">
 # Work Packet Queue (courier_core/work_packet.py)
 def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[WorkPacket]:
@@ -494,7 +494,7 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <span class="lbl">Estimated Monthly Net Value:</span>
             <span class="val" id="res-money">2.880 €</span>
           </div>
-          <p style="margin:0;font-size:0.85rem;color:var(--muted)">Annahme im Beispiel: 30 Minuten Wiederaufbau pro Unterbrechung. Keine gemessenen Ergebnisse.</p>
+          <p class="calc-note">Annahme im Beispiel: 30 Minuten Wiederaufbau pro Unterbrechung. Keine gemessenen Ergebnisse.</p>
         </div>
       </div>
     </div>
@@ -627,9 +627,9 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
       <div class="contact-card">
         <div>
           <h2>Kostenloses Pilotprogramm</h2>
-          <p style="color:var(--muted);margin:0">Wir suchen 3–5 Teams, die KI-Agenten oder Automationen (z. B. n8n, Make) betreiben und Abbrüche oder doppelte Aktionen kennen. Der Pilot ist kostenlos und unverbindlich. Ihr schickt einen exportierten Ablauf ohne Zugangsdaten, wir zeigen, wo ein Neustart doppelt auslösen würde, und liefern einen nachprüfbaren Beleg.</p>
+          <p class="contact-lede">Wir suchen 3–5 Teams, die KI-Agenten oder Automationen (z. B. n8n, Make) betreiben und Abbrüche oder doppelte Aktionen kennen. Der Pilot ist kostenlos und unverbindlich. Ihr schickt einen exportierten Ablauf ohne Zugangsdaten, wir zeigen, wo ein Neustart doppelt auslösen würde, und liefern einen nachprüfbaren Beleg.</p>
           <p class="en-line" lang="en">Free pilot for 3–5 teams running AI agents or automations. Send an exported workflow (no credentials), get a duplicate-risk report plus a verifiable receipt.</p>
-          <p style="margin-top:1rem"><a class="btn" href="mailto:founder@couriersymphony.de?subject=Pilot%20anfragen&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Awir%20m%C3%B6chten%20den%20kostenlosen%20Pilot%20anfragen.%0A%0ATeam%3A%20%0AAblauf%20%28exportiert%2C%20ohne%20Zugangsdaten%29%3A%20%0A%0ADanke">Pilot anfragen</a></p>
+          <p class="stack-actions"><a class="btn" href="mailto:founder@couriersymphony.de?subject=Pilot%20anfragen&amp;body=Hallo%20Courier%20Symphony%2C%0A%0Awir%20m%C3%B6chten%20den%20kostenlosen%20Pilot%20anfragen.%0A%0ATeam%3A%20%0AAblauf%20%28exportiert%2C%20ohne%20Zugangsdaten%29%3A%20%0A%0ADanke">Pilot anfragen</a></p>
         </div>
 
         <form class="contact-form" id="pilot-form">
@@ -650,8 +650,8 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <textarea id="contact-notes" rows="3" placeholder="Welcher Ablauf bricht ab, und wo entsteht eine doppelte Aktion?"></textarea>
           </div>
           <button type="submit" class="btn">Pilot anfragen (öffnet E-Mail)</button>
-          <div class="form-feedback" id="form-feedback" style="display:none;margin-top:.8rem;padding:.8rem;background:rgba(61,214,140,.1);border:1px solid rgba(61,214,140,.3);border-radius:8px;color:var(--green);font-size:.9rem">
-            E-Mail-Programm wird geöffnet. Sonst direkt an <a href="mailto:founder@couriersymphony.de" style="color:var(--gold);font-weight:bold">founder@couriersymphony.de</a>.
+          <div class="form-feedback" id="form-feedback" hidden>
+            E-Mail-Programm wird geöffnet. Sonst direkt an <a class="feedback-mail" href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>.
           </div>
         </form>
         <p class="hero-note">Oder direkt an <a href="mailto:founder@couriersymphony.de">founder@couriersymphony.de</a>. Keine Cookies, kein Tracking.</p>
@@ -1038,7 +1038,7 @@ ${name}`
   );
 
   const feedback = document.getElementById("form-feedback");
-  if (feedback) feedback.style.display = "block";
+  if (feedback) feedback.hidden = false;
 
   window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
 });

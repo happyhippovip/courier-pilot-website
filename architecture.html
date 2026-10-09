@@ -42,16 +42,16 @@
 <main id="main" class="page">
   <section class="section">
     <div class="wrap">
-      <p class="tag">System Design</p>
+      <p class="tag">Prototype · system design</p>
       <h1>Architecture of Courier Symphony</h1>
-      <p class="section-lede">Courier Symphony coordinates autonomous agents, workers, and tools into a single auditable execution graph. Every task runs under strict admission, writes to an append-only ledger, and resumes safely from checkpoints after failures.</p>
+      <p class="section-lede">Target picture: agents and workers under admission, an append-only journal, and resume from checkpoints. Evidenced so far: synthetic controller/worker path in PR #361 — not a finished product architecture claim.</p>
     </div>
   </section>
 
   <section class="section" id="pipeline">
     <div class="wrap">
       <h2>The Execution Pipeline</h2>
-      <p class="section-lede">Every unit of work progresses through an explicit, fail-closed state machine.</p>
+      <p class="section-lede">Intended fail-closed path for a unit of work (sketch). Not every step is shipped for every OS.</p>
 
       <div class="report" role="region" aria-label="Execution Flow Diagram">
         <div class="arch-chain">

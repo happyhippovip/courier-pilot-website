@@ -26,3 +26,19 @@ def test_company_lanes_are_roadmap_not_absolute_guarantees():
     assert "Technical lane roadmap" in text
     assert "Gründung in Vorbereitung" in text
     assert 'style="margin-top:' not in text
+
+
+def test_architecture_and_developers_lead_with_prototype_limits():
+    arch = _read("architecture.html")
+    assert "finished product architecture claim" in arch or "PR #361" in arch
+    assert "Every task runs under strict admission" not in arch
+    dev = _read("developers.html")
+    assert "replace complex distributed workflow frameworks" not in dev
+    assert "Prototype · developer notes" in dev
+
+
+def test_homepage_avoids_leftover_inline_pilot_styles():
+    index = _read("index.html")
+    assert 'style="color:var(--muted);margin:0"' not in index
+    assert 'id="form-feedback" hidden' in index
+    assert "Independent verifier path (prototype sketch)" in index

@@ -42,16 +42,16 @@
 <main id="main" class="page">
   <section class="section">
     <div class="wrap">
-      <p class="tag">Technical Specifications</p>
+      <p class="tag">Prototype · developer notes</p>
       <h1>Developer Primitives &amp; Core Contracts</h1>
-      <p class="section-lede">Courier Symphony provides minimal, durable building blocks that replace complex distributed workflow frameworks with deterministic OS files and verifiable receipts.</p>
+      <p class="section-lede">Building blocks the prototype aims for: durable journal records and verifiable receipts. Not a drop-in replacement for every workflow framework.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
       <h2>1. The Append-Only Execution Ledger</h2>
-      <p class="section-lede">All state transitions are recorded as immutable, monotonically sequenced JSONL events.</p>
+      <p class="section-lede">Goal: record state transitions as sequenced journal events. Example payload below is illustrative.</p>
 
       <div class="report" role="region" aria-label="Event Log Example">
         <pre><code>{
@@ -93,15 +93,15 @@
         </article>
         <article class="card">
           <h3>LEASED</h3>
-          <p class="fine">Worker holds an exclusive, time-bounded lease. A second writer on the same scope is rejected immediately.</p>
+          <p class="fine">Goal: exclusive, time-bounded lease so a second writer on the same scope is rejected.</p>
         </article>
         <article class="card">
           <h3>COMPLETED</h3>
-          <p class="fine">Execution succeeded and produced a valid verification receipt. The item is retired and never re-executed.</p>
+          <p class="fine">Goal: retire an item only after a verification receipt — never treat unverified success as done.</p>
         </article>
         <article class="card">
           <h3>EXPIRED / RELEASED</h3>
-          <p class="fine">If a worker crashes or fails heartbeat checks, the lease expires cleanly and returns to the pool with failure evidence.</p>
+          <p class="fine">Goal: if a worker crashes or misses heartbeats, expire the lease and keep failure evidence.</p>
         </article>
       </div>
     </div>
@@ -110,7 +110,7 @@
   <section class="section">
     <div class="wrap">
       <h2>3. Fail-Closed CLI &amp; Audit Engine</h2>
-      <p class="section-lede">Courier Symphony includes standalone verification tools that run locally or in CI without external dependencies.</p>
+      <p class="section-lede">Prototype direction: local/CI verification tools without requiring paid cloud APIs on this site.</p>
 
       <div class="report">
         <h3>Work Queue Audit Engine (<code>work_queue_audit.py</code>)</h3>

@@ -27,6 +27,10 @@ body{
   overflow-x:clip;
 }
 .stack-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.2rem;align-items:center}
+.calc-note{margin:0;font-size:.85rem;color:var(--muted)}
+.contact-lede{color:var(--muted);margin:0}
+.form-feedback{margin-top:.8rem;padding:.8rem;background:rgba(61,214,140,.1);border:1px solid rgba(61,214,140,.3);border-radius:8px;color:var(--green);font-size:.9rem}
+.form-feedback .feedback-mail{color:var(--gold);font-weight:700}
 .skip{position:absolute;left:-999px;top:0;background:var(--gold);color:#111;padding:.5rem 1rem;z-index:99}
 .skip:focus{left:0}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
