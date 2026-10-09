@@ -514,6 +514,26 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <p>Courier Symphony is engineered for Windows 10/11 desktop environments as a self-contained executable (EXE), with support for background worker daemons on macOS and headless Linux servers.</p>
           </div>
         </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-header">
+            <span>Where is operational data stored, and does Courier Symphony comply with EU GDPR (DSGVO)?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-content">
+            <p>All operational data, journals, and task states reside exclusively in your local SQLite WAL database within your designated local workspace or enterprise server. Zero prompts, documents, or intermediate calculation artifacts are transmitted to Courier Symphony or any third-party infrastructure. Courier Symphony is 100% compliant with EU GDPR (DSGVO Art. 25 &amp; 32 Datenschutz durch Technikgestaltung).</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-header">
+            <span>How does the Kirby Resource Governor prevent system exhaustion (EMFILE / OOM)?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-content">
+            <p>The embedded Kirby governor monitors host file descriptor usage, memory thresholds, and subprocess table limits. If system pressure spikes toward OS caps, Kirby initiates bounded throttle cycles and sheds concurrent sub-workers instead of crashing the host process, ensuring clean operation even on resource-constrained developer workstations.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
