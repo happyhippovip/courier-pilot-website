@@ -556,7 +556,7 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <li>Local Desktop Hub with event replay</li>
             <li>Direct architectural email advisory</li>
           </ul>
-          <a class="btn btn-ghost" href="#contact">Apply for Pilot</a>
+          <a class="btn btn-ghost" href="#contact" data-select-tier="Windows Desktop Hub & Local Workers (EXE Evaluation)">Apply for Pilot</a>
         </div>
 
         <div class="pricing-card featured">
@@ -572,7 +572,7 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <li>Air-gapped offline Linux server appliance</li>
             <li>SLA-backed technical integration support</li>
           </ul>
-          <a class="btn" href="#contact">Request Architecture Briefing</a>
+          <a class="btn" href="#contact" data-select-tier="Enterprise Architecture & Security Review">Request Architecture Briefing</a>
         </div>
 
         <div class="pricing-card">
@@ -587,7 +587,7 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <li>Cryptographic forensic audit log exports</li>
             <li>Full source code inspection &amp; build escrow</li>
           </ul>
-          <a class="btn btn-ghost" href="#contact">Schedule Briefing</a>
+          <a class="btn btn-ghost" href="#contact" data-select-tier="Sovereign Appliance & Air-Gapped Linux Node">Schedule Briefing</a>
         </div>
       </div>
     </div>
@@ -1168,6 +1168,19 @@ if (btnCopyInquiry) {
     });
   });
 }
+
+// Wire pricing buttons to automatically choose tier in pilot form
+document.querySelectorAll("[data-select-tier]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const targetTier = btn.dataset.selectTier;
+    const tierSelect = document.getElementById("contact-tier");
+    if (tierSelect && targetTier) {
+      tierSelect.value = targetTier;
+      const nameInput = document.getElementById("contact-name");
+      if (nameInput) nameInput.focus();
+    }
+  });
+});
 </script>
 </body>
 </html>
