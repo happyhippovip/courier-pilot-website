@@ -172,6 +172,7 @@
               <div class="pill-bar">
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-429">⚡ Inject Provider 429 Limit</button>
                 <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-crash">💻 Simulate Host Crash</button>
+                <button type="button" class="pill-btn pill-btn-danger" id="btn-fault-verifier">🛡️ Verifier Fail-Closed</button>
                 <button type="button" class="pill-btn" id="btn-fault-sleep">🌙 Laptop Sleep / Wake</button>
                 <button type="button" class="pill-btn" id="btn-fault-gate">✋ Trigger Human Decision Gate</button>
               </div>
@@ -1047,6 +1048,30 @@ document.getElementById("btn-fault-crash").addEventListener("click", () => {
     hash: "sha256:77bb00...3341",
     data: { replay_verified: true, duplicate_side_effects: 0 }
   });
+  renderJournal();
+  journalContainer.scrollTop = journalContainer.scrollHeight;
+});
+
+document.getElementById("btn-fault-verifier").addEventListener("click", () => {
+  const nextSeq = logEntries.length + 1;
+  logEntries.push({
+    seq: nextSeq,
+    type: "UNTRUSTED_OUTPUT_EMITTED",
+    kind: "ingress",
+    desc: "Agent emitted output with potential discrepancy: Ledger sum mismatch vs raw receipt",
+    hash: "sha256:88ee99...3311",
+    data: { claimed_sum: "14.250,00 €", actual_sum: "12.800,00 €", delta: "+1.450,00 €" }
+  });
+  logEntries.push({
+    seq: nextSeq + 1,
+    type: "VERIFIER_FAIL_CLOSED",
+    kind: "circuit",
+    desc: "Deterministic Python Verifier: FAILED (Sum mismatch) · Quarantined prior to journal commit",
+    hash: "sha256:ee1122...7744",
+    data: { verifier: "L4_FINANCIAL_INVARIANT", verdict: "FAIL_CLOSED", side_effects_blocked: true, quarantine_id: "q-8821" }
+  });
+  statusBadge.className = "demo-badge badge-paused";
+  statusBadge.textContent = "Quarantined";
   renderJournal();
   journalContainer.scrollTop = journalContainer.scrollHeight;
 });
