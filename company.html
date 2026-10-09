@@ -74,30 +74,30 @@
 
   <section class="section">
     <div class="wrap">
-      <h2>Technical Lane Architecture</h2>
-      <p class="section-lede">Our engineering roadmap progresses across structured architectural lanes:</p>
+      <h2>Technical lane roadmap</h2>
+      <p class="section-lede">Internal V1 writer lanes (direction of the prototype). Not a claim that every lane is finished or shipping.</p>
 
       <div class="report">
         <ul class="caplist">
           <div>
-            <dt>Lane 1 &mdash; Golden Baselines &amp; Regressions</dt>
-            <dd>Strict regression ratchets, zero new test exclusions, and end-to-end failover tests.</dd>
+            <dt>Lane 1 &mdash; Golden baselines &amp; CI</dt>
+            <dd>Goal: keep regressions visible and fail closed. Not a promise of zero exclusions everywhere.</dd>
           </div>
           <div>
-            <dt>Lane 2 &mdash; Execution Ledger &amp; Work Queue</dt>
-            <dd>Append-only JSONL ledgers, time-bounded leases, receipt read models, and consistency audit engines.</dd>
+            <dt>Lane 2 &mdash; Execution ledger &amp; work queue</dt>
+            <dd>Goal: append-only journal, leases, and receipt read models as the product truth.</dd>
           </div>
           <div>
-            <dt>Lane 3 &mdash; Host Admission &amp; Process Governance</dt>
-            <dd>Hardware capacity checks, single-heavy-job host locks, Win32 Job Objects, and POSIX process session isolation.</dd>
+            <dt>Lane 3 &mdash; Host admission &amp; process governance</dt>
+            <dd>Goal: capacity checks and exact process containment (Windows Job Objects intended). Packaging not claimed here.</dd>
           </div>
           <div>
-            <dt>Lane 4 &mdash; Reality Analysis &amp; Code Scans</dt>
-            <dd>Repo Reality Check engine, AST validation, and tamper-evident audit reporting.</dd>
+            <dt>Lane 4 &mdash; Reality analysis &amp; verification</dt>
+            <dd>Goal: independent checks and re-verifiable receipts (synthetic path evidenced in PR #361).</dd>
           </div>
           <div>
-            <dt>Lane 5 &mdash; Coordination Hub &amp; Read-Only MCP</dt>
-            <dd>Task coordination protocols, multi-agent missions, and secure read-only MCP endpoints.</dd>
+            <dt>Lane 5 &mdash; Desktop Hub &amp; read models</dt>
+            <dd>Goal: customer Home as a projection of journal/controller truth — not a second state store.</dd>
           </div>
         </ul>
       </div>
@@ -108,9 +108,9 @@
     <div class="wrap">
       <div class="report">
         <h2>Open Governance &amp; Contact</h2>
-        <p>Courier Symphony is being developed in Germany with rigorous adherence to European data privacy standards, GDPR, and consumer protection laws (§ 356 BGB).</p>
-        <p class="fine">Have technical questions or want to participate in our builder pool? Reach out directly via our founder channel:</p>
-        <div style="margin-top:1.2rem">
+        <p>Developed in Germany by a private person (Gründung in Vorbereitung). Legal notices: Impressum and Datenschutzerklärung. No company register entry is claimed here.</p>
+        <p class="fine">Technical questions or Early Access: email the founder channel.</p>
+        <div class="stack-actions">
           <a class="btn" href="mailto:founder@couriersymphony.de">Contact Founder</a>
           <a class="btn btn-ghost" href="/impressum.html">Legal Notice (Impressum)</a>
         </div>
@@ -121,7 +121,7 @@
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <p class="foot-copy">&copy; 2026 Courier Symphony. Built for resilient, unattended AI work.</p>
+    <p class="foot-copy">&copy; 2026 Courier Symphony. Prototype — not a finished unattended product.</p>
     <nav class="foot-nav" aria-label="Legal &amp; Information">
       <a href="/architecture.html">Architecture</a>
       <a href="/security.html">Security</a>
