@@ -608,19 +608,27 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
             <input type="text" id="contact-name" placeholder="e.g. Dr. Dennis Schmidt / Tech Systems GmbH" required>
           </div>
           <div class="form-row">
+            <label for="contact-email">Work Email</label>
+            <input type="email" id="contact-email" placeholder="e.g. dennis@techsystems.de" required>
+          </div>
+          <div class="form-row">
             <label for="contact-tier">Primary Pilot Scope</label>
             <select id="contact-tier">
-              <option value="Windows Desktop Hub & Local Workers">Windows Desktop Hub & Local Workers (EXE Evaluation)</option>
+              <option value="Windows Desktop Hub & Local Workers (EXE Evaluation)">Windows Desktop Hub & Local Workers (EXE Evaluation)</option>
               <option value="Enterprise Architecture & Security Review">Enterprise Architecture & Security Review</option>
               <option value="Autonomous Email & Document Housekeeping">Autonomous Email & Document Housekeeping</option>
               <option value="Custom Adapter & Provider Integration">Custom Adapter & Provider Integration</option>
+              <option value="Sovereign Appliance & Air-Gapped Linux Node">Sovereign Appliance & Air-Gapped Linux Node</option>
             </select>
           </div>
           <div class="form-row">
             <label for="contact-notes">Project Requirements & Target OS</label>
             <textarea id="contact-notes" rows="3" placeholder="Tell us about your workload frequency, environment (Windows, Mac, Linux), and current failure bottlenecks..."></textarea>
           </div>
-          <button type="submit" class="btn">Send Pilot Request (Direct to Founder)</button>
+          <div class="form-actions" style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap">
+            <button type="submit" class="btn">Send Pilot Request (Direct to Founder)</button>
+            <button type="button" class="pill-btn" id="btn-copy-inquiry">📋 Copy Request Text</button>
+          </div>
           <div class="form-feedback" id="form-feedback" style="display:none;margin-top:.8rem;padding:.8rem;background:rgba(61,214,140,.1);border:1px solid rgba(61,214,140,.3);border-radius:8px;color:var(--green);font-size:.9rem">
             Opening your email client... Alternatively, email us directly at <a href="mailto:founder@couriersymphony.de" style="color:var(--gold);font-weight:bold">founder@couriersymphony.de</a>.
           </div>
@@ -1113,19 +1121,17 @@ function updateCalculator() {
 updateCalculator();
 
 // --- CONTACT FORM BUILDER ---
-document.getElementById("pilot-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const name = document.getElementById("contact-name").value.trim();
+function getPilotInquiryText() {
+  const name = document.getElementById("contact-name").value.trim() || "[Your Name]";
+  const email = document.getElementById("contact-email").value.trim() || "[Your Email]";
   const tier = document.getElementById("contact-tier").value;
   const notes = document.getElementById("contact-notes").value.trim();
 
-  const subject = encodeURIComponent(`Courier Symphony Pilot Request — ${name} (${tier})`);
-  const body = encodeURIComponent(
-`Hello Courier Symphony Team,
+  return `Hello Courier Symphony Team,
 
 I would like to request pilot evaluation details for Courier Symphony.
 
-Applicant: ${name}
+Applicant: ${name} (${email})
 Primary Focus: ${tier}
 Environment & Workload Details:
 ${notes || "Self-hosted evaluation of durable AI orchestration engine."}
@@ -1133,14 +1139,35 @@ ${notes || "Self-hosted evaluation of durable AI orchestration engine."}
 Please send instructions for accessing the pilot build and technical architecture overview.
 
 Best regards,
-${name}`
-  );
+${name}`;
+}
+
+document.getElementById("pilot-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("contact-name").value.trim();
+  const email = document.getElementById("contact-email").value.trim();
+  const tier = document.getElementById("contact-tier").value;
+
+  const subject = encodeURIComponent(`Courier Symphony Pilot Request — ${name} (${tier})`);
+  const body = encodeURIComponent(getPilotInquiryText());
 
   const feedback = document.getElementById("form-feedback");
   if (feedback) feedback.style.display = "block";
 
   window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
 });
+
+const btnCopyInquiry = document.getElementById("btn-copy-inquiry");
+if (btnCopyInquiry) {
+  btnCopyInquiry.addEventListener("click", () => {
+    const text = getPilotInquiryText();
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btnCopyInquiry.textContent;
+      btnCopyInquiry.textContent = "✓ Copied to Clipboard!";
+      setTimeout(() => { btnCopyInquiry.textContent = orig; }, 2000);
+    });
+  });
+}
 </script>
 </body>
 </html>
