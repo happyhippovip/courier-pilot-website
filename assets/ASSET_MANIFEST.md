@@ -21,9 +21,9 @@ No authorized Robfort/Grok artifact channel was available to this session.
 |---|---|---|
 | `og-cover.png` (1200×630) | Open Graph + homepage hero (`index.html`) | Courier site chrome |
 | `favicon.svg`, `apple-touch-icon.png` (180×180) | Site chrome / apple-touch | Courier site chrome |
-| `assets/konzept/landing-thumb.webp` | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
-| `assets/konzept/workflows-thumb.webp` | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
-| `assets/konzept/so-funktionierts-thumb.webp` | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
+| `assets/konzept/landing-thumb.webp` (+ `landing.webp` via `srcset`) | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
+| `assets/konzept/workflows-thumb.webp` (+ `workflows.webp` via `srcset`) | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
+| `assets/konzept/so-funktionierts-thumb.webp` (+ full via `srcset`) | Homepage `#visuals` + `konzept.html` | Courier Konzept / concept preview |
 | `assets/konzept/*.webp` (remaining) | `konzept.html` gallery + thumbs | Courier Konzept / concept preview |
 | `assets/konzept/*.mp4` + posters | `konzept.html` clips | Courier Konzept / concept preview |
 
