@@ -58,14 +58,14 @@
           <ul class="checks">
             <li><strong>Repo Reality Check:</strong> Scans real Git trees, measures lines of code, detects phantom imports, and calculates objective quality scores.</li>
             <li><strong>Monotonic Regression Ratchets:</strong> Ensures test suites strictly advance without allowing new failures or untracked state mutations.</li>
-            <li><strong>Tamper-Evident Receipts:</strong> Produces cryptographically hashed markdown audit reports tied to exact commit SHAs.</li>
+            <li><strong>Receipts (prototype):</strong> Aims for hashed audit reports tied to commit SHAs; demonstrated path is the synthetic receipt in PR #361.</li>
           </ul>
         </article>
 
         <article class="card">
           <span class="card-num">02</span>
           <h2>Multi-Day Unattended Agent Runs</h2>
-          <p>Standard agent CLI tools stop when a terminal session disconnects or an OS process hangs. Courier Symphony supervises long-running workflows with zero babysitting.</p>
+          <p>Standard agent CLI tools often stop when a session disconnects. Courier aims to resume from the last verified checkpoint — prototype, not a finished unattended product.</p>
           <ul class="checks">
             <li><strong>Deterministic Checkpointing:</strong> Progress is committed event-by-event to an append-only ledger on disk.</li>
             <li><strong>Watchdog Supervision:</strong> Daemon watchdogs detect stalled processes, re-run failed jobs, and restart safely without duplicate work.</li>

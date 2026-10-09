@@ -97,31 +97,33 @@
 
   <section class="section" id="pillars">
     <div class="wrap">
-      <h2>Core Architectural Pillars</h2>
+      <p class="duo-kicker">Prototype sketch</p>
+      <h2>Architectural pillars (goals)</h2>
+      <p class="section-lede">These describe the direction of the prototype. Only the evidenced controller/worker demo (PR #361) is claimed as demonstrated so far.</p>
       <dl class="caplist">
         <div>
-          <dt>1. Admission Control &amp; Host Isolation</dt>
-          <dd>Heavy tasks require explicit admission tokens. A host never runs more than one heavy builder simultaneously, preventing out-of-memory crashes and thrashing.</dd>
+          <dt>1. Admission control &amp; host isolation</dt>
+          <dd>Heavy work should require admission so a host does not thrash. Full multi-builder admission packaging is still in progress.</dd>
         </div>
         <div>
-          <dt>2. Append-Only Execution Ledger</dt>
-          <dd>State transitions are recorded in an immutable journal. Leases are time-bounded. If a worker process halts or crashes, the ledger state remains intact and uncorrupted.</dd>
+          <dt>2. Append-only execution ledger</dt>
+          <dd>State transitions are recorded in a journal so a crash does not erase progress. Leases are time-bounded in the prototype design.</dd>
         </div>
         <div>
-          <dt>3. Pluggable Provider Abstraction</dt>
-          <dd>Work units can execute across heterogeneous providers (Cursor, Codex, Muse, Antigravity, or local worker scripts). Providers must qualify via automated probes before receiving production tasks.</dd>
+          <dt>3. Pluggable provider abstraction</dt>
+          <dd>Work units can target different providers over time. Real provider adapters beyond the synthetic demo are in progress, not finished product claims.</dd>
         </div>
         <div>
-          <dt>4. Verification &amp; Result Receipts</dt>
-          <dd>A task is not marked complete because a process exited with zero; completion requires cryptographically hashed result artifacts read back and validated by an independent verifier.</dd>
+          <dt>4. Verification &amp; result receipts</dt>
+          <dd>Exit code alone is not enough: success should require evidence that an independent verifier can check. Demonstrated with the synthetic adapter path in PR #361.</dd>
         </div>
         <div>
-          <dt>5. Zero Duplicate Side Effects</dt>
-          <dd>Retry storms and repeated API calls are strictly avoided through idempotency keys derived from lease event IDs and specification fingerprints.</dd>
+          <dt>5. Avoid duplicate side effects</dt>
+          <dd>Retries should reuse stable effect keys. The hard-kill/restart demo showed 0 duplicate tasks with a synthetic adapter.</dd>
         </div>
         <div>
-          <dt>6. Cross-Platform Runtime</dt>
-          <dd>Designed to coordinate local development nodes (macOS, Windows, Linux) alongside transient burst cloud compute on AWS, keeping local hosts responsive.</dd>
+          <dt>6. Cross-platform runtime</dt>
+          <dd>Target picture: coordinate local nodes and optional cloud workers. Clean-machine Windows shipping is not claimed here.</dd>
         </div>
       </dl>
     </div>
@@ -130,10 +132,10 @@
   <section class="section" id="evidence">
     <div class="wrap narrow">
       <h2>Evidence &amp; Reproducibility</h2>
-      <p>Courier Symphony adheres to an evidence-first rule: this site does not present a technical capability as done without an automated test suite, an immutable Git SHA, and a reproducible verification record.</p>
+      <p>Evidence-first rule: public pages should not present a capability as finished without a concrete demo, test, or Git SHA. The primary evidenced demo today is <a href="https://github.com/happyhippovip/2026-courier/pull/361">PR #361</a>.</p>
       <div class="order-slot">
-        <a class="btn btn-ghost" href="/security.html">View Security Model</a>
-        <a class="btn" href="/repo-reality-check.html">See Repo Reality Check</a>
+        <a class="btn btn-ghost" href="/security.html">Security goals</a>
+        <a class="btn" href="/#early-access">Early Access</a>
       </div>
     </div>
   </section>
