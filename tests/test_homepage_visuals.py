@@ -62,3 +62,22 @@ def test_no_stripe_or_paid_ctas_on_homepage():
 def test_nav_reaches_visuals_and_early_access():
     assert 'href="#visuals"' in INDEX
     assert 'href="#early-access"' in INDEX
+
+
+def test_no_unverified_simulator_coverage_or_clean_machine_claims():
+    """Browser simulation must not present invented coverage / clean-machine proof."""
+    banned = (
+        "100% test coverage",
+        "Clean machine verified",
+        "Zero architecture drift",
+        "Zero hallucinated dates",
+        "Zero duplicate calls",
+    )
+    for token in banned:
+        assert token not in INDEX, token
+
+
+def test_use_case_cards_are_labeled_as_goals_not_shipped():
+    assert "Zielbild:" in INDEX
+    assert INDEX.count("Zielbild:") >= 4
+    assert "Real Customer Use Cases" not in INDEX

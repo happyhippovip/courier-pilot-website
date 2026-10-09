@@ -154,7 +154,7 @@ a.nav-burger{text-decoration:none;color:inherit}
 .pipe-step.done .step-val{color:var(--green)}
 
 /* Journal Terminal */
-.demo-terminal{background:#060a14;padding:1.2rem;min-height:360px;max-height:460px;overflow-y:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.85rem}
+.demo-terminal{background:#060a14;padding:1.2rem;min-height:360px;max-height:460px;overflow-x:auto;overflow-y:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.85rem}
 .term-head{color:var(--muted);border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:.5rem;margin-bottom:.8rem;font-size:.8rem;display:flex;justify-content:space-between}
 .journal-log{display:grid;gap:.5rem}
 .log-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem .75rem;padding:.38rem .55rem;border-radius:5px;background:rgba(255,255,255,.02);border-left:3px solid var(--line);transition:background .15s}
@@ -165,10 +165,10 @@ a.nav-burger{text-decoration:none;color:inherit}
 .log-row.kind-verified{border-left-color:var(--green)}
 .log-row.kind-paused{border-left-color:#eab308}
 .log-row.kind-circuit{border-left-color:var(--red)}
-.log-seq{color:var(--gold);font-weight:700;min-width:32px}
-.log-type{color:var(--cyan);font-weight:600;min-width:140px}
-.log-desc{color:var(--ink);flex:1}
-.log-hash{color:rgba(174,185,205,.55);font-size:.78rem}
+.log-seq{color:var(--gold);font-weight:700;min-width:2rem;flex:0 0 auto}
+.log-type{color:var(--cyan);font-weight:600;min-width:0;flex:0 1 9rem;overflow-wrap:anywhere}
+.log-desc{color:var(--ink);flex:1 1 12rem;min-width:0;overflow-wrap:anywhere}
+.log-hash{color:rgba(174,185,205,.55);font-size:.78rem;flex:1 1 100%;overflow-wrap:anywhere}
 
 /* Use Case Cards */
 .usecase-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
@@ -178,8 +178,9 @@ a.nav-burger{text-decoration:none;color:inherit}
 .usecase-card h3{margin:0;font-size:1.3rem;color:var(--ink)}
 .usecase-card p{margin:0;color:var(--muted);font-size:.98rem}
 .card-metrics{list-style:none;padding:0;margin:0;display:grid;gap:.5rem;border-top:1px solid var(--line);padding-top:.9rem}
-.card-metrics li{font-size:.9rem;color:var(--ink);display:flex;align-items:center;gap:.6rem}
-.card-metrics li::before{content:"✓";color:var(--green);font-weight:bold}
+.card-metrics li{font-size:.9rem;color:var(--ink);display:flex;align-items:flex-start;gap:.6rem}
+/* Goals, not verified success — green checks would imply shipped proof */
+.card-metrics li::before{content:"→";color:var(--gold);font-weight:700;flex:0 0 auto}
 
 /* Interactive Architecture Tabs */
 .arch-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
@@ -388,6 +389,12 @@ button.btn:disabled,.btn.is-disabled{
   .nav:target .nav-close{display:block}
   .hero-actions .btn,.order-slot .btn{display:block;text-align:center;width:100%}
   .pipeline-diagram{grid-template-columns:1fr 1fr}
+}
+@media (max-width:420px){
+  .pipeline-diagram{grid-template-columns:1fr}
+  .demo-header{flex-direction:column;align-items:flex-start}
+  .topbar-in{gap:.6rem}
+  .brand span{font-size:.95rem}
 }
 /* Sub-pages: always-visible compact nav (no inline styles, CSP-safe) */
 .nav.nav-static{display:flex}

@@ -83,6 +83,15 @@ def test_offer_page_no_longer_points_to_placeholders():
     assert "als Platzhalter markiert" not in text
 
 
+def test_privacy_has_og_description_and_points_to_binding_german():
+    text = _read("privacy.html")
+    assert 'property="og:description"' in text
+    assert 'name="twitter:card"' in text
+    assert "/datenschutz.html" in text
+    assert NAME not in text  # English summary; controller details stay on Datenschutzerklärung
+    assert EMAIL in text
+
+
 def test_release_passes_with_only_payment_link_warning():
     proc = subprocess.run(
         [sys.executable, "build.py", "--release"],

@@ -284,7 +284,7 @@
     </div>
   </section>
 
-  <!-- Real Customer Use Cases -->
+  <!-- Concept use-case sketches (not shipped customer products) -->
   <section class="section" id="use-cases">
     <div class="wrap">
       <div class="section-head">
@@ -299,10 +299,10 @@
         <div class="usecase-card">
           <div class="card-icon">01</div>
           <h3>German Bescheid Deadline Tracker</h3>
-          <p>Calculates strict administrative appeal deadlines (Rechtsbehelfsfristen) under § 41 VwVfG with automated 4-day Bekanntgabe-Fiktion and state holiday shifts.</p>
+          <p>Zielbild: administrative appeal deadlines (Rechtsbehelfsfristen) under § 41 VwVfG with 4-day Bekanntgabe-Fiktion and state holiday shifts — not a shipped calculator.</p>
           <ul class="card-metrics">
-            <li>Considers Reformationstag & Easter shifts</li>
-            <li>Enforces 7-day early action target boundary</li>
+            <li>Ziel: Feiertage und Wochenenden beachten</li>
+            <li>Ziel: frühe Handlungsgrenze vor Fristende</li>
             <li>Ziel: keine erfundenen Kalenderdaten</li>
           </ul>
         </div>
@@ -311,11 +311,11 @@
         <div class="usecase-card">
           <div class="card-icon">02</div>
           <h3>Deterministic Spreadsheet Reconciliation</h3>
-          <p>Modifies cell formulas and values in .xlsx workbooks with standard-library precision and independent before/after SHA-256 validation.</p>
+          <p>Zielbild: cell formulas and values in .xlsx workbooks with before/after hash checks — not an evidenced real-provider run.</p>
           <ul class="card-metrics">
-            <li>Atomic in-place mutations without Excel locks</li>
-            <li>Verifiable before/after hash receipts</li>
-            <li>Rollback on untouched cell modification</li>
+            <li>Ziel: nachvollziehbare Zelländerungen</li>
+            <li>Ziel: Beleg mit before/after-Hash</li>
+            <li>Ziel: Abbruch ohne stille Teiländerungen</li>
           </ul>
         </div>
 
@@ -323,10 +323,10 @@
         <div class="usecase-card">
           <div class="card-icon">03</div>
           <h3>Inbound Triage & Gated Invoice Delivery</h3>
-          <p>Processes incoming customer emails, classifies intent, generates invoices, and blocks external communication until explicit human confirmation.</p>
+          <p>Zielbild: classify inbound mail, draft invoices, and block outbound send until explicit human confirmation — prototype direction only.</p>
           <ul class="card-metrics">
-            <li>Auto-detects bounces and vacation notices</li>
-            <li>Strict human gate for monetary transactions</li>
+            <li>Ziel: Bounces und Abwesenheiten erkennen</li>
+            <li>Ziel: Geld-relevante Schritte nur mit Freigabe</li>
             <li>Ziel: keine ausgehende Mail ohne Freigabe</li>
           </ul>
         </div>
@@ -335,10 +335,10 @@
         <div class="usecase-card">
           <div class="card-icon">04</div>
           <h3>Autonomous Repository Reality Sweep</h3>
-          <p>Performs background codebase integrity audits, monitors git worktrees for orphaned locks, and verifies SHA-256 commit chains without human oversight.</p>
+          <p>Zielbild: background integrity checks on public repos and worktree locks — concept sketch, not unattended production ops.</p>
           <ul class="card-metrics">
-            <li>Single-writer concurrency lock enforcement</li>
-            <li>Self-healing crash recovery from SQLite WAL</li>
+            <li>Ziel: ein Schreiber pro Aufgabe</li>
+            <li>Ziel: Fortsetzung am letzten geprüften Stand</li>
             <li>Ziel: keine erfundenen Änderungen</li>
           </ul>
         </div>
@@ -700,7 +700,7 @@ const WORKFLOWS = {
     { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Classification complete: POSITIVE_INTEREST (0.95 conf)", hash: "sha256:332d91...aa88", data: { category: "POSITIVE_INTEREST", checkpoint_token: "ckpt-9102" } },
     { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Invoice draft INV-2026-004 generated with verified pricing", hash: "sha256:eef401...7712", data: { invoice_id: "INV-2026-004", amount_eur: 450.00, outcome: "success" } },
     { seq: 5, type: "RESULT_ACCEPTED", kind: "verified", desc: "Independent verifier validated invoice schema & hash", hash: "sha256:bb144a...9090", data: { verifier: "adapters.invoice.verify", accepted: true } },
-    { seq: 6, type: "TASK_COMPLETE", kind: "verified", desc: "Execution completed in 1.4s · Zero duplicate calls", hash: "sha256:0a41bc...d91e", data: { status: "COMPLETE", total_duration_s: 1.4 } }
+    { seq: 6, type: "TASK_COMPLETE", kind: "verified", desc: "Example completion in this simulation (not a live engine run)", hash: "sha256:0a41bc...d91e", data: { status: "COMPLETE", total_duration_s: 1.4 } }
   ],
   workbook: [
     { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Reconciliation requested: 'Q3_Financials.xlsx' (cells B2:B10)", hash: "sha256:4a12ec...9980", data: { task_id: "task-wb-02", adapter: "workbook", effect_class: "idempotent" } },
@@ -714,14 +714,14 @@ const WORKFLOWS = {
     { seq: 2, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Bekanntgabe established: 2026-07-24 (4-day legal presumption)", hash: "sha256:0b0b88...7710", data: { bekanntgabe: "2026-07-24", holiday_adjusted: false } },
     { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "1-Month legal period computed · Shifted for weekend to Monday", hash: "sha256:456cde...99ff", data: { raw_end: "2026-08-24", legal_deadline: "2026-08-24" } },
     { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Target safety alert set 7 calendar days before deadline: 2026-08-17", hash: "sha256:119acd...3322", data: { target_date: "2026-08-17", status: "VERIFIED" } },
-    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Calendar dispatch confirmed · Zero hallucinated dates", hash: "sha256:ff0132...ee55", data: { status: "COMPLETE" } }
+    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Example calendar receipt in this simulation only", hash: "sha256:ff0132...ee55", data: { status: "COMPLETE" } }
   ],
   repo: [
     { seq: 1, type: "TASK_CREATED", kind: "created", desc: "Repository scan initiated: Audit active branches and locks", hash: "sha256:7a81dd...1142", data: { task_id: "task-repo-audit", adapter: "repo_reality", scope: "locked_route" } },
     { seq: 2, type: "TASK_LEASED", kind: "leased", desc: "Fenced L4 worker took the audit token · Lock valid for 60s", hash: "sha256:3e44fa...7781", data: { worker_id: "worker-l4-verifier", fencing_token: "fence-8812" } },
-    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Worktree scan complete: 0 orphaned locks · Clean machine verified", hash: "sha256:bb0122...3344", data: { clean_worktrees: 12, stale_locks_purged: 0 } },
-    { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Cryptographic SHA chain intact: 100% test coverage verified", hash: "sha256:99ff11...00aa", data: { head_sha: "f425d3285", ledger_valid: true, outcome: "success" } },
-    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Audit receipt committed to journal · Zero architecture drift", hash: "sha256:88ee99...dd44", data: { status: "COMPLETE", drift_detected: false } }
+    { seq: 3, type: "CHECKPOINT_SAVED", kind: "ckpt", desc: "Example worktree scan in this simulation (not a clean-machine proof)", hash: "sha256:bb0122...3344", data: { clean_worktrees: 12, stale_locks_purged: 0 } },
+    { seq: 4, type: "RESULT_READY", kind: "verified", desc: "Example journal hash in this simulation (not measured coverage)", hash: "sha256:99ff11...00aa", data: { head_sha: "f425d3285", ledger_valid: true, outcome: "success" } },
+    { seq: 5, type: "TASK_COMPLETE", kind: "verified", desc: "Example audit receipt in this simulation only", hash: "sha256:88ee99...dd44", data: { status: "COMPLETE", drift_detected: false } }
   ]
 };
 
