@@ -76,9 +76,9 @@
       <a href="#whitepaper">Whitepaper</a>
       <a href="#calculator">Value Calculator</a>
       <a href="#faq">FAQ</a>
-      <div class="topbar-status-badge" title="Cryptographic Ledger Integrity Verified">
+      <div class="topbar-status-badge" title="V1 in Entwicklung · Demo im MOCK-Modus">
         <span class="status-pulse-dot" aria-hidden="true"></span>
-        <span>V1 Engine Live</span>
+        <span>V1 Engine in Entwicklung</span>
       </div>
       <a class="nav-cta" href="#contact">Request Pilot</a>
     </nav>
@@ -90,7 +90,7 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <div class="livedot"><span class="pulse" aria-hidden="true"></span>Production-Grade V1 Engine · Local-First Architecture</div>
+        <div class="livedot"><span class="pulse" aria-hidden="true"></span>V1 Engine in Entwicklung · Local-First Architecture</div>
         <h1>Keep AI work moving.</h1>
         <p class="lede">A deterministic continuity and orchestration layer for AI tasks across models, machines, and local environments — so a provider rate limit, host crash, or laptop sleep never means starting over blind.</p>
         <div class="hero-actions">
@@ -100,20 +100,20 @@
         <p class="hero-note">Runs locally on your hardware. Append-only SQLite journal. Zero telemetry tracking.</p>
         <div class="hero-metrics">
           <div class="metric-item">
-            <strong class="metric-num">0%</strong>
-            <span class="metric-lbl">Duplicate Side-Effects</span>
+            <strong class="metric-num">Ziel</strong>
+            <span class="metric-lbl">Keine doppelten Side-Effects (Idempotency-Keys, in Tests)</span>
           </div>
           <div class="metric-item">
             <strong class="metric-num">100%</strong>
             <span class="metric-lbl">Local SQLite WAL</span>
           </div>
           <div class="metric-item">
-            <strong class="metric-num">1 EXE</strong>
-            <span class="metric-lbl">Zero-Install Windows Binary</span>
+            <strong class="metric-num">Geplant</strong>
+            <span class="metric-lbl">Windows-Einzeldatei (in Entwicklung)</span>
           </div>
           <div class="metric-item">
-            <strong class="metric-num">&lt;5ms</strong>
-            <span class="metric-lbl">Checkpoint Replay Latency</span>
+            <strong class="metric-num">Offen</strong>
+            <span class="metric-lbl">Replay-Latenz noch nicht gemessen</span>
           </div>
         </div>
       </div>
@@ -547,9 +547,9 @@ def get_admissible_packet(self, current_sha: str, host_safe: bool) -> Optional[W
         <div class="briefing-copy">
           <div class="pricing-badge" style="margin-bottom:.5rem">Engineering Specification</div>
           <h3>Technical Whitepaper: The Deterministic Continuity Layer</h3>
-          <p>Read the complete 28-page mathematical specification detailing SQLite WAL append-only journals, fail-closed verifier contracts, single-writer lease fencing, and crash-resilient restart procedures.</p>
+          <p>Whitepaper in Vorbereitung. Geplante Themen: SQLite WAL append-only journals, fail-closed verifier contracts, single-writer lease fencing, and crash-resilient restart procedures.</p>
           <ul class="briefing-bullets">
-            <li>Formal proof of zero duplicate non-idempotent side-effects under arbitrary process death</li>
+            <li>Ziel: Nachweis, dass nicht-idempotente Side-Effects auch bei Prozessabbruch nicht doppelt ausgeführt werden</li>
             <li>Kirby resource governor algorithms for POSIX EMFILE and macOS swap memory mitigation</li>
             <li>German § 41 VwVfG legal holiday computation algorithms with zero calendar hallucinations</li>
           </ul>
