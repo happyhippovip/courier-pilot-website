@@ -70,10 +70,10 @@
       <dl class="caplist">
         <div><dt>Durable continuity and checkpointing</dt><dd>Work survives session ends, restarts, and host failures. Recovery resumes from the last checkpoint.</dd></div>
         <div><dt>Capability-aware routing</dt><dd>Each unit of work goes to an execution environment that can actually do it — by provider, machine, and tool.</dd></div>
-        <div><dt>Host-aware bounded capacity</dt><dd>Concurrency follows what the machine can bear. Small hosts stay responsive; scale comes from more hosts, not more load.</dd></div>
+        <div><dt>Host-aware bounded capacity</dt><dd>Concurrency follows what the machine can bear.</dd></div>
         <div><dt>Safe parallelism</dt><dd>One writer per mutable scope. Parallel work that cannot collide, instead of hope and retries.</dd></div>
         <div><dt>Recovery, not repetition</dt><dd>After provider limits or host and process failures, work continues — never a blind duplicate execution of the same effect.</dd></div>
-        <div><dt>Human gates</dt><dd>Spending, credentials, and sensitive actions always stop at a person. Unknown authorization fails closed.</dd></div>
+        <div><dt>Human gates</dt><dd>Spending, credentials, and sensitive actions always stop at a person.</dd></div>
       </dl>
     </div>
   </section>
@@ -83,7 +83,7 @@
       <h2>How it works</h2>
       <ol class="steps">
         <li><span class="step-n">1</span><div><h3>Checkpoint</h3><p>Progress, decisions, and durable state are recorded as work runs — including across machines.</p></div></li>
-        <li><span class="step-n">2</span><div><h3>Route</h3><p>Each next step is assigned to a capable, available environment. Nothing runs where it cannot succeed.</p></div></li>
+        <li><span class="step-n">2</span><div><h3>Route</h3><p>Each next step is assigned to a capable, available environment.</p></div></li>
         <li><span class="step-n">3</span><div><h3>Recover</h3><p>When a provider, machine, or process fails, the work resumes from its checkpoint on a healthy path.</p></div></li>
       </ol>
     </div>
@@ -93,7 +93,6 @@
     <div class="wrap narrow">
       <h2>Safety by construction</h2>
       <ul class="checks">
-        <li>No credentials or secrets leave their vault.</li>
         <li>Every sensitive action waits for a human decision.</li>
       </ul>
     </div>
