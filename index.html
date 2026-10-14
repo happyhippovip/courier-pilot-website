@@ -56,22 +56,11 @@
     </div>
   </section>
 
-  <section class="strip" aria-label="Why continuity matters">
-    <div class="wrap strip-grid">
-      <p><strong>AI work stalls.</strong> A provider limit hits mid-task. A laptop sleeps. A process dies overnight. The context, the checkpoint, the half-finished run — gone, and the retry starts blind.</p>
-      <p>Courier Symphony treats that as the normal case, not the exception: durable checkpoints, capability-aware routing, and recovery that resumes instead of repeating.</p>
-    </div>
-  </section>
-
   <section class="section" id="product">
     <div class="wrap">
       <h2>What it does</h2>
-      <p class="section-lede">One layer that keeps long-running AI work durable, bounded, and recoverable.</p>
       <dl class="caplist">
-        <div><dt>Durable continuity and checkpointing</dt><dd>Work survives session ends, restarts, and host failures. Recovery resumes from the last checkpoint.</dd></div>
-        <div><dt>Capability-aware routing</dt><dd>Each unit of work goes to an execution environment that can actually do it — by provider, machine, and tool.</dd></div>
         <div><dt>Host-aware bounded capacity</dt><dd>Concurrency follows what the machine can bear.</dd></div>
-        <div><dt>Safe parallelism</dt><dd>One writer per mutable scope. Parallel work that cannot collide, instead of hope and retries.</dd></div>
         <div><dt>Recovery, not repetition</dt><dd>After provider limits or host and process failures, work continues — never a blind duplicate execution of the same effect.</dd></div>
         <div><dt>Human gates</dt><dd>Spending, credentials, and sensitive actions always stop at a person.</dd></div>
       </dl>
