@@ -21,15 +21,20 @@ def test_every_order_page_carries_the_synced_block():
 
 def test_ueberweisung_mailto_is_primary_and_no_checkout_without_link():
     block = build.render_order_block(build.PAYMENT_LINK_PLACEHOLDER, "founder@couriersymphony.de")
-    assert "Bezahlung per Überweisung" in block
+    assert "Zahlung erst nach Bestätigung, Zahlungsdetails per Mail" in block
+    for m in ("PayPal", "Überweisung", "Karte (Stripe)"):
+        assert m in block
+    for tier in ("Free – 0&nbsp;€", "Basis – 1,99&nbsp;€", "Plus – 2,99&nbsp;€", "Großes Paket – 4,99&nbsp;€ / Monat"):
+        assert tier in block, tier
+    assert "stripe.com" not in block
     assert "mailto:founder@couriersymphony.de" in block
     assert "Repo%20Reality%20Check%20bestellen" in block or "Repo Reality Check bestellen" in block
     assert "github.com/OWNER/REPO" in block or "OWNER%2FREPO" in block or "OWNER/REPO" in block
     assert "Sofort bezahlen" not in block  # no checkout/payment control without a live link
-    assert "Repo-Check bestellen" in block and "5\u00a0€" in block
-    assert "nach unserer Bestätigung" in block and "nur in dieser Antwort-Mail" in block
+    assert "Repo-Check bestellen" in block and "ab&nbsp;0&nbsp;€" in block
+    assert "nur in unserer Antwort-Mail" in block
     assert "48&nbsp;Stunden" in block
-    assert "Mein%20Name" in block and "gepr%C3%BCft" in block  # name + what to check prefilled
+    assert "Mein%20Name" in block and "Zahlungsart" in block and "Paket" in block  # tier, payment, repo prefilled
     assert "Widerrufsfrist" in block or "Widerrufsfrist" in __import__("urllib.parse").parse.unquote(block)
     assert "IBAN" not in block and "iban" not in block
     assert build.PAYMENT_LINK_PLACEHOLDER not in block
@@ -40,7 +45,7 @@ def test_live_payment_link_enables_sofort_bezahlen():
     assert 'href="https://pay.example/abc"' in live
     assert "Sofort bezahlen" in live
     assert "disabled" not in live.split("Sofort bezahlen")[0][-80:]  # the sofort control is live
-    assert "Bezahlung per Überweisung" in live  # mailto path stays
+    assert "Zahlung erst nach Bestätigung" in live  # mailto path stays
 
 
 def test_no_third_party_forms_scripts_or_zip_offer_on_landing():
@@ -85,4 +90,13 @@ def test_golive_blockers_fixed():
     video = unquote(build.render_video_block())
     assert "Rechte am Videomaterial" in video and "Widerrufsfrist" in video
     repo = build.render_order_block()
-    assert repo.count("Bezahlung per Überweisung") == 1
+    assert repo.count("Zahlung erst nach Bestätigung") == 1
+
+
+def test_no_undeliverable_promises_and_ustg_off():
+    for page in ROOT.glob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        for bad in ("Reality-Score", "0–100", "buy.stripe.com", "5 EUR"):
+            assert bad not in text, (page.name, bad)
+    assert build.SHOW_USTG19_NOTE is False
+    assert "§ 19 UStG" not in build.render_order_block()

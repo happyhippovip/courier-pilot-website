@@ -86,16 +86,31 @@ def email_state(email: str) -> str:
     return "invalid"
 
 
-REPO_PRICE_LABEL = "5 €"
+REPO_PRICE_LABEL = "ab 0 €"
+# Repo Reality Check tiers: only what scripts/repo_reality_check.py (2026-courier) delivers.
+RRC_TIERS = [
+    ("Free", "0 €", "Anzahl der Funde nach Schwere (hoch/mittel/niedrig) und die 3 wichtigsten Funde per Mail."),
+    ("Basis", "1,99 €", "Ein Scan, vollständiger Report als report.md per Mail."),
+    ("Plus", "2,99 €", "Wie Basis, zusätzlich report.pdf und report.json sowie eine kurze persönliche Einordnung."),
+    ("Großes Paket", "4,99 € / Monat", "Einführungspreis: Plus-Report plus monatlicher Re-Scan, kündbar zum Monatsende. Der reguläre Preis wird später höher sein."),
+]
+PAYMENT_METHODS = ["PayPal", "Überweisung", "Karte (Stripe)"]
+# §19 UStG (Kleinunternehmer) note: switched OFF until Dennis confirms the tax status.
+SHOW_USTG19_NOTE = False
+USTG19_NOTE = "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
 # Shorts-Paket price: single source, change here and run python3 build.py --sync.
 VIDEO_PRICE_LABEL = "79 €"
 VIDEO_PAGES = ["index.html"]
 VIDEO_BLOCK_BEGIN = "<!-- BEGIN:video-block -->"
 VIDEO_BLOCK_END = "<!-- END:video-block -->"
 
-PAY_COPY = (
+VIDEO_PAY_COPY = (
     "Bezahlung per Überweisung erst nach unserer Bestätigung per Mail. "
     "Die Bankverbindung steht nur in dieser Antwort-Mail – nie auf der Website."
+)
+PAY_COPY = (
+    "Zahlung erst nach Bestätigung, Zahlungsdetails per Mail. "
+    "Du wählst PayPal, Überweisung oder Karte (Stripe); die Zahlungsdetails stehen nur in unserer Antwort-Mail – nie auf der Website."
 )
 
 
@@ -104,35 +119,47 @@ def _mailto(email: str, subject: str, body: str) -> str:
     return f"mailto:{esc}?subject={quote(subject)}&amp;body={quote(body)}"
 
 
-def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = ORDER_CONTACT_EMAIL) -> str:
-    """Repo-Check order slot: mailto (primary), bank transfer after confirmation.
+def render_tier_list() -> str:
+    items = "\n".join(
+        f'<li><strong>{html.escape(n)} – {html.escape(p).replace(" ", "&nbsp;", 1) if p[0].isdigit() else html.escape(p)}</strong>: {html.escape(d)}</li>'
+        for n, p, d in RRC_TIERS
+    )
+    return f'<ul class="rrc-tiers">\n{items}\n</ul>'
 
-    Bank details are never inlined; the reply mail carries them. No checkout:
-    the optional Sofort-bezahlen link renders only when PAYMENT_LINK_REPO_REALITY is live.
+
+def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = ORDER_CONTACT_EMAIL) -> str:
+    """Repo-Check order slot: tiers + mailto. Payment only after confirmation; details only by mail.
+
+    No checkout link on the site; the optional Sofort-bezahlen link renders only when
+    PAYMENT_LINK_REPO_REALITY is a live https URL.
     """
     pay = payment_state(payment)
     mail = email_state(email)
     copy = (
         f'<p class="order-pay">{PAY_COPY} Lieferung des Reports innerhalb von 48&nbsp;Stunden '
-        'nach Zahlungseingang.</p>'
+        'nach Zahlungseingang (Free: nach Bestätigung).</p>'
     )
+    if SHOW_USTG19_NOTE:
+        copy += f'\n<p class="fine">{USTG19_NOTE}</p>'
     if mail == "live":
         esc = html.escape(email, quote=True)
+        tiers = " / ".join(f"{n} ({p})" for n, p, _ in RRC_TIERS)
         body = (
             "Hallo Courier Symphony,\n\n"
-            "ich möchte einen Repo Reality Check (Beta, 5 EUR per Überweisung) bestellen.\n\n"
-            "Öffentlicher GitHub-Link: https://github.com/OWNER/REPO\n"
-            "Was soll geprüft werden (optional): \n"
+            "ich möchte einen Repo Reality Check bestellen.\n\n"
+            f"Paket ({tiers}): \n"
+            f"Zahlungsart ({' / '.join(PAYMENT_METHODS)}): \n"
+            "Öffentlicher GitHub-Link (Repo-URL): https://github.com/OWNER/REPO\n"
             "Mein Name: \n\n"
             "Ich stimme ausdrücklich zu, dass ihr vor Ablauf der Widerrufsfrist mit dem Report beginnt, "
             "und weiß, dass ich mit Beginn der Ausführung mein Widerrufsrecht verliere "
             "(siehe Widerrufsbelehrung auf couriersymphony.de).\n\n"
-            "Bitte bestätigt die Bestellung und schickt mir die Bankverbindung.\n\n"
+            "Bitte bestätigt die Bestellung und schickt mir die Zahlungsdetails.\n\n"
             "Danke"
         )
         mailto_cta = (
             f'<a class="btn" href="{_mailto(email, "Repo Reality Check bestellen", body)}">'
-            f'Repo-Check bestellen – {REPO_PRICE_LABEL}</a>'
+            f'Repo-Check bestellen – {REPO_PRICE_LABEL.replace(" ", "&nbsp;")}</a>'
         )
         contact = f'<p class="fine">Fragen: <a href="mailto:{esc}">{esc}</a></p>'
     elif mail == "placeholder":
@@ -141,7 +168,7 @@ def render_order_block(payment: str = PAYMENT_LINK_REPO_REALITY, email: str = OR
     else:
         mailto_cta = "<!-- invalid ORDER_CONTACT_EMAIL -->"
         contact = "<!-- invalid ORDER_CONTACT_EMAIL -->"
-    parts = [copy, mailto_cta]
+    parts = [render_tier_list(), copy, mailto_cta]
     if pay == "live":
         parts.append(f'<a class="btn btn-ghost" href="{html.escape(payment, quote=True)}">Sofort bezahlen</a>')
     elif pay == "invalid":
@@ -170,7 +197,7 @@ def render_video_block(email: str = ORDER_CONTACT_EMAIL, price: str = VIDEO_PRIC
     )
     return "\n".join([
         f'<p class="order-pay">{price} pro Paket, verbindlich erst mit unserer Bestätigung per Mail; '
-        f'die Lieferzeit nennen wir in der Bestätigung. {PAY_COPY}</p>',
+        f'die Lieferzeit nennen wir in der Bestätigung. {VIDEO_PAY_COPY}</p>',
         f'<a class="btn" href="{_mailto(email, f"Video-Schnitt anfragen (Shorts-Paket {price_txt})", body)}">'
         f'Shorts-Paket – 10 Clips aus einem Langvideo: {price}</a>',
         '<p class="fine">Erster Probe-Clip kostenlos.</p>',
@@ -211,7 +238,7 @@ def main() -> int:
         errors.append("PAYMENT_LINK_REPO_REALITY must be TODO_PAYMENT_LINK or an https:// URL")
     elif pay == "placeholder":
         warnings.append(
-            "PAYMENT_LINK_REPO_REALITY is still TODO_PAYMENT_LINK (optional Sofort-bezahlen link; Überweisung via mailto is live)"
+            "PAYMENT_LINK_REPO_REALITY is still TODO_PAYMENT_LINK (optional Sofort-bezahlen link; mailto order is live)"
         )
     if mail == "invalid":
         errors.append("ORDER_CONTACT_EMAIL must be TODO_ORDER_EMAIL or a plain email address")
@@ -221,8 +248,10 @@ def main() -> int:
         )
 
     rendered = render_order_block()
-    if "Bezahlung per Überweisung" not in rendered:
-        errors.append("internal: order block must state Überweisung payment")
+    if "Zahlung erst nach Bestätigung, Zahlungsdetails per Mail" not in rendered:
+        errors.append("internal: order block must state payment-after-confirmation")
+    if "stripe.com" in rendered:
+        errors.append("internal: no Stripe (test) link in the order block")
     if "IBAN" in rendered or "iban" in rendered:
         errors.append("internal: bank/IBAN data must never appear in the order block")
     if pay == "placeholder":
