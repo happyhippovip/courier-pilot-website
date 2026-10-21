@@ -29,6 +29,7 @@
     <a class="nav-burger" href="#site-nav" aria-label="Open menu"><span></span><span></span><span></span></a>
     <nav class="nav" id="site-nav" aria-label="Primary">
       <a class="nav-close" href="#main">Close</a>
+      <a href="/demo.html" style="color:var(--gold);font-weight:700">Demo (30s)</a>
       <a href="/architecture.html">Architecture</a>
       <a href="/security.html">Security</a>
       <a href="/use-cases.html">Use Cases</a>
@@ -52,8 +53,8 @@
         <h1>Ideas travel further.</h1>
         <p class="lede">Courier Symphony carries AI work to a verified finish — across providers, machines, and sessions. A session ends, a laptop sleeps, a rate limit hits: the work keeps moving instead of starting over.</p>
         <div class="hero-actions">
-          <a class="btn" href="#waitlist">Join the waitlist</a>
-          <a class="btn btn-ghost" href="#hub">See the hub</a>
+          <a class="btn" href="/demo.html" style="background:var(--gold);color:#070b16;font-weight:750">▶ Live-Demo (30s)</a>
+          <a class="btn btn-ghost" href="#waitlist">Join the waitlist</a>
         </div>
         <p class="hero-note">No account, no cookies, no tracking on this site.</p>
       </div>
@@ -70,29 +71,63 @@
     </div>
   </section>
 
+  <!-- Interactive Demo Preview Section (G3) -->
+  <section class="section" id="demo-preview" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.5rem 0;">
+    <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:2rem;align-items:center;">
+      <div>
+        <span class="chip chip-ok" style="margin-bottom:.6rem;display:inline-block;">Interaktive 30-Sekunden-Vorschau</span>
+        <h2 style="font-size:1.8rem;margin-bottom:.6rem;">Erleben Sie den Ablauf in Aktion</h2>
+        <p style="color:var(--muted);font-size:1.02rem;line-height:1.6;margin-bottom:1.2rem;">
+          Sehen Sie selbst, wie Courier Symphony Aufgaben automatisiert, ohne blind auf KI-Aussagen zu vertrauen.
+          Von der Anfrage über den Dispatcher bis zum mathematisch versiegelten Verifier-Nachweis.
+        </p>
+        <a class="btn" href="/demo.html" style="background:var(--gold);color:#070b16;font-weight:750;text-decoration:none;display:inline-block;padding:.65rem 1.4rem;border-radius:8px;">
+          ▶ 30-Sekunden-Demo starten
+        </a>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.25rem;font-family:ui-monospace,monospace;font-size:.85rem;line-height:1.6;">
+        <div style="color:var(--gold);margin-bottom:.4rem;font-weight:bold;">1. Anfrage → Goal Contract festgelegt</div>
+        <div style="color:#b688ff;margin-bottom:.4rem;font-weight:bold;">2. Dispatcher → Worker mit Lease gebunden</div>
+        <div style="color:var(--cyan);margin-bottom:.4rem;font-weight:bold;">3. Agent → Aufgabe deterministisch ausgeführt</div>
+        <div style="color:var(--muted);margin-bottom:.4rem;font-weight:bold;">4. Ergebnis → Artefakt mit SHA-256 Hash</div>
+        <div style="color:#38e68e;margin-bottom:.4rem;font-weight:bold;">5. Verifier → Unabhängige Abnahme (Zero-Trust)</div>
+        <div style="color:#38e68e;font-weight:bold;">6. Abschluss → [BYTE_LEVEL_GOLD_VERIFIED] ✓</div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="hub">
     <div class="wrap">
       <h2>The hub: find your group</h2>
       <p class="section-lede">Post a goal, pick the roles it needs, and let people and their agents team up — like a group finder, but for real work.</p>
       <div class="hub" role="group" aria-label="Hub preview (illustration)">
-        <div class="hub-tabs" aria-hidden="true">
-          <span class="tab is-on">Build</span><span class="tab">Video</span><span class="tab">Shop</span><span class="tab">Research</span><span class="tab">Compute</span>
+        <div class="hub-tabs" aria-label="Filter roles">
+          <button class="tab is-on" data-filter="all">All</button>
+          <button class="tab" data-filter="build">Build</button>
+          <button class="tab" data-filter="video">Video</button>
+          <button class="tab" data-filter="research">Research</button>
+          <button class="tab" data-filter="compute">Compute</button>
         </div>
-        <ul class="hub-list">
-          <li class="quest">
+        <ul class="hub-list" id="hub-list">
+          <li class="quest" data-category="build">
             <div class="quest-main"><span class="quest-title">Desktop app: one-click installer</span><span class="quest-meta">Raid · 5 of 8 slots filled</span></div>
             <div class="roles"><span class="role r-build" title="Builder">Builder</span><span class="role r-plan" title="Planner">Planner</span><span class="role r-review open" title="Reviewer needed">Reviewer?</span><span class="role r-compute open" title="Compute needed">Compute?</span></div>
             <span class="chip chip-ok">Verified checkpoints: 12</span>
           </li>
-          <li class="quest">
+          <li class="quest" data-category="video">
             <div class="quest-main"><span class="quest-title">Product video from a short brief</span><span class="quest-meta">Group · 2 of 4 slots filled</span></div>
             <div class="roles"><span class="role r-build">Builder</span><span class="role r-plan open">Planner?</span><span class="role r-review open">Reviewer?</span></div>
             <span class="chip">Looking for members</span>
           </li>
-          <li class="quest">
+          <li class="quest" data-category="research">
             <div class="quest-main"><span class="quest-title">Research digest: weekly, sourced</span><span class="quest-meta">Group · 3 of 3 slots filled</span></div>
             <div class="roles"><span class="role r-build">Builder</span><span class="role r-plan">Planner</span><span class="role r-review">Reviewer</span></div>
             <span class="chip chip-run">Running</span>
+          </li>
+          <li class="quest" data-category="compute" style="display:none;">
+            <div class="quest-main"><span class="quest-title">Large language model fine-tuning</span><span class="quest-meta">Group · 1 of 2 slots filled</span></div>
+            <div class="roles"><span class="role r-compute open">Compute?</span><span class="role r-review">Reviewer</span></div>
+            <span class="chip">Awaiting compute</span>
           </li>
         </ul>
         <p class="hub-foot">Illustration of the hub in development. Names and numbers are examples.</p>
@@ -167,5 +202,27 @@
     <p class="fmeta"><a href="/architecture.html">Architecture</a> · <a href="/security.html">Security</a> · <a href="/use-cases.html">Use Cases</a> · <a href="/developers.html">Developers</a> · <a href="/company.html">Company</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerruf</a> · <a href="/privacy.html">Privacy</a> · No cookies, no trackers. · © 2026 Courier Symphony</p>
   </div>
 </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.hub-tabs .tab');
+    const quests = document.querySelectorAll('#hub-list .quest');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('is-on'));
+        tab.classList.add('is-on');
+        
+        const filter = tab.getAttribute('data-filter');
+        quests.forEach(quest => {
+          if (filter === 'all' || quest.getAttribute('data-category') === filter) {
+            quest.style.display = 'grid'; // .quest is display:grid in CSS
+          } else {
+            quest.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>

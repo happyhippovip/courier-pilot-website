@@ -14,6 +14,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 DIST = ROOT / "dist"
 PAGES = [
     "index.html",
+    "demo.html",
     "repo-reality-check.html",
     "architecture.html",
     "security.html",
