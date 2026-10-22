@@ -346,6 +346,7 @@
       <button class="scenario-btn" id="scenario-security" data-scenario="security">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
       <button class="scenario-btn" id="scenario-rejection" data-scenario="rejection">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
       <button class="btn-sub" id="btnAutoRunScenario" style="margin-left:auto;font-size:.82rem;padding:.35rem .75rem;color:var(--cyan);border-color:rgba(56,214,230,.35);" onclick="runDemo()">▶ Szenario abspielen</button>
+      <button class="btn-sub" id="btnCopyScenarioLink" style="font-size:.82rem;padding:.35rem .75rem;" onclick="copyScenarioLink()">🔗 Link teilen</button>
     </div>
 
     <!-- Stepper Pipeline -->
@@ -841,6 +842,21 @@
     btn.classList.add('is-active');
     currentScenarioKey = key;
     resetDemo();
+  }
+
+  function copyScenarioLink() {
+    const base = window.location.origin + window.location.pathname;
+    const shareUrl = `${base}#scenario-${currentScenarioKey}?run=1`;
+    const btn = document.getElementById('btnCopyScenarioLink');
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ Link kopiert!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2500);
+      }
+    }).catch(err => {
+      alert("Fehler beim Kopieren: " + err);
+    });
   }
 
   // Scenario Buttons
