@@ -195,10 +195,15 @@
           <h2>Beispielreport, Demo-Daten</h2>
           <p class="section-lede" style="margin:0;">Synthetische Beispieldaten zur Illustration typischer Repository-Profile. Wählen Sie ein Profil:</p>
         </div>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;" role="tablist" aria-label="Szenario-Auswahl" onkeydown="handleScenarioTabKey(event)">
-          <button type="button" class="btn scenario-btn is-active" id="btnScen1" role="tab" aria-selected="true" aria-controls="realityReportArticle" onclick="selectScenario(0)" style="font-size:.82rem;padding:.35rem .75rem;">1. Startup MVP (Score 42)</button>
-          <button type="button" class="btn scenario-btn" id="btnScen2" role="tab" aria-selected="false" aria-controls="realityReportArticle" onclick="selectScenario(1)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">2. Enterprise Core (Score 89)</button>
-          <button type="button" class="btn scenario-btn" id="btnScen3" role="tab" aria-selected="false" aria-controls="realityReportArticle" onclick="selectScenario(2)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">3. Legacy Bridge (Score 19)</button>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;" role="tablist" aria-label="Szenario-Auswahl" onkeydown="handleScenarioTabKey(event)">
+            <button type="button" class="btn scenario-btn is-active" id="btnScen1" role="tab" aria-selected="true" aria-controls="realityReportArticle" onclick="selectScenario(0)" style="font-size:.82rem;padding:.35rem .75rem;">1. Startup MVP (Score 42)</button>
+            <button type="button" class="btn scenario-btn" id="btnScen2" role="tab" aria-selected="false" aria-controls="realityReportArticle" onclick="selectScenario(1)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">2. Enterprise Core (Score 89)</button>
+            <button type="button" class="btn scenario-btn" id="btnScen3" role="tab" aria-selected="false" aria-controls="realityReportArticle" onclick="selectScenario(2)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">3. Legacy Bridge (Score 19)</button>
+          </div>
+          <button type="button" class="btn-sub" id="btnHelpModal" onclick="toggleRealityHelpModal()" aria-haspopup="dialog" aria-controls="realityHelpModal" aria-expanded="false" title="Tastatur-Hilfe (? / F1)" style="font-size:.82rem;padding:.35rem .75rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;">
+            <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
+          </button>
         </div>
       </div>
 
@@ -776,6 +781,42 @@
       } else if (key === 'r' || key === 'R') {
         e.preventDefault();
         resetQuickCheck();
+      } else if (key === '?' || (e.shiftKey && key === '?') || key === 'F1') {
+        e.preventDefault();
+        toggleRealityHelpModal();
+      } else if (key === 'Escape') {
+        const modal = document.getElementById('realityHelpModal');
+        if (modal && modal.style.display === 'flex') {
+          e.preventDefault();
+          toggleRealityHelpModal(false);
+        }
+      }
+    });
+
+    function toggleRealityHelpModal(forceState) {
+      const modal = document.getElementById('realityHelpModal');
+      const triggerBtn = document.getElementById('btnHelpModal');
+      if (!modal) return;
+      const isCurrentlyOpen = modal.style.display === 'flex';
+      const nextState = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+      modal.style.display = nextState ? 'flex' : 'none';
+      if (triggerBtn) {
+        triggerBtn.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+      }
+      if (nextState) {
+        const closeBtn = document.getElementById('btnCloseRealityHelpModal');
+        if (closeBtn) closeBtn.focus();
+      } else {
+        if (triggerBtn) triggerBtn.focus();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('realityHelpModal');
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) toggleRealityHelpModal(false);
+        });
       }
     });
   </script>
@@ -834,6 +875,57 @@
       <p class="fine">Beta-Hinweis: begrenzte Plätze, Preis später 99–149 EUR, der Report ist eine ehrliche Einschätzung der genannten Punkte und kein Audit. <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a> · <a href="/widerruf.html">Widerrufsbelehrung</a></p>
     </div>
   </section>
+    <!-- Keyboard Shortcuts Help Modal Dialog -->
+    <div id="realityHelpModal" role="dialog" aria-modal="true" aria-labelledby="realityHelpTitle" style="display:none;position:fixed;inset:0;background:rgba(4,7,16,.75);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;max-width:540px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.6);padding:1.4rem;position:relative;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:1px solid var(--line);padding-bottom:.65rem;">
+          <h3 id="realityHelpTitle" style="margin:0;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem;">
+            <span>⌨️</span> <span>Tastatur-Navigation &amp; Shortcuts</span>
+          </h3>
+          <button type="button" id="btnCloseRealityHelpModal" onclick="toggleRealityHelpModal(false)" aria-label="Hilfe-Dialog schließen" style="background:transparent;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.2rem .4rem;">&times;</button>
+        </div>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:0;margin-bottom:1rem;line-height:1.45;">
+          Der Repo Reality Check bietet barrierefreie Tastaturbedienung für schnelle Szenario-Wechsel, Exporte und Quick-Check Kalkulationen.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr;gap:.5rem;font-size:.84rem;margin-bottom:1.2rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">1</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">2</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">3</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Szenario / Profil wählen (1: Startup, 2: Enterprise, 3: Legacy)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&larr;</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&rarr;</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">W3C ARIA Tab-Navigation zwischen Szenario-Reitern</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">C</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Sample-Report JSON in Zwischenablage kopieren</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">D</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Dynamischen Report als JSON herunterladen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">M</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Quick-Check Markdown Zusammenfassung kopieren</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">R</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Quick-Check Rechner auf Standardwerte zurücksetzen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Diesen Tastatur-Hilfe Dialog öffnen / schließen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">Esc</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Dialog schließen</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+          <button type="button" id="btnCloseRealityHelpModalFooter" class="btn-sub" onclick="toggleRealityHelpModal(false)" style="font-size:.82rem;padding:.35rem .9rem;cursor:pointer;">Schließen (Esc)</button>
+        </div>
+      </div>
+    </div>
 </main>
 
 <footer class="footer">
