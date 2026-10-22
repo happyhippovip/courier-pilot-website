@@ -449,6 +449,7 @@
           <option value="2200">2x (Schnell · 2.2s)</option>
           <option value="1200">3x (Turbo · 1.2s)</option>
         </select>
+        <span id="speedIntervalPill" style="font-size:.72rem;font-weight:600;color:var(--cyan);background:rgba(0,212,255,.08);padding:.18rem .45rem;border-radius:10px;border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;gap:.25rem;user-select:none;" title="Aktuelles Schritt-Intervall für automatische Vorführung">⚡ 4.5s/Schritt (1x)</span>
       </div>
       <label style="display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;color:var(--muted);cursor:pointer;user-select:none;">
         <input type="checkbox" id="chkLoopDemo" style="accent-color:var(--cyan);cursor:pointer;"> Dauerschleife (Kiosk)
@@ -1052,6 +1053,7 @@
         runDemo();
       }, 400);
     }
+    updateSpeedIndicator();
   }
 
   window.addEventListener('hashchange', checkScenarioHash);
@@ -1481,8 +1483,20 @@
     return demoSpeed;
   }
 
+  function updateSpeedIndicator() {
+    const pill = document.getElementById('speedIntervalPill');
+    if (!pill) return;
+    const speed = getDemoSpeed();
+    const sec = (speed / 1000).toFixed(1);
+    let mult = '1x';
+    if (speed <= 1500) mult = '3x';
+    else if (speed <= 2500) mult = '2x';
+    pill.textContent = `⚡ ${sec}s/Schritt (${mult})`;
+  }
+
   function changeDemoSpeed() {
     demoSpeed = getDemoSpeed();
+    updateSpeedIndicator();
     if (timerId !== null) {
       clearInterval(timerId);
       timerId = setInterval(() => {
