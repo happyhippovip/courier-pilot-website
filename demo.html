@@ -529,6 +529,7 @@
             <button type="button" id="btnReceiptTabSummary" role="tab" aria-selected="true" onclick="switchReceiptView('summary')" style="background:var(--cyan);color:#070b16;font-size:.75rem;font-weight:700;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Übersicht</button>
             <button type="button" id="btnReceiptTabRaw" role="tab" aria-selected="false" onclick="switchReceiptView('raw')" style="background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Raw JSON</button>
           </div>
+          <span id="receiptTimingBadge" style="font-size:.72rem;font-weight:600;color:var(--cyan);background:rgba(0,212,255,.08);padding:.18rem .5rem;border-radius:10px;border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;gap:.3rem;" title="Dauer der deterministischen Verifikation">⏱️ 42 ms</span>
           <span class="receipt-badge ok" id="receiptBadge">✓ BYTE_LEVEL_GOLD_VERIFIED</span>
         </div>
       </div>
@@ -851,6 +852,7 @@
         output_sha256: "4a2d8e90123456789abcdef0123456789abcdef0123456789abcdef0123b3f81",
         rows_processed: 14280,
         errors_repaired: 45,
+        verification_duration_ms: 42,
         resolution: "BYTE_LEVEL_GOLD_VERIFIED",
         seal_time: "2026-10-21T20:25:00Z"
       }
@@ -903,6 +905,7 @@
         scanned_files: 4,
         rules_enforced: ["NO_LOCALAPPDATA_WIPE", "NO_WILDCARD_APP_DELETE", "SANDBOX_COLLISION_ABORT"],
         violations_found: 0,
+        verification_duration_ms: 18,
         resolution: "SECURITY_ACCEPTANCE_PASS",
         seal_time: "2026-10-21T20:25:00Z"
       }
@@ -955,6 +958,7 @@
         expected_sum: "1,450,000.00 EUR",
         actual_sum: "1,448,200.00 EUR",
         discrepancy: "-1,800.00 EUR",
+        verification_duration_ms: 31,
         resolution: "FAIL_CLOSED_REJECTED",
         reason: "Ungedeckte Diskrepanz in Quellzeile 312.",
         seal_time: "2026-10-21T20:25:00Z"
@@ -1325,10 +1329,11 @@
     }
 
     container.innerHTML = `
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:.6rem;margin-bottom:.5rem;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));gap:.6rem;margin-bottom:.5rem;">
         <div><span style="color:var(--muted);font-size:.78rem;display:block;">Task-Identifikator</span><strong style="color:var(--ink);">${r.task_id}</strong></div>
         <div><span style="color:var(--muted);font-size:.78rem;display:block;">Unabhängiger Verifier</span><strong style="color:var(--ink);">${r.verifier}</strong></div>
         <div><span style="color:var(--muted);font-size:.78rem;display:block;">Prüfergebnis</span><strong style="color:${isOk ? '#38e68e' : '#e64538'};">${r.resolution}</strong></div>
+        <div><span style="color:var(--muted);font-size:.78rem;display:block;">Verifikationsdauer</span><strong style="color:var(--cyan);">${r.verification_duration_ms ? r.verification_duration_ms + ' ms' : 'Sofort'} (Deterministisch)</strong></div>
         <div><span style="color:var(--muted);font-size:.78rem;display:block;">Siegel-Zeitstempel</span><span style="color:var(--ink);">${r.seal_time}</span></div>
       </div>
       <div style="border-top:1px solid var(--line);padding-top:.45rem;margin-top:.4rem;">
@@ -1382,6 +1387,11 @@
 
     badge.className = 'receipt-badge ' + (scen.resultOk ? 'ok' : 'fail');
     badge.textContent = scen.badgeText;
+
+    const timingBadge = document.getElementById('receiptTimingBadge');
+    if (timingBadge && scen.receipt && scen.receipt.verification_duration_ms) {
+      timingBadge.textContent = `⏱️ ${scen.receipt.verification_duration_ms} ms`;
+    }
 
     body.textContent = JSON.stringify(scen.receipt, null, 2);
 
