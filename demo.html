@@ -452,6 +452,57 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">R</kbd> Reset</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">T</kbd> Tempo</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">1</kbd>-<kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">3</kbd> Szenario</span>
+      <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal">
+        <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
+      </button>
+    </div>
+
+    <!-- Keyboard Shortcuts Help Modal Dialog -->
+    <div id="keyboardHelpModal" role="dialog" aria-modal="true" aria-labelledby="keyboardHelpTitle" style="display:none;position:fixed;inset:0;background:rgba(4,7,16,.75);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;max-width:540px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.6);padding:1.4rem;position:relative;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:1px solid var(--line);padding-bottom:.65rem;">
+          <h3 id="keyboardHelpTitle" style="margin:0;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem;">
+            <span>⌨️</span> <span>Tastatur-Navigation &amp; Presenter-Modus</span>
+          </h3>
+          <button type="button" onclick="toggleHelpModal(false)" aria-label="Hilfe-Dialog schließen" style="background:transparent;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.2rem .4rem;">&times;</button>
+        </div>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:0;margin-bottom:1rem;line-height:1.45;">
+          Courier Symphony unterstützt vollständige, barrierefreie Tastaturbedienung für Live-Demonstrationen, Screenreader und Evaluatoren.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr;gap:.5rem;font-size:.84rem;margin-bottom:1.2rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">S</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Wiedergabe starten, pausieren oder fortsetzen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">N</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&rarr;</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Genau einen Einzelschritt manuell ausführen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">R</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Demonstration &amp; Protokoll zurücksetzen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">T</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Wiedergabe-Tempo umschalten (1x &rarr; 2x &rarr; 3x)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">1</kbd>, <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">2</kbd>, <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">3</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Szenario wechseln (Tabelle, Security, Rejection)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Diese Hilfe öffnen / schließen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">Esc</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Hilfe-Dialog schließen</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+          <button type="button" class="btn-sub" onclick="toggleHelpModal(false)" style="font-size:.82rem;padding:.35rem .9rem;cursor:pointer;">Schließen (Esc)</button>
+        </div>
+      </div>
     </div>
 
     <!-- Artifact / Receipt Result Card -->
@@ -1036,6 +1087,32 @@
         sel.selectedIndex = (sel.selectedIndex + 1) % sel.options.length;
         changeDemoSpeed();
       }
+    } else if (key === '?' || key === 'F1') {
+      e.preventDefault();
+      toggleHelpModal();
+    } else if (key === 'Escape') {
+      const modal = document.getElementById('keyboardHelpModal');
+      if (modal && modal.style.display === 'flex') {
+        e.preventDefault();
+        toggleHelpModal(false);
+      }
+    }
+  });
+
+  function toggleHelpModal(forceState) {
+    const modal = document.getElementById('keyboardHelpModal');
+    if (!modal) return;
+    const isCurrentlyOpen = modal.style.display === 'flex';
+    const nextState = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+    modal.style.display = nextState ? 'flex' : 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('keyboardHelpModal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) toggleHelpModal(false);
+      });
     }
   });
 
