@@ -498,6 +498,7 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">1</kbd>-<kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">3</kbd> Szenario</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">L</kbd> Export</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">V</kbd> Ansicht</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">K</kbd> Kiosk</span>
       <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal">
         <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
       </button>
@@ -543,6 +544,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">V</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Zertifikat-Ansicht wechseln (Übersicht &harr; Raw JSON)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">K</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Dauerschleife (Kiosk-Modus) an- / ausschalten</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
@@ -1160,6 +1165,9 @@
     } else if (key === 'v' || key === 'V') {
       e.preventDefault();
       toggleReceiptView();
+    } else if (key === 'k' || key === 'K') {
+      e.preventDefault();
+      toggleLoopDemoFromKey();
     } else if (key === '?' || key === 'F1') {
       e.preventDefault();
       toggleHelpModal();
@@ -1368,6 +1376,17 @@
       localStorage.setItem('courier_demo_loop', enabled ? 'true' : 'false');
     } catch (e) {
       // Ignore localStorage restrictions in sandboxed environments
+    }
+  }
+
+  function toggleLoopDemoFromKey() {
+    const chk = document.getElementById('chkLoopDemo');
+    if (!chk) return;
+    chk.checked = !chk.checked;
+    toggleLoopDemo(chk.checked);
+    const status = document.getElementById('demoStatus');
+    if (status && !timerId) {
+      status.textContent = chk.checked ? 'Status: Bereit (Kiosk-Modus aktiv)' : 'Status: Bereit';
     }
   }
 
