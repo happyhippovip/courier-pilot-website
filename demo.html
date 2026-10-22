@@ -375,9 +375,9 @@
   <div class="demo-container">
     <div class="scenario-picker">
       <span style="font-weight:700;font-size:.9rem;align-self:center;margin-right:.5rem;">Szenario wählen:</span>
-      <button class="scenario-btn is-active" id="scenario-spreadsheet" data-scenario="spreadsheet">1. Datenbereinigung &amp; Schema-Prüfung (Erfolg)</button>
-      <button class="scenario-btn" id="scenario-security" data-scenario="security">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
-      <button class="scenario-btn" id="scenario-rejection" data-scenario="rejection">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
+      <button class="scenario-btn is-active" id="scenario-spreadsheet" data-scenario="spreadsheet" aria-pressed="true">1. Datenbereinigung &amp; Schema-Prüfung (Erfolg)</button>
+      <button class="scenario-btn" id="scenario-security" data-scenario="security" aria-pressed="false">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
+      <button class="scenario-btn" id="scenario-rejection" data-scenario="rejection" aria-pressed="false">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
       <button class="btn-sub" id="btnAutoRunScenario" style="margin-left:auto;font-size:.82rem;padding:.35rem .75rem;color:var(--cyan);border-color:rgba(56,214,230,.35);" onclick="runDemo()">▶ Szenario abspielen</button>
       <button class="btn-sub" id="btnCopyScenarioLink" style="font-size:.82rem;padding:.35rem .75rem;" onclick="copyScenarioLink()">🔗 Link teilen</button>
     </div>
@@ -505,6 +505,7 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">D</kbd> Zertifikat</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">Z</kbd> Kopieren</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">F</kbd> Suche</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">U</kbd> Link</span>
       <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal" aria-expanded="false">
         <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
       </button>
@@ -574,6 +575,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Suchfeld im Audit-Log fokussieren</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">U</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Direktlink zum aktuellen Szenario kopieren</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
@@ -1045,8 +1050,12 @@
   function selectScenario(key) {
     const btn = document.querySelector(`.scenario-btn[data-scenario="${key}"]`);
     if (!btn) return;
-    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('is-active'));
+    document.querySelectorAll('.scenario-btn').forEach(b => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-pressed', 'false');
+    });
     btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed', 'true');
     currentScenarioKey = key;
     resetDemo();
   }
@@ -1236,6 +1245,9 @@
         searchInput.focus();
         searchInput.select();
       }
+    } else if (key === 'u' || key === 'U') {
+      e.preventDefault();
+      copyScenarioLink();
     } else if (key === '?' || key === 'F1') {
       e.preventDefault();
       toggleHelpModal();
