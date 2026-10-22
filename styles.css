@@ -193,7 +193,7 @@ button.btn:disabled,.btn.is-disabled{
 /* Footer */
 .footer,.foot{margin-top:3rem;border-top:1px solid var(--line);padding:1.6rem 0 2.2rem;color:var(--muted);font-size:.9rem}
 .footer-grid{display:grid;gap:.4rem}
-.footer p,.foot-copy{margin:0}
+.footer p,.footer nav,.foot-copy{margin:0}
 .footer a,.foot a{color:var(--muted);text-decoration:none;transition:color .15s ease}
 .footer a:hover,.foot a:hover{color:var(--ink)}
 .foot-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem}
