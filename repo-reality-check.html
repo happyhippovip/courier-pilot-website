@@ -209,7 +209,13 @@
 
       <article class="report" id="realityReportArticle" role="tabpanel" aria-labelledby="demo-title">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
-          <p class="demo-flag" style="margin:0;">Beispielreport, Demo-Daten · Interaktive Vorschau</p>
+          <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+            <p class="demo-flag" style="margin:0;">Beispielreport, Demo-Daten · Interaktive Vorschau</p>
+            <div class="report-tab-group" role="tablist" aria-label="Ansicht des Prüfreports" onkeydown="handleReportViewTabKey(event)" style="display:inline-flex;background:#060a14;border:1px solid var(--line);border-radius:6px;padding:2px;">
+              <button type="button" id="btnReportTabSummary" role="tab" aria-selected="true" aria-controls="realityReportVisual" onclick="switchReportView('summary')" style="background:var(--cyan);color:#070b16;font-size:.75rem;font-weight:700;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Übersicht</button>
+              <button type="button" id="btnReportTabRaw" role="tab" aria-selected="false" aria-controls="realityReportJsonBody" onclick="switchReportView('raw')" style="background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Raw JSON</button>
+            </div>
+          </div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
             <button type="button" class="btn" id="btnCopyScenarioLink" onclick="copyScenarioLink()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">🔗 Link kopieren</button>
             <button type="button" class="btn" id="btnCopySampleReportJson" onclick="copySampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📋 JSON kopieren</button>
@@ -219,6 +225,7 @@
           </div>
         </div>
 
+        <div id="realityReportVisual" role="tabpanel" aria-labelledby="btnReportTabSummary" tabindex="0">
         <div class="report-top">
           <div>
             <h3 id="demo-title">demo-org/widget-api</h3>
@@ -254,6 +261,8 @@
           <li>Den Beispielpfad <code>refund</code> mit einem Test abdecken.</li>
         </ol>
         <p class="hub-foot">Alle Zahlen und Dateinamen in diesem Kasten sind Demo-Daten. Ein echter Report bezieht sich nur auf das Repo, das du schickst.</p>
+        </div>
+        <pre id="realityReportJsonBody" role="tabpanel" aria-labelledby="btnReportTabRaw" tabindex="0" style="display:none;font-family:ui-monospace,monospace;font-size:.82rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin:1rem 0;max-height:420px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;color:var(--ink);"></pre>
       </article>
     </div>
   </section>
@@ -474,6 +483,72 @@
 
     let currentScenarioIdx = 0;
 
+    function switchReportView(mode) {
+      const visual = document.getElementById("realityReportVisual");
+      const raw = document.getElementById("realityReportJsonBody");
+      const btnSummary = document.getElementById("btnReportTabSummary");
+      const btnRaw = document.getElementById("btnReportTabRaw");
+      if (!visual || !raw) return;
+
+      if (mode === "raw") {
+        raw.textContent = JSON.stringify(getSampleReportPayload(), null, 2);
+        visual.style.display = "none";
+        raw.style.display = "block";
+        if (btnSummary) {
+          btnSummary.style.background = "transparent";
+          btnSummary.style.color = "var(--muted)";
+          btnSummary.setAttribute("aria-selected", "false");
+        }
+        if (btnRaw) {
+          btnRaw.style.background = "var(--cyan)";
+          btnRaw.style.color = "#070b16";
+          btnRaw.setAttribute("aria-selected", "true");
+        }
+      } else {
+        visual.style.display = "block";
+        raw.style.display = "none";
+        if (btnSummary) {
+          btnSummary.style.background = "var(--cyan)";
+          btnSummary.style.color = "#070b16";
+          btnSummary.setAttribute("aria-selected", "true");
+        }
+        if (btnRaw) {
+          btnRaw.style.background = "transparent";
+          btnRaw.style.color = "var(--muted)";
+          btnRaw.setAttribute("aria-selected", "false");
+        }
+      }
+    }
+
+    function toggleReportView() {
+      const raw = document.getElementById("realityReportJsonBody");
+      if (!raw) return;
+      const isRaw = (raw.style.display === "block");
+      switchReportView(isRaw ? "summary" : "raw");
+    }
+
+    function handleReportViewTabKey(e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const raw = document.getElementById("realityReportJsonBody");
+        const isRaw = raw && (raw.style.display === "block");
+        const targetMode = isRaw ? "summary" : "raw";
+        switchReportView(targetMode);
+        const targetBtn = document.getElementById(targetMode === "raw" ? "btnReportTabRaw" : "btnReportTabSummary");
+        if (targetBtn) targetBtn.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        switchReportView("summary");
+        const btn = document.getElementById("btnReportTabSummary");
+        if (btn) btn.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        switchReportView("raw");
+        const btn = document.getElementById("btnReportTabRaw");
+        if (btn) btn.focus();
+      }
+    }
+
     function selectScenario(idx) {
       currentScenarioIdx = idx;
       const s = SCENARIOS[idx];
@@ -520,6 +595,10 @@
           url.searchParams.set("scenario", (idx + 1).toString());
           window.history.replaceState(null, "", url.toString());
         } catch (e) {}
+      }
+      const rawView = document.getElementById("realityReportJsonBody");
+      if (rawView && rawView.style.display === "block") {
+        rawView.textContent = JSON.stringify(getSampleReportPayload(), null, 2);
       }
     }
 
@@ -850,6 +929,9 @@
       } else if (key === 'd' || key === 'D') {
         e.preventDefault();
         downloadSampleReportJson();
+      } else if (key === 'v' || key === 'V') {
+        e.preventDefault();
+        toggleReportView();
       } else if (key === 'm' || key === 'M') {
         e.preventDefault();
         copyQuickCheckMarkdown();
@@ -993,6 +1075,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">D</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Dynamischen Report als JSON herunterladen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">V</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Report-Ansicht wechseln (Übersicht &harr; Raw JSON)</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">M</kbd></span>

@@ -271,3 +271,14 @@ button.btn:disabled,.btn.is-disabled{
 .report pre code{color:var(--cyan);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem}
 
 
+
+#btnReportTabSummary:focus-visible,
+#btnReportTabRaw:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 1px;
+}
+#realityReportVisual:focus-visible,
+#realityReportJsonBody:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 1px;
+}
