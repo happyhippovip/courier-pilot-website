@@ -297,15 +297,15 @@
             <h3 style="font-size:1.1rem;margin:0;color:var(--ink);">Repository-Profil eingeben:</h3>
             <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;">
               <span style="font-size:.75rem;color:var(--muted);font-weight:600;">Presets:</span>
-              <button type="button" class="btn" id="btnQcPreset1" onclick="applyQuickCheckPreset(0)" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 1: Startup MVP laden (Taste 1)">1. Startup (42)</button>
-              <button type="button" class="btn" id="btnQcPreset2" onclick="applyQuickCheckPreset(1)" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 2: Enterprise Core laden (Taste 2)">2. Enterprise (89)</button>
-              <button type="button" class="btn" id="btnQcPreset3" onclick="applyQuickCheckPreset(2)" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 3: Legacy Bridge laden (Taste 3)">3. Legacy (19)</button>
+              <button type="button" class="btn" id="btnQcPreset1" onclick="applyQuickCheckPreset(0)" aria-controls="qcScoreNumber" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 1: Startup MVP laden (Taste 1)">1. Startup (42)</button>
+              <button type="button" class="btn" id="btnQcPreset2" onclick="applyQuickCheckPreset(1)" aria-controls="qcScoreNumber" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 2: Enterprise Core laden (Taste 2)">2. Enterprise (89)</button>
+              <button type="button" class="btn" id="btnQcPreset3" onclick="applyQuickCheckPreset(2)" aria-controls="qcScoreNumber" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 3: Legacy Bridge laden (Taste 3)">3. Legacy (19)</button>
             </div>
           </div>
 
           <div style="margin-bottom:1rem;">
             <label for="qcCi" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">1. CI/CD Pipeline &amp; Automatisierung:</label>
-            <select id="qcCi" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <select id="qcCi" aria-controls="qcScoreNumber" aria-describedby="qcLiveAnnounce" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="25">Grüne CI-Pipeline läuft bei jedem Push / PR (+25 Pkt)</option>
               <option value="10">CI vorhanden, schlägt aber häufig fehl oder läuft unregelmäßig (+10 Pkt)</option>
               <option value="0">Keine CI-Pipeline eingerichtet (0 Pkt)</option>
@@ -314,7 +314,7 @@
 
           <div style="margin-bottom:1rem;">
             <label for="qcTest" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">2. Testabdeckung (Coverage):</label>
-            <select id="qcTest" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <select id="qcTest" aria-controls="qcScoreNumber" aria-describedby="qcLiveAnnounce" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="25">&gt; 60% Zeilenabdeckung mit soliden Unit-/Integrationstests (+25 Pkt)</option>
               <option value="15">20% – 60% Abdeckung, Kernpfade teilweise getestet (+15 Pkt)</option>
               <option value="5">Wenige Alibi-Tests oder &lt; 20% Abdeckung (+5 Pkt)</option>
@@ -324,7 +324,7 @@
 
           <div style="margin-bottom:1rem;">
             <label for="qcDeps" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">3. Abhängigkeiten &amp; Version-Pinning:</label>
-            <select id="qcDeps" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <select id="qcDeps" aria-controls="qcScoreNumber" aria-describedby="qcLiveAnnounce" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="20">Lockfile vorhanden &amp; alle Versionen strikt gepinnt (+20 Pkt)</option>
               <option value="10">Lockfile vorhanden, aber Versionen mit Wildcards/Ranges (+10 Pkt)</option>
               <option value="0">Kein Lockfile oder unversionierte Abhängigkeiten (0 Pkt)</option>
@@ -333,7 +333,7 @@
 
           <div style="margin-bottom:1rem;">
             <label for="qcTodo" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">4. TODO &amp; FIXME Kommentare:</label>
-            <select id="qcTodo" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <select id="qcTodo" aria-controls="qcScoreNumber" aria-describedby="qcLiveAnnounce" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="15">&lt; 10 offene TODOs im gesamten Codebase (+15 Pkt)</option>
               <option value="8">10 – 50 offene TODOs / Altlasten (+8 Pkt)</option>
               <option value="0">&gt; 50 offene TODOs oder ungelöste Baustellen (0 Pkt)</option>
@@ -342,7 +342,7 @@
 
           <div>
             <label for="qcSec" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">5. Sicherheits- &amp; Rechte-Hygiene:</label>
-            <select id="qcSec" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <select id="qcSec" aria-controls="qcScoreNumber" aria-describedby="qcLiveAnnounce" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="15">Keine Secrets im Git-Verlauf, strenge Rechte (+15 Pkt)</option>
               <option value="8">Teilweise geprüft, .env ignoriert (+8 Pkt)</option>
               <option value="0">Ungeprüft / Secrets im Verlauf nicht ausgeschlossen (0 Pkt)</option>
@@ -352,6 +352,7 @@
 
         <!-- Live Score Result Box -->
         <div id="qcLiveResultBox" role="status" aria-live="polite" aria-atomic="true" aria-label="Ergebnis des Reality-Score Schnelltests" style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between;">
+          <div id="qcLiveAnnounce" class="sr-only" role="status" aria-live="polite" aria-atomic="true">Berechneter Reality-Score: 100 von 100 Punkten. Einstufung: Exzellente Repository-Disziplin.</div>
           <div>
             <span style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.4rem;">Geschätztes Ergebnis:</span>
             <div style="display:flex;align-items:baseline;gap:.6rem;margin-bottom:.8rem;">
@@ -775,6 +776,11 @@
     function applyQuickCheckPreset(idx) {
       selectScenario(idx);
       applyToQuickCheck();
+      const s = SCENARIOS[idx];
+      const announceEl = document.getElementById("qcLiveAnnounce");
+      if (announceEl && s) {
+        announceEl.textContent = "Profil " + (idx + 1) + " (" + s.name + ") geladen. Berechneter Reality-Score: " + s.score + " von 100 Punkten.";
+      }
     }
 
     function applyToQuickCheck() {
@@ -852,6 +858,11 @@
         badgeEl.textContent = "Kritisches Drift-Risiko";
         sumEl.textContent = "Hohe Wahrscheinlichkeit für unbemerkte Regressionen, fehlschlagende Builds und Sicherheitslecks.";
       }
+
+      const announceEl = document.getElementById("qcLiveAnnounce");
+      if (announceEl) {
+        announceEl.textContent = "Berechneter Reality-Score: " + total + " von 100 Punkten. Einstufung: " + badgeEl.textContent.trim() + ".";
+      }
     }
 
     function copyQuickCheckMarkdown() {
@@ -885,6 +896,10 @@
         const orig = btn.textContent;
         btn.textContent = "✓ Kopiert!";
         btn.style.color = "#38e68e";
+        const announceEl = document.getElementById("qcLiveAnnounce");
+        if (announceEl) {
+          announceEl.textContent = "Ergebnis des Schnelltests erfolgreich als Markdown in die Zwischenablage kopiert.";
+        }
         setTimeout(() => {
           btn.textContent = orig;
           btn.style.color = "var(--ink)";
@@ -919,6 +934,10 @@
           btn.textContent = orig;
           btn.style.color = "var(--muted)";
         }, 1500);
+      }
+      const announceEl = document.getElementById("qcLiveAnnounce");
+      if (announceEl) {
+        announceEl.textContent = "Schnelltest auf Standardwerte zurückgesetzt: 100 von 100 Punkten. Exzellente Repository-Disziplin.";
       }
     }
 
