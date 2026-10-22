@@ -504,6 +504,7 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">O</kbd> Scroll</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">D</kbd> Zertifikat</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">Z</kbd> Kopieren</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">F</kbd> Suche</span>
       <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal" aria-expanded="false">
         <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
       </button>
@@ -569,6 +570,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">Z</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Zertifikat in die Zwischenablage kopieren</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Suchfeld im Audit-Log fokussieren</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
@@ -1143,6 +1148,20 @@
   // Global Keyboard Navigation for Live Demo & Presenter Mode
   window.addEventListener('keydown', (e) => {
     const active = document.activeElement;
+    if (active && active.id === 'searchConsoleLog') {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        active.value = '';
+        filterConsoleLogs();
+        active.blur();
+        return;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        active.blur();
+        return;
+      }
+    }
     const tag = active ? active.tagName.toLowerCase() : '';
     if (tag === 'textarea' || tag === 'input' || tag === 'select' || (active && active.isContentEditable)) {
       return;
@@ -1210,6 +1229,13 @@
     } else if (key === 'z' || key === 'Z') {
       e.preventDefault();
       copyScenarioReceipt();
+    } else if (key === 'f' || key === 'F') {
+      e.preventDefault();
+      const searchInput = document.getElementById('searchConsoleLog');
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      }
     } else if (key === '?' || key === 'F1') {
       e.preventDefault();
       toggleHelpModal();
