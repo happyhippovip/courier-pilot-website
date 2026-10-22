@@ -1062,6 +1062,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     document.getElementById('liveResultBox').style.display = "none";
     document.getElementById('liveWarningBox').style.display = "none";
     document.getElementById('fileInfoBadge').style.display = "none";
+    document.getElementById('btnFilterAll').textContent = "Alle Zeilen";
+    document.getElementById('btnFilterChanged').textContent = "Nur geänderte Zeilen";
     document.getElementById('liveStatus').textContent = "Eingabe zurückgesetzt.";
     updateCharCount();
   }
@@ -1312,6 +1314,11 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     document.getElementById('statUntouched').textContent = untouchedCellCount.toString();
     document.getElementById('hashDisplay').textContent = `SHA-256 Vorher: ${inputSha.slice(0, 16)}... | Nachher: ${outputSha.slice(0, 16)}...`;
 
+    const modifiedRowCount = parsedResultRows.filter(r => r.isModified).length;
+    const totalRowCount = parsedResultRows.length;
+    document.getElementById('btnFilterAll').textContent = `Alle Zeilen (${totalRowCount})`;
+    document.getElementById('btnFilterChanged').textContent = `Nur geänderte Zeilen (${modifiedRowCount})`;
+
     renderResultTable(headerCols, 'all');
 
     document.getElementById('liveResultBox').style.display = "block";
@@ -1364,6 +1371,12 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
       tr.innerHTML = rowHtml;
       tbody.appendChild(tr);
     });
+
+    if (displayedCount === 0) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td colspan="${headers.length + 1}" style="text-align:center;padding:1.5rem;color:var(--muted);font-style:italic;">Keine modifizierten Zeilen vorhanden — alle Zeilen entsprechen bereits den Validierungsregeln.</td>`;
+      tbody.appendChild(tr);
+    }
 
     table.appendChild(tbody);
   }
