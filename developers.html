@@ -149,7 +149,10 @@
       <div class="report" role="region" aria-label="Receipt Schema Specification">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
           <h3 style="margin:0;">Verification Receipt Schema (<code>receipt.schema.json</code>)</h3>
-          <button id="copy-schema-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyReceiptSchema()">📋 Copy Schema JSON</button>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <button id="copy-schema-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyReceiptSchema()">📋 Copy Schema JSON</button>
+            <a href="/receipt.schema.json" download="receipt.schema.json" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;text-decoration:none;">📥 Download Schema (.json)</a>
+          </div>
         </div>
         <pre><code id="schema-code">{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
