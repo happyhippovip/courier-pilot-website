@@ -375,7 +375,7 @@
   </div>
 </header>
 
-<main id="main" class="wrap" style="padding-top:2rem;padding-bottom:4rem;">
+<main id="main" tabindex="-1" class="wrap" style="padding-top:2rem;padding-bottom:4rem;">
   <h1>Wie Courier Symphony funktioniert</h1>
   <p class="section-lede" style="font-size:1.2rem;color:var(--muted);max-width:760px;margin-bottom:1rem;">
     Normale KI-Agenten neigen dazu, Fehler selbstsicher zu verschweigen. 
@@ -537,9 +537,9 @@
     <div id="keyboardHelpModal" role="dialog" aria-modal="true" aria-labelledby="keyboardHelpTitle" style="display:none;position:fixed;inset:0;background:rgba(4,7,16,.75);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
       <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;max-width:540px;width:100%;box-shadow:0 12px 36px rgba(0,0,0,.6);padding:1.4rem;position:relative;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:1px solid var(--line);padding-bottom:.65rem;">
-          <h3 id="keyboardHelpTitle" style="margin:0;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem;">
+          <h2 id="keyboardHelpTitle" style="margin:0;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem;">
             <span>⌨️</span> <span>Tastatur-Navigation &amp; Presenter-Modus</span>
-          </h3>
+          </h2>
           <button type="button" id="btnCloseHelpModal" onclick="toggleHelpModal(false)" aria-label="Hilfe-Dialog schließen" style="background:transparent;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:.2rem .4rem;">&times;</button>
         </div>
         <p style="font-size:.85rem;color:var(--muted);margin-top:0;margin-bottom:1rem;line-height:1.45;">
