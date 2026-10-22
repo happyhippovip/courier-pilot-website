@@ -449,7 +449,7 @@
           <input type="search" id="searchConsoleLog" placeholder="Keyword..." oninput="filterConsoleLogs()" aria-label="Audit-Log durchsuchen" style="background:#0c1120;border:1px solid var(--line);color:var(--ink);padding:.2rem .45rem;border-radius:4px;font-size:.75rem;width:115px;outline:none;">
         </label>
         <label style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;user-select:none;">
-          <input type="checkbox" id="chkAutoScroll" checked style="accent-color:var(--cyan);cursor:pointer;"> Auto-Scroll
+          <input type="checkbox" id="chkAutoScroll" onchange="toggleAutoScroll(this.checked)" checked style="accent-color:var(--cyan);cursor:pointer;"> Auto-Scroll
         </label>
         <button type="button" class="btn-sub" id="btnCopyConsoleLogs" onclick="copyConsoleLogs()" style="font-size:.75rem;padding:.2rem .55rem;border-radius:4px;cursor:pointer;">
           <span id="lblCopyConsoleLogs">📋 Logs kopieren</span>
@@ -1092,7 +1092,9 @@
 
   window.addEventListener('hashchange', checkScenarioHash);
   window.addEventListener('DOMContentLoaded', checkScenarioHash);
+  window.addEventListener('DOMContentLoaded', initAutoScrollPreference);
   checkScenarioHash();
+  initAutoScrollPreference();
 
   // Global Keyboard Navigation for Live Demo & Presenter Mode
   window.addEventListener('keydown', (e) => {
@@ -1326,6 +1328,26 @@
       const copyLbl = document.getElementById('lblCopyConsoleLogs');
       if (copyLbl) copyLbl.textContent = '📋 Logs kopieren';
       updateLogCounter();
+    }
+  }
+
+  function toggleAutoScroll(enabled) {
+    try {
+      localStorage.setItem('courier_demo_autoscroll', enabled ? 'true' : 'false');
+    } catch (e) {
+      // Ignore localStorage restrictions in sandboxed environments
+    }
+  }
+
+  function initAutoScrollPreference() {
+    try {
+      const saved = localStorage.getItem('courier_demo_autoscroll');
+      if (saved !== null) {
+        const chk = document.getElementById('chkAutoScroll');
+        if (chk) chk.checked = (saved === 'true');
+      }
+    } catch (e) {
+      // Ignore localStorage restrictions in sandboxed environments
     }
   }
 
