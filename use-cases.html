@@ -73,6 +73,10 @@
             <li><strong>Watchdog Supervision:</strong> Daemon watchdogs detect stalled processes, re-run failed jobs, and restart safely without duplicate work.</li>
             <li><strong>Host Capacity Relief:</strong> Enforces host locks so resource-intensive builds never overwhelm developer machines.</li>
           </ul>
+          <div style="margin-top:1.25rem;display:flex;gap:.6rem;flex-wrap:wrap;">
+            <a class="btn" href="/demo.html#pipeline">Watch Crash Recovery (30s) &rarr;</a>
+            <a class="btn btn-ghost" href="/architecture.html#pipeline">Pipeline Specs</a>
+          </div>
         </article>
 
         <article class="card">
@@ -84,6 +88,10 @@
             <li><strong>Process Tree Governance:</strong> Uses POSIX process groups on macOS/Linux and Win32 Job Objects on Windows to prevent orphaned background tasks.</li>
             <li><strong>Clean Workspace Isolation:</strong> Every task executes in dedicated, ephemeral git worktrees without corrupting shared working trees.</li>
           </ul>
+          <div style="margin-top:1.25rem;display:flex;gap:.6rem;flex-wrap:wrap;">
+            <a class="btn btn-ghost" href="/architecture.html#pillars">Architectural Pillars</a>
+            <a class="btn btn-ghost" href="/security.html#tenets">Process Isolation Tenets &rarr;</a>
+          </div>
         </article>
 
         <article class="card">
@@ -95,6 +103,10 @@
             <li><strong>Solid-Color &amp; Integrity Detection:</strong> Automatically validates media output (e.g., detecting blank frames or corrupted streams) before marking tasks complete.</li>
             <li><strong>Atomic Artifact Delivery:</strong> Output files are verified, checksummed, and packaged with verifiable receipt metadata.</li>
           </ul>
+          <div style="margin-top:1.25rem;display:flex;gap:.6rem;flex-wrap:wrap;">
+            <a class="btn btn-ghost" href="/security.html#tenets">Admission Mutex Tenets</a>
+            <a class="btn btn-ghost" href="/developers.html#receipt-contract">Receipt Schema &rarr;</a>
+          </div>
         </article>
 
         <article class="card">
