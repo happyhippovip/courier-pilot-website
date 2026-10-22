@@ -22,7 +22,8 @@ body{
   font-size:1.02rem;
 }
 .skip{position:absolute;left:-999px;top:0;background:var(--gold);color:#111;padding:.5rem 1rem;z-index:99}
-.skip:focus{left:0}
+.skip:focus,
+.skip:focus-visible{left:0;outline:2px solid var(--cyan);outline-offset:2px}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
 a{color:var(--cyan)}
 h1,h2,h3{line-height:1.15;margin:0 0 .6rem;letter-spacing:-.01em}
@@ -39,7 +40,11 @@ h3{font-size:1.1rem}
 .nav{margin-left:auto;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;justify-content:flex-end}
 .nav a{color:var(--muted);text-decoration:none;font-size:.95rem;white-space:nowrap}
 .nav a:hover{color:var(--ink)}
+.brand:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.nav a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px;color:var(--ink)}
 .nav-cta{border:1px solid var(--gold-soft);border-radius:999px;padding:.35rem .95rem;color:var(--gold)!important}
+.nav-cta:hover{background:var(--gold-soft);border-color:var(--gold)}
+.nav-cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px;background:var(--gold-soft)}
 .nav-toggle{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .nav-burger{display:none;flex-direction:column;gap:5px;margin-left:auto;cursor:pointer;padding:.4rem;text-decoration:none;color:inherit}
 .nav-toggle:focus-visible+.nav-burger,a.nav-burger:focus-visible{outline:2px solid var(--gold);border-radius:6px}
@@ -280,5 +285,31 @@ button.btn:disabled,.btn.is-disabled{
 #realityReportVisual:focus-visible,
 #realityReportJsonBody:focus-visible {
   outline: 1px solid var(--cyan);
+  outline-offset: 1px;
+}
+
+/* WCAG 2.4.7 Focus Visible & Interactive State Standards */
+.btn:focus-visible,
+.btn-main:focus-visible,
+.btn-sub:focus-visible,
+button.btn:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.footer a:focus-visible,
+.foot a:focus-visible,
+.fmeta a:focus-visible,
+.foot-nav a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--cyan);
   outline-offset: 1px;
 }
