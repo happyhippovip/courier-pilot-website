@@ -397,7 +397,7 @@
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;padding:0 .2rem;">
       <span style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;">
         <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></span>
-        Audit-Log &amp; Zero-Trust Journal
+        Audit-Log &amp; Zero-Trust Journal <span id="logCountBadge" style="font-size:.72rem;font-weight:600;color:var(--muted);background:rgba(255,255,255,.05);padding:.1rem .4rem;border-radius:10px;border:1px solid var(--line);" title="Anzahl der Audit-Einträge (sichtbar / gesamt)">(0)</span>
       </span>
       <div style="display:inline-flex;align-items:center;gap:.65rem;flex-wrap:wrap;">
         <label for="filterConsoleTag" style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;">
@@ -1154,6 +1154,23 @@
         l.style.display = 'none';
       }
     });
+    updateLogCounter();
+  }
+
+  function updateLogCounter() {
+    const box = document.getElementById('consoleBox');
+    const badge = document.getElementById('logCountBadge');
+    if (!box || !badge) return;
+    const allLines = box.querySelectorAll('.log-line');
+    let visibleCount = 0;
+    allLines.forEach(l => {
+      if (l.style.display !== 'none') visibleCount++;
+    });
+    if (visibleCount === allLines.length) {
+      badge.textContent = `(${allLines.length})`;
+    } else {
+      badge.textContent = `(${visibleCount}/${allLines.length})`;
+    }
   }
 
   function log(tag, msg, customTime) {
@@ -1184,6 +1201,7 @@
     if (!chk || chk.checked) {
       box.scrollTop = box.scrollHeight;
     }
+    updateLogCounter();
   }
 
   function copyConsoleLogs() {
@@ -1261,6 +1279,7 @@
       log('intake', 'Audit-Log geleert. Bereit für Szenario-Ausführung.');
       const copyLbl = document.getElementById('lblCopyConsoleLogs');
       if (copyLbl) copyLbl.textContent = '📋 Logs kopieren';
+      updateLogCounter();
     }
   }
 
@@ -2190,6 +2209,7 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     if (scLbl) scLbl.textContent = 'Zertifikat kopieren';
     const copyLogsLbl = document.getElementById('lblCopyConsoleLogs');
     if (copyLogsLbl) copyLogsLbl.textContent = '📋 Logs kopieren';
+    updateLogCounter();
   }
 </script>
 </body>
