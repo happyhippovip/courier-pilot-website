@@ -193,17 +193,18 @@
           <h2>Beispielreport, Demo-Daten</h2>
           <p class="section-lede" style="margin:0;">Synthetische Beispieldaten zur Illustration typischer Repository-Profile. Wählen Sie ein Profil:</p>
         </div>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;" role="tablist" aria-label="Szenario-Auswahl">
-          <button type="button" class="btn scenario-btn is-active" id="btnScen1" onclick="selectScenario(0)" style="font-size:.82rem;padding:.35rem .75rem;">1. Startup MVP (Score 42)</button>
-          <button type="button" class="btn scenario-btn" id="btnScen2" onclick="selectScenario(1)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">2. Enterprise Core (Score 89)</button>
-          <button type="button" class="btn scenario-btn" id="btnScen3" onclick="selectScenario(2)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">3. Legacy Bridge (Score 19)</button>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;" role="tablist" aria-label="Szenario-Auswahl" onkeydown="handleScenarioTabKey(event)">
+          <button type="button" class="btn scenario-btn is-active" id="btnScen1" role="tab" aria-selected="true" aria-controls="realityReportArticle" onclick="selectScenario(0)" style="font-size:.82rem;padding:.35rem .75rem;">1. Startup MVP (Score 42)</button>
+          <button type="button" class="btn scenario-btn" id="btnScen2" role="tab" aria-selected="false" aria-controls="realityReportArticle" onclick="selectScenario(1)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">2. Enterprise Core (Score 89)</button>
+          <button type="button" class="btn scenario-btn" id="btnScen3" role="tab" aria-selected="false" aria-controls="realityReportArticle" onclick="selectScenario(2)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">3. Legacy Bridge (Score 19)</button>
         </div>
       </div>
 
-      <article class="report" aria-labelledby="demo-title">
+      <article class="report" id="realityReportArticle" role="tabpanel" aria-labelledby="demo-title">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
           <p class="demo-flag" style="margin:0;">Beispielreport, Demo-Daten · Interaktive Vorschau</p>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button type="button" class="btn" id="btnCopySampleReportJson" onclick="copySampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📋 JSON kopieren</button>
             <button type="button" class="btn" onclick="downloadSampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📥 Szenario als JSON</button>
             <a class="btn" href="/sample-reality-report.json" download="sample-reality-report.json" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);text-decoration:none;">📄 Statischer Report (.json)</a>
             <a class="btn" href="#schnelltest" onclick="applyToQuickCheck()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--ink);">⚡ Im Schnelltest prüfen</a>
@@ -458,14 +459,20 @@
       // Update buttons
       for (let i = 0; i < 3; i++) {
         const btn = document.getElementById("btnScen" + (i + 1));
-        if (i === idx) {
-          btn.style.background = "var(--ink)";
-          btn.style.color = "var(--bg)";
-          btn.style.border = "1px solid var(--ink)";
-        } else {
-          btn.style.background = "transparent";
-          btn.style.color = "var(--ink)";
-          btn.style.border = "1px solid var(--line)";
+        if (btn) {
+          const isSelected = (i === idx);
+          btn.setAttribute("aria-selected", isSelected ? "true" : "false");
+          if (isSelected) {
+            btn.classList.add("is-active");
+            btn.style.background = "var(--ink)";
+            btn.style.color = "var(--bg)";
+            btn.style.border = "1px solid var(--ink)";
+          } else {
+            btn.classList.remove("is-active");
+            btn.style.background = "transparent";
+            btn.style.color = "var(--ink)";
+            btn.style.border = "1px solid var(--line)";
+          }
         }
       }
 
@@ -486,9 +493,35 @@
       document.getElementById("demo-steps-list").innerHTML = s.steps.map(st => `<li>${st}</li>`).join("");
     }
 
-    function downloadSampleReportJson() {
+    function handleScenarioTabKey(e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = (currentScenarioIdx + 1) % 3;
+        selectScenario(next);
+        const b = document.getElementById("btnScen" + (next + 1));
+        if (b) b.focus();
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const prev = (currentScenarioIdx + 2) % 3;
+        selectScenario(prev);
+        const b = document.getElementById("btnScen" + (prev + 1));
+        if (b) b.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        selectScenario(0);
+        const b = document.getElementById("btnScen1");
+        if (b) b.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        selectScenario(2);
+        const b = document.getElementById("btnScen3");
+        if (b) b.focus();
+      }
+    }
+
+    function getSampleReportPayload() {
       const s = SCENARIOS[currentScenarioIdx];
-      const payload = {
+      return {
         tool: "Courier Symphony Reality Engine (Beta)",
         report_type: "Repository Reality Audit",
         generated_at: new Date().toISOString(),
@@ -504,12 +537,55 @@
         top_5_recommended_actions: s.steps,
         audit_note: "Dieser Report ist ein interaktives Demo-Beispiel von couriersymphony.de. Ein echter Report umfasst die unbestechliche 48h-Analyse Ihres echten Repositories."
       };
+    }
+
+    function downloadSampleReportJson() {
+      const s = SCENARIOS[currentScenarioIdx];
+      const payload = getSampleReportPayload();
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = `reality_report_${s.name.replace(/[^a-zA-Z0-9_-]/g, "_")}.json`;
       a.click();
       URL.revokeObjectURL(a.href);
+    }
+
+    function copySampleReportJson() {
+      const payload = getSampleReportPayload();
+      const str = JSON.stringify(payload, null, 2);
+      const btn = document.getElementById("btnCopySampleReportJson");
+      const done = () => {
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = "✓ Kopiert!";
+          btn.style.color = "#38e68e";
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.style.color = "var(--cyan)";
+          }, 1800);
+        }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(str).then(done).catch(() => {
+          fallbackCopyText(str);
+          done();
+        });
+      } else {
+        fallbackCopyText(str);
+        done();
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
     }
 
     function applyToQuickCheck() {
