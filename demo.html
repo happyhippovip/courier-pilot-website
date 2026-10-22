@@ -476,7 +476,11 @@
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('leads')">📋 1. Gemischte CRM-Leads (Leerzeichen, gemischte Telefone)</button>
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('accounting')">📑 2. Deutsche Buchhaltung (Semikolon ';', Beträge, Umlaute)</button>
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('duplicates')">⚠️ 3. Dubletten-Test (Leerzeilen &amp; identische Zeilen)</button>
+              <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('inventory')">📦 4. Lagerbestand &amp; Inventar (IDs, Datum, Duplikate)</button>
             </div>
+            <a href="/sample-inventory-dirty.csv" download="sample-inventory-dirty.csv" class="btn-sub" style="display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:.82rem;padding:.45rem .8rem;margin-top:.6rem;width:100%;justify-content:center;border-color:rgba(56,214,230,.3);color:var(--cyan);">
+              <span>📥</span> <span>Beispieldatei herunterladen (.csv)</span>
+            </a>
           </div>
           <div style="margin-top:.8rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(174,185,205,.1);padding-top:.6rem;">
             <label for="delimiterSelect" style="font-size:.82rem;color:var(--muted);">Trennzeichen:</label>
@@ -1005,7 +1009,16 @@
   bob baumann ,0170222222, Bob@work.de ,München
   
   clara clemens ,0160333333, clara@clemens.de ,Köln
-  alice schmidt ,0151111111, alice@example.com ,Berlin`
+  alice schmidt ,0151111111, alice@example.com ,Berlin`,
+
+    inventory: `Artikelnummer,Bezeichnung,Kategorie,Bestand,Letzte_Lieferung,Lieferant_Kontakt,Status
+  ART-10492 ,  kugellager 12mm stahl  , Mechanik , 250 , 14.10.2026 , +49 (0) 89 1234567 , aktiv  
+ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
+  art-20811 , HYDRAULIKVENTIL 24V DC , Pneumatik , 45 , 2026-09-28 , 0171/8899001 , AKTIV 
+
+  art-33100 ,  dichtungsring nbr 40  , Dichtungen , 1200 , 02.10.2026 , supplier@seal-corp.de , lieferbar
+  ART-45091 , servoantrieb ac 400w , Antriebstechnik , 12 , 15/08/2026 , 0049 711 554433 , bestellt 
+  art-33100 , dichtungsring nbr 40 , Dichtungen , 1200 , 02.10.2026 , supplier@seal-corp.de , lieferbar`
   };
 
   function loadPreset(key) {
