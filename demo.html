@@ -479,9 +479,14 @@
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('inventory')">📦 4. Lagerbestand &amp; Inventar (IDs, Datum, Duplikate)</button>
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('tsv_logs')">📊 5. Dev-Server-Logs (Tabulator '\t', Timestamps, Level)</button>
             </div>
-            <a href="/sample-inventory-dirty.csv" download="sample-inventory-dirty.csv" class="btn-sub" style="display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:.82rem;padding:.45rem .8rem;margin-top:.6rem;width:100%;justify-content:center;border-color:rgba(56,214,230,.3);color:var(--cyan);">
-              <span>📥</span> <span>Beispieldatei herunterladen (.csv)</span>
-            </a>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.6rem;">
+              <a href="/sample-inventory-dirty.csv" download="sample-inventory-dirty.csv" class="btn-sub" style="display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:.82rem;padding:.45rem .8rem;justify-content:center;border-color:rgba(56,214,230,.3);color:var(--cyan);">
+                <span>📥</span> <span>Rohdaten (.csv)</span>
+              </a>
+              <a href="/sample-inventory-clean.json" download="sample-inventory-clean.json" class="btn-sub" style="display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:.82rem;padding:.45rem .8rem;justify-content:center;border-color:rgba(56,230,142,.3);color:#38e68e;">
+                <span>📥</span> <span>Bereinigt (.json)</span>
+              </a>
+            </div>
           </div>
           <div style="margin-top:.8rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(174,185,205,.1);padding-top:.6rem;">
             <label for="delimiterSelect" style="font-size:.82rem;color:var(--muted);">Trennzeichen:</label>

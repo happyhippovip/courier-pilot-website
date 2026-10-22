@@ -1,0 +1,38 @@
+[
+  {
+    "Artikelnummer": "ART-10492",
+    "Bezeichnung": "Kugellager 12mm Stahl",
+    "Kategorie": "Mechanik",
+    "Bestand": "250",
+    "Letzte_Lieferung": "2026-10-14",
+    "Lieferant_Kontakt": "+49 89 1234567",
+    "Status": "Aktiv"
+  },
+  {
+    "Artikelnummer": "ART-20811",
+    "Bezeichnung": "Hydraulikventil 24V DC",
+    "Kategorie": "Pneumatik",
+    "Bestand": "45",
+    "Letzte_Lieferung": "2026-09-28",
+    "Lieferant_Kontakt": "+49 171 8899001",
+    "Status": "Aktiv"
+  },
+  {
+    "Artikelnummer": "ART-33100",
+    "Bezeichnung": "Dichtungsring NBR 40",
+    "Kategorie": "Dichtungen",
+    "Bestand": "1200",
+    "Letzte_Lieferung": "2026-10-02",
+    "Lieferant_Kontakt": "supplier@seal-corp.de",
+    "Status": "Lieferbar"
+  },
+  {
+    "Artikelnummer": "ART-45091",
+    "Bezeichnung": "Servoantrieb AC 400W",
+    "Kategorie": "Antriebstechnik",
+    "Bestand": "12",
+    "Letzte_Lieferung": "2026-08-15",
+    "Lieferant_Kontakt": "+49 711 554433",
+    "Status": "Bestellt"
+  }
+]
