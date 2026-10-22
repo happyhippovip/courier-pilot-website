@@ -500,6 +500,7 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">V</kbd> Ansicht</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">K</kbd> Kiosk</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">C</kbd> Leeren</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">O</kbd> Scroll</span>
       <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal">
         <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
       </button>
@@ -553,6 +554,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">C</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Audit-Log leeren &amp; Filter zurücksetzen</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">O</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Auto-Scroll im Audit-Log an- / ausschalten</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
@@ -1176,6 +1181,9 @@
     } else if (key === 'c' || key === 'C') {
       e.preventDefault();
       clearConsoleLog();
+    } else if (key === 'o' || key === 'O') {
+      e.preventDefault();
+      toggleAutoScrollFromKey();
     } else if (key === '?' || key === 'F1') {
       e.preventDefault();
       toggleHelpModal();
@@ -1365,6 +1373,13 @@
     } catch (e) {
       // Ignore localStorage restrictions in sandboxed environments
     }
+  }
+
+  function toggleAutoScrollFromKey() {
+    const chk = document.getElementById('chkAutoScroll');
+    if (!chk) return;
+    chk.checked = !chk.checked;
+    toggleAutoScroll(chk.checked);
   }
 
   function initAutoScrollPreference() {
