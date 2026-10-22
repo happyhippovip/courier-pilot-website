@@ -1129,20 +1129,58 @@
       highlightStep(step.num, isFail ? 'failed' : 'done');
       showReceipt(scen);
       document.getElementById('demoStatus').textContent = scen.resultOk ? 'Status: Erfolgreich verifiziert ✓' : 'Status: Fehler aufgedeckt (Fail-Closed) ✗';
-      document.getElementById('btnStart').disabled = false;
-      document.getElementById('btnStart').textContent = '↺ Erneut vorführen';
+      updatePlayButtons('finished');
       stopAuto();
     } else {
       document.getElementById('demoStatus').textContent = `Status: Schritt ${currentStepIndex} von ${scen.steps.length}...`;
     }
   }
 
+  function updatePlayButtons(state) {
+    const mainBtn = document.getElementById('btnStart');
+    const autoBtn = document.getElementById('btnAutoRunScenario');
+    if (state === 'running') {
+      if (mainBtn) { mainBtn.disabled = false; mainBtn.textContent = '⏸ Pausieren'; }
+      if (autoBtn) { autoBtn.textContent = '⏸ Pausieren'; }
+    } else if (state === 'paused') {
+      if (mainBtn) { mainBtn.disabled = false; mainBtn.textContent = '▶ Fortsetzen'; }
+      if (autoBtn) { autoBtn.textContent = '▶ Fortsetzen'; }
+    } else if (state === 'finished') {
+      if (mainBtn) { mainBtn.disabled = false; mainBtn.textContent = '↺ Erneut vorführen'; }
+      if (autoBtn) { autoBtn.textContent = '↺ Erneut vorführen'; }
+    } else if (state === 'ready') {
+      if (mainBtn) { mainBtn.disabled = false; mainBtn.textContent = '▶ 30s Demo starten'; }
+      if (autoBtn) { autoBtn.textContent = '▶ Szenario abspielen'; }
+    }
+  }
+
   function runDemo() {
+    const scen = SCENARIOS[currentScenarioKey];
+    if (!scen) return;
+
+    // 1. If currently running -> Pause
+    if (timerId !== null) {
+      stopAuto();
+      updatePlayButtons('paused');
+      document.getElementById('demoStatus').textContent = `Status: Pausiert (Schritt ${currentStepIndex} von ${scen.steps.length})`;
+      return;
+    }
+
+    // 2. If paused mid-stream -> Resume without resetting
+    if (currentStepIndex > 0 && currentStepIndex < scen.steps.length) {
+      updatePlayButtons('running');
+      document.getElementById('demoStatus').textContent = `Demo läuft (Schritt ${currentStepIndex} von ${scen.steps.length})...`;
+      timerId = setInterval(() => {
+        advanceStep();
+      }, 4500);
+      return;
+    }
+
+    // 3. Otherwise (ready or finished) -> Start fresh
     resetDemo();
-    document.getElementById('btnStart').disabled = true;
+    updatePlayButtons('running');
     document.getElementById('demoStatus').textContent = 'Demo läuft (30 Sekunden)...';
     
-    // Automatisch alle 4,5 Sekunden einen Schritt durchführen
     advanceStep();
     timerId = setInterval(() => {
       advanceStep();
@@ -1150,8 +1188,12 @@
   }
 
   function stepDemo() {
+    const scen = SCENARIOS[currentScenarioKey];
     stopAuto();
     advanceStep();
+    if (currentStepIndex > 0 && currentStepIndex < (scen ? scen.steps.length : 6)) {
+      updatePlayButtons('paused');
+    }
   }
 
   function stopAuto() {
@@ -1770,8 +1812,7 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const bar = document.getElementById('progressBar');
     if (bar) bar.setAttribute('aria-valuenow', 0);
     document.getElementById('artifactCard').classList.remove('show');
-    document.getElementById('btnStart').disabled = false;
-    document.getElementById('btnStart').textContent = '▶ 30s Demo starten';
+    updatePlayButtons('ready');
     document.getElementById('demoStatus').textContent = 'Status: Bereit';
     const scLbl = document.getElementById('lblCopyScenarioReceipt');
     if (scLbl) scLbl.textContent = 'Zertifikat kopieren';
