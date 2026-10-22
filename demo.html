@@ -418,6 +418,12 @@
           Dieser Nachweis garantiert mathematisch, dass das Arbeitsergebnis unverändert den definierten Prüfkriterien entspricht. Keine Halluzinationen, kein Durchwinken.
         </p>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+          <button class="btn-sub" id="btnCopyScenarioReceipt" onclick="copyScenarioReceipt()" style="font-size:.78rem;padding:.3rem .65rem;display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;">
+            <span>📋</span> <span id="lblCopyScenarioReceipt">Zertifikat kopieren</span>
+          </button>
+          <button class="btn-sub" id="btnDownloadScenarioReceipt" onclick="downloadScenarioReceipt()" style="font-size:.78rem;padding:.3rem .65rem;display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;">
+            <span>📥</span> <span>Zertifikat (.json)</span>
+          </button>
           <a href="/sample-receipt.json" download="sample-receipt.json" class="btn-sub" style="font-size:.78rem;padding:.3rem .65rem;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;">
             <span>📥</span> <span>Muster-Zertifikat (.json)</span>
           </a>
@@ -857,6 +863,34 @@
     }).catch(err => {
       alert("Fehler beim Kopieren: " + err);
     });
+  }
+
+  function copyScenarioReceipt() {
+    const scen = SCENARIOS[currentScenarioKey];
+    if (!scen || !scen.receipt) return;
+    const lbl = document.getElementById('lblCopyScenarioReceipt');
+    const jsonStr = JSON.stringify(scen.receipt, null, 2);
+    navigator.clipboard.writeText(jsonStr).then(() => {
+      if (lbl) {
+        const orig = lbl.textContent;
+        lbl.textContent = '✓ Zertifikat kopiert!';
+        setTimeout(() => { lbl.textContent = orig; }, 2500);
+      }
+    }).catch(err => {
+      alert("Fehler beim Kopieren: " + err);
+    });
+  }
+
+  function downloadScenarioReceipt() {
+    const scen = SCENARIOS[currentScenarioKey];
+    if (!scen || !scen.receipt) return;
+    const blob = new Blob([JSON.stringify(scen.receipt, null, 2)], { type: "application/json;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `receipt-${currentScenarioKey}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   // Scenario Buttons
@@ -1629,6 +1663,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     document.getElementById('btnStart').disabled = false;
     document.getElementById('btnStart').textContent = '▶ 30s Demo starten';
     document.getElementById('demoStatus').textContent = 'Status: Bereit';
+    const scLbl = document.getElementById('lblCopyScenarioReceipt');
+    if (scLbl) scLbl.textContent = 'Zertifikat kopieren';
   }
 </script>
 </body>
