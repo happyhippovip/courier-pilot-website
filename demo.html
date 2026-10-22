@@ -485,7 +485,7 @@
         <span id="speedIntervalPill" style="font-size:.72rem;font-weight:600;color:var(--cyan);background:rgba(0,212,255,.08);padding:.18rem .45rem;border-radius:10px;border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;gap:.25rem;user-select:none;" title="Aktuelles Schritt-Intervall für automatische Vorführung">⚡ 4.5s/Schritt (1x)</span>
       </div>
       <label style="display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;color:var(--muted);cursor:pointer;user-select:none;">
-        <input type="checkbox" id="chkLoopDemo" style="accent-color:var(--cyan);cursor:pointer;"> Dauerschleife (Kiosk)
+        <input type="checkbox" id="chkLoopDemo" onchange="toggleLoopDemo(this.checked)" style="accent-color:var(--cyan);cursor:pointer;"> Dauerschleife (Kiosk)
       </label>
       <span id="demoStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.9rem;color:var(--muted);margin-left:auto;">Status: Bereit</span>
     </div>
@@ -1094,9 +1094,11 @@
   window.addEventListener('DOMContentLoaded', checkScenarioHash);
   window.addEventListener('DOMContentLoaded', initAutoScrollPreference);
   window.addEventListener('DOMContentLoaded', initSpeedPreference);
+  window.addEventListener('DOMContentLoaded', initLoopPreference);
   checkScenarioHash();
   initAutoScrollPreference();
   initSpeedPreference();
+  initLoopPreference();
 
   // Global Keyboard Navigation for Live Demo & Presenter Mode
   window.addEventListener('keydown', (e) => {
@@ -1346,6 +1348,26 @@
       const saved = localStorage.getItem('courier_demo_autoscroll');
       if (saved !== null) {
         const chk = document.getElementById('chkAutoScroll');
+        if (chk) chk.checked = (saved === 'true');
+      }
+    } catch (e) {
+      // Ignore localStorage restrictions in sandboxed environments
+    }
+  }
+
+  function toggleLoopDemo(enabled) {
+    try {
+      localStorage.setItem('courier_demo_loop', enabled ? 'true' : 'false');
+    } catch (e) {
+      // Ignore localStorage restrictions in sandboxed environments
+    }
+  }
+
+  function initLoopPreference() {
+    try {
+      const saved = localStorage.getItem('courier_demo_loop');
+      if (saved !== null) {
+        const chk = document.getElementById('chkLoopDemo');
         if (chk) chk.checked = (saved === 'true');
       }
     } catch (e) {
