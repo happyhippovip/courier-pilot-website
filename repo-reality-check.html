@@ -272,7 +272,15 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;align-items:stretch;">
         <!-- Question Form -->
         <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.4rem;">
-          <h3 style="font-size:1.1rem;margin-top:0;margin-bottom:1rem;color:var(--ink);">Repository-Profil eingeben:</h3>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
+            <h3 style="font-size:1.1rem;margin:0;color:var(--ink);">Repository-Profil eingeben:</h3>
+            <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;">
+              <span style="font-size:.75rem;color:var(--muted);font-weight:600;">Presets:</span>
+              <button type="button" class="btn" id="btnQcPreset1" onclick="applyQuickCheckPreset(0)" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 1: Startup MVP laden (Taste 1)">1. Startup (42)</button>
+              <button type="button" class="btn" id="btnQcPreset2" onclick="applyQuickCheckPreset(1)" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 2: Enterprise Core laden (Taste 2)">2. Enterprise (89)</button>
+              <button type="button" class="btn" id="btnQcPreset3" onclick="applyQuickCheckPreset(2)" style="font-size:.75rem;padding:.2rem .5rem;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;" title="Profil 3: Legacy Bridge laden (Taste 3)">3. Legacy (19)</button>
+            </div>
+          </div>
 
           <div style="margin-bottom:1rem;">
             <label for="qcCi" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">1. CI/CD Pipeline &amp; Automatisierung:</label>
@@ -636,6 +644,11 @@
       document.body.removeChild(ta);
     }
 
+    function applyQuickCheckPreset(idx) {
+      selectScenario(idx);
+      applyToQuickCheck();
+    }
+
     function applyToQuickCheck() {
       const s = SCENARIOS[currentScenarioIdx];
       document.getElementById("qcCi").value = s.qc.ci;
@@ -644,6 +657,21 @@
       document.getElementById("qcTodo").value = s.qc.todo;
       document.getElementById("qcSec").value = s.qc.sec;
       calculateRealityScore();
+
+      for (let i = 0; i < 3; i++) {
+        const btn = document.getElementById("btnQcPreset" + (i + 1));
+        if (btn) {
+          if (i === currentScenarioIdx) {
+            btn.style.borderColor = "var(--cyan)";
+            btn.style.color = "var(--cyan)";
+            btn.style.fontWeight = "700";
+          } else {
+            btn.style.borderColor = "var(--line)";
+            btn.style.color = "var(--ink)";
+            btn.style.fontWeight = "400";
+          }
+        }
+      }
     }
 
     function calculateRealityScore() {
@@ -745,6 +773,15 @@
       document.getElementById('qcTodo').value = "15";
       document.getElementById('qcSec').value = "15";
       calculateRealityScore();
+
+      for (let i = 0; i < 3; i++) {
+        const btn = document.getElementById("btnQcPreset" + (i + 1));
+        if (btn) {
+          btn.style.borderColor = "var(--line)";
+          btn.style.color = "var(--ink)";
+          btn.style.fontWeight = "400";
+        }
+      }
       const btn = document.getElementById('qcResetBtn');
       if (btn) {
         const orig = btn.textContent;
