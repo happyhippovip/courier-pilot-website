@@ -203,6 +203,26 @@
           Need a full report example? See our real-world <a href="/repo-reality-check.html#beispiel">Sample Audit Report JSON</a> or explore live pipeline events in the <a href="/demo.html">Interactive Demo</a>.
         </p>
       </div>
+
+      <div class="report" role="region" aria-label="Sample Receipt Instance" style="margin-top:1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
+          <h3 style="margin:0;">Sample Receipt Instance (<code>sample-receipt.json</code>)</h3>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <button id="copy-sample-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copySampleReceipt()">📋 Copy Sample JSON</button>
+            <a href="/sample-receipt.json" download="sample-receipt.json" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;text-decoration:none;">📥 Download Sample (.json)</a>
+          </div>
+        </div>
+        <pre><code id="sample-code">{
+  "receipt_id": "rcpt-c8f912ae-4b01-49fa-91b3-1934ba098def",
+  "item_id": "wq-task-20261022-0042",
+  "worker_id": "mac-physical-worker-01",
+  "timestamp": "2026-10-22T08:55:00Z",
+  "status": "SUCCESS",
+  "fingerprint": "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e",
+  "tests_passed": 19,
+  "execution_duration_ms": 1420.5
+}</code></pre>
+      </div>
     </div>
   </section>
 
@@ -249,6 +269,24 @@ function copyReceiptSchema() {
     if (btn) {
       const orig = btn.innerHTML;
       btn.innerHTML = '✓ Schema copied!';
+      setTimeout(() => { btn.innerHTML = orig; }, 2500);
+    }
+  }).catch(() => {
+    if (btn) {
+      btn.innerText = 'Fehler beim Kopieren';
+    }
+  });
+}
+
+function copySampleReceipt() {
+  const code = document.getElementById('sample-code');
+  if (!code) return;
+  const text = code.innerText || code.textContent;
+  const btn = document.getElementById('copy-sample-btn');
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✓ Sample copied!';
       setTimeout(() => { btn.innerHTML = orig; }, 2500);
     }
   }).catch(() => {

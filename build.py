@@ -27,7 +27,7 @@ PAGES = [
     "privacy.html",
     "404.html",
 ]
-ASSETS = ["styles.css", "favicon.svg", "apple-touch-icon.png", "og-cover.png", "robots.txt", "sitemap.xml", "receipt.schema.json"]
+ASSETS = ["styles.css", "favicon.svg", "apple-touch-icon.png", "og-cover.png", "robots.txt", "sitemap.xml", "receipt.schema.json", "sample-receipt.json"]
 OFFER_PAGE = "repo-reality-check.html"
 ORDER_BLOCK_BEGIN = "<!-- BEGIN:order-block -->"
 ORDER_BLOCK_END = "<!-- END:order-block -->"

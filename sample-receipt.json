@@ -1,0 +1,10 @@
+{
+  "receipt_id": "rcpt-c8f912ae-4b01-49fa-91b3-1934ba098def",
+  "item_id": "wq-task-20261022-0042",
+  "worker_id": "mac-physical-worker-01",
+  "timestamp": "2026-10-22T08:55:00Z",
+  "status": "SUCCESS",
+  "fingerprint": "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e",
+  "tests_passed": 19,
+  "execution_duration_ms": 1420.5
+}
