@@ -1093,8 +1093,10 @@
   window.addEventListener('hashchange', checkScenarioHash);
   window.addEventListener('DOMContentLoaded', checkScenarioHash);
   window.addEventListener('DOMContentLoaded', initAutoScrollPreference);
+  window.addEventListener('DOMContentLoaded', initSpeedPreference);
   checkScenarioHash();
   initAutoScrollPreference();
+  initSpeedPreference();
 
   // Global Keyboard Navigation for Live Demo & Presenter Mode
   window.addEventListener('keydown', (e) => {
@@ -1558,12 +1560,36 @@
 
   function changeDemoSpeed() {
     demoSpeed = getDemoSpeed();
+    try {
+      localStorage.setItem('courier_demo_speed', String(demoSpeed));
+    } catch (e) {
+      // Ignore localStorage restrictions in sandboxed environments
+    }
     updateSpeedIndicator();
     if (timerId !== null) {
       clearInterval(timerId);
       timerId = setInterval(() => {
         advanceStep();
       }, demoSpeed);
+    }
+  }
+
+  function initSpeedPreference() {
+    try {
+      const saved = localStorage.getItem('courier_demo_speed');
+      if (saved) {
+        const val = parseInt(saved, 10);
+        if (!isNaN(val) && val > 0) {
+          const sel = document.getElementById('speedSelect');
+          if (sel) {
+            sel.value = String(val);
+          }
+          demoSpeed = val;
+          updateSpeedIndicator();
+        }
+      }
+    } catch (e) {
+      // Ignore localStorage restrictions in sandboxed environments
     }
   }
 
