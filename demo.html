@@ -378,7 +378,7 @@
       <button class="scenario-btn is-active" id="scenario-spreadsheet" data-scenario="spreadsheet" aria-pressed="true">1. Datenbereinigung &amp; Schema-Prüfung (Erfolg)</button>
       <button class="scenario-btn" id="scenario-security" data-scenario="security" aria-pressed="false">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
       <button class="scenario-btn" id="scenario-rejection" data-scenario="rejection" aria-pressed="false">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
-      <button class="btn-sub" id="btnAutoRunScenario" style="margin-left:auto;font-size:.82rem;padding:.35rem .75rem;color:var(--cyan);border-color:rgba(56,214,230,.35);" onclick="runDemo()">▶ Szenario abspielen</button>
+      <button class="btn-sub" id="btnAutoRunScenario" title="Szenario abspielen oder pausieren (Taste P)" style="margin-left:auto;font-size:.82rem;padding:.35rem .75rem;color:var(--cyan);border-color:rgba(56,214,230,.35);" onclick="runDemo()">▶ Szenario abspielen</button>
       <button class="btn-sub" id="btnCopyScenarioLink" style="font-size:.82rem;padding:.35rem .75rem;" onclick="copyScenarioLink()">🔗 Link teilen</button>
     </div>
 
@@ -506,6 +506,7 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">Z</kbd> Kopieren</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">F</kbd> Suche</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">U</kbd> Link</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">P</kbd> Play</span>
       <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal" aria-expanded="false">
         <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
       </button>
@@ -579,6 +580,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">U</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Direktlink zum aktuellen Szenario kopieren</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">P</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Szenario abspielen oder pausieren (Play/Pause)</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
@@ -1180,7 +1185,7 @@
     }
 
     const key = e.key;
-    if (key === 's' || key === 'S' || key === 'a' || key === 'A') {
+    if (key === 's' || key === 'S' || key === 'a' || key === 'A' || key === 'p' || key === 'P') {
       e.preventDefault();
       const btn = document.getElementById('btnStart');
       if (btn && !btn.disabled) {
