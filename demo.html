@@ -357,32 +357,32 @@
 
     <!-- Stepper Pipeline -->
     <div class="pipeline" id="pipeline" role="list" aria-label="Ablaufschritte der Verifikationspipeline">
-      <div class="pipe-step" id="step-1" role="listitem" tabindex="0" title="Phase 1: Anfrage &amp; Zielvertrag — Definition der Zielkriterien, Scope-Grenzen und verifizierbaren Akzeptanzbedingungen.">
+      <div class="pipe-step" id="step-1" role="listitem" tabindex="0" title="Phase 1: Anfrage &amp; Zielvertrag — Definition der Zielkriterien, Scope-Grenzen und verifizierbaren Akzeptanzbedingungen." onclick="jumpToStep(1)" onkeydown="if(event.key==='Enter'||event.key===' ')jumpToStep(1)">
         <span class="step-num">1</span>
         <span class="step-title">Anfrage</span>
         <span class="step-desc">Zielvertrag &amp; Prüfkriterien festlegen</span>
       </div>
-      <div class="pipe-step" id="step-2" role="listitem" tabindex="0" title="Phase 2: Dispatcher &amp; Lease — Kryptografische Worker-Registrierung, Lease-Zuweisung und Token-Boundaries.">
+      <div class="pipe-step" id="step-2" role="listitem" tabindex="0" title="Phase 2: Dispatcher &amp; Lease — Kryptografische Worker-Registrierung, Lease-Zuweisung und Token-Boundaries." onclick="jumpToStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')jumpToStep(2)">
         <span class="step-num">2</span>
         <span class="step-title">Dispatcher</span>
         <span class="step-desc">Geprüfter Worker &amp; Lease-Sicherung</span>
       </div>
-      <div class="pipe-step" id="step-3" role="listitem" tabindex="0" title="Phase 3: Autonome Agent-Ausführung — Isolierte Aufgabenausführung und Erzeugung der Zwischen- und Endartefakte.">
+      <div class="pipe-step" id="step-3" role="listitem" tabindex="0" title="Phase 3: Autonome Agent-Ausführung — Isolierte Aufgabenausführung und Erzeugung der Zwischen- und Endartefakte." onclick="jumpToStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')jumpToStep(3)">
         <span class="step-num">3</span>
         <span class="step-title">Agent</span>
         <span class="step-desc">Autonome Ausführung &amp; Datensatzerzeugung</span>
       </div>
-      <div class="pipe-step" id="step-4" role="listitem" tabindex="0" title="Phase 4: Ergebnis-Bereitstellung — Erfassung aller Ergebnisdateien mit SHA-256 Prüfsummen und Erstellung des Arbeitsberichts.">
+      <div class="pipe-step" id="step-4" role="listitem" tabindex="0" title="Phase 4: Ergebnis-Bereitstellung — Erfassung aller Ergebnisdateien mit SHA-256 Prüfsummen und Erstellung des Arbeitsberichts." onclick="jumpToStep(4)" onkeydown="if(event.key==='Enter'||event.key===' ')jumpToStep(4)">
         <span class="step-num">4</span>
         <span class="step-title">Ergebnis</span>
         <span class="step-desc">Artefakt mit SHA-256 Prüfsumme</span>
       </div>
-      <div class="pipe-step" id="step-5" role="listitem" tabindex="0" title="Phase 5: Unabhängiger Verifier — Zero-Trust-Prüfung gegen Zielvertrag; PASS- oder REJECT-Entscheidung ohne Modellvertrauen.">
+      <div class="pipe-step" id="step-5" role="listitem" tabindex="0" title="Phase 5: Unabhängiger Verifier — Zero-Trust-Prüfung gegen Zielvertrag; PASS- oder REJECT-Entscheidung ohne Modellvertrauen." onclick="jumpToStep(5)" onkeydown="if(event.key==='Enter'||event.key===' ')jumpToStep(5)">
         <span class="step-num">5</span>
         <span class="step-title">Verifier</span>
         <span class="step-desc">Unabhängige Abnahme (Zero-Trust)</span>
       </div>
-      <div class="pipe-step" id="step-6" role="listitem" tabindex="0" title="Phase 6: Manipulationssicherer Abschluss — Signiertes Audit-Zertifikat mit kryptografischer Nachweiskette und Protokoll-Siegel.">
+      <div class="pipe-step" id="step-6" role="listitem" tabindex="0" title="Phase 6: Manipulationssicherer Abschluss — Signiertes Audit-Zertifikat mit kryptografischer Nachweiskette und Protokoll-Siegel." onclick="jumpToStep(6)" onkeydown="if(event.key==='Enter'||event.key===' ')jumpToStep(6)">
         <span class="step-num">6</span>
         <span class="step-title">Abschluss</span>
         <span class="step-desc">Manipulationssicherer Nachweis</span>
@@ -1427,6 +1427,51 @@
     stopAuto();
     advanceStep();
     if (currentStepIndex > 0 && currentStepIndex < (scen ? scen.steps.length : 6)) {
+      updatePlayButtons('paused');
+    }
+  }
+
+  function jumpToStep(targetStepNum) {
+    if (targetStepNum < 1 || targetStepNum > 6) return;
+    stopAuto();
+    const scen = SCENARIOS[currentScenarioKey];
+    if (!scen || !scen.steps) return;
+
+    // Reset pipeline step styles
+    for (let i = 1; i <= 6; i++) {
+      const el = document.getElementById(`step-${i}`);
+      if (el) {
+        el.classList.remove('is-active', 'is-done', 'is-failed');
+        el.removeAttribute('aria-current');
+      }
+    }
+
+    // Set previous steps to done/failed
+    for (let i = 1; i < targetStepNum; i++) {
+      const prevStep = scen.steps[i - 1];
+      const isPrevFail = !scen.resultOk && prevStep.num >= 5;
+      highlightStep(i, isPrevFail ? 'failed' : 'done');
+    }
+
+    // Highlight target step
+    const targetIdx = targetStepNum - 1;
+    const targetStep = scen.steps[targetIdx];
+    const isTargetFail = !scen.resultOk && targetStep.num >= 5;
+    const isLast = targetStepNum === scen.steps.length;
+
+    highlightStep(targetStep.num, isLast ? (isTargetFail ? 'failed' : 'done') : (isTargetFail ? 'failed' : 'active'));
+    log(targetStep.tag, `[DIREKTSPRUNG] Phase ${targetStep.num}: ${targetStep.msg}`);
+    updateProgress(targetStepNum, scen.steps.length);
+
+    currentStepIndex = targetStepNum;
+
+    if (isLast) {
+      showReceipt(scen);
+      document.getElementById('demoStatus').textContent = scen.resultOk ? 'Status: Erfolgreich verifiziert ✓' : 'Status: Fehler aufgedeckt (Fail-Closed) ✗';
+      updatePlayButtons('finished');
+    } else {
+      document.getElementById('artifactCard').classList.remove('show');
+      document.getElementById('demoStatus').textContent = `Status: Schritt ${targetStepNum} von ${scen.steps.length} (Direktsprung)`;
       updatePlayButtons('paused');
     }
   }
