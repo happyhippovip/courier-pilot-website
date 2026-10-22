@@ -29,6 +29,7 @@
     <nav class="nav" id="offer-nav" aria-label="Primary">
       <a class="nav-close" href="#angebot">Schließen</a>
       <a href="#lieferumfang">Bericht</a>
+      <a href="#schnelltest">Schnelltest</a>
       <a href="#beispiel">Beispiel</a>
       <a href="#ablauf">Ablauf</a>
       <a href="#faq">FAQ</a>
@@ -123,6 +124,160 @@
       </article>
     </div>
   </section>
+
+    <section class="section" id="schnelltest" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.5rem 0;">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+        <div>
+          <h2>Reality-Score Schnelltest (30s Selbst-Check)</h2>
+          <p class="section-lede" style="margin:0;">Beantworten Sie 5 kurze Fragen, um Ihren geschätzten Reality-Score sofort im Browser zu berechnen (100% anonym, kein Upload).</p>
+        </div>
+        <span class="chip chip-ok" style="font-weight:700;">Interaktiver Rechner</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;align-items:stretch;">
+        <!-- Question Form -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.4rem;">
+          <h3 style="font-size:1.1rem;margin-top:0;margin-bottom:1rem;color:var(--ink);">Repository-Profil eingeben:</h3>
+
+          <div style="margin-bottom:1rem;">
+            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">1. CI/CD Pipeline &amp; Automatisierung:</label>
+            <select id="qcCi" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+              <option value="25">Grüne CI-Pipeline läuft bei jedem Push / PR (+25 Pkt)</option>
+              <option value="10">CI vorhanden, schlägt aber häufig fehl oder läuft unregelmäßig (+10 Pkt)</option>
+              <option value="0">Keine CI-Pipeline eingerichtet (0 Pkt)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">2. Testabdeckung (Coverage):</label>
+            <select id="qcTest" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+              <option value="25">&gt; 60% Zeilenabdeckung mit soliden Unit-/Integrationstests (+25 Pkt)</option>
+              <option value="15">20% – 60% Abdeckung, Kernpfade teilweise getestet (+15 Pkt)</option>
+              <option value="5">Wenige Alibi-Tests oder &lt; 20% Abdeckung (+5 Pkt)</option>
+              <option value="0">Keine automatisierten Tests vorhanden (0 Pkt)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">3. Abhängigkeiten &amp; Version-Pinning:</label>
+            <select id="qcDeps" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+              <option value="20">Lockfile vorhanden &amp; alle Versionen strikt gepinnt (+20 Pkt)</option>
+              <option value="10">Lockfile vorhanden, aber Versionen mit Wildcards/Ranges (+10 Pkt)</option>
+              <option value="0">Kein Lockfile oder unversionierte Abhängigkeiten (0 Pkt)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">4. TODO &amp; FIXME Kommentare:</label>
+            <select id="qcTodo" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+              <option value="15">&lt; 10 offene TODOs im gesamten Codebase (+15 Pkt)</option>
+              <option value="8">10 – 50 offene TODOs / Altlasten (+8 Pkt)</option>
+              <option value="0">&gt; 50 offene TODOs oder ungelöste Baustellen (0 Pkt)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">5. Sicherheits- &amp; Rechte-Hygiene:</label>
+            <select id="qcSec" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+              <option value="15">Keine Secrets im Git-Verlauf, strenge Rechte (+15 Pkt)</option>
+              <option value="8">Teilweise geprüft, .env ignoriert (+8 Pkt)</option>
+              <option value="0">Ungeprüft / Secrets im Verlauf nicht ausgeschlossen (0 Pkt)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Score Result Box -->
+        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <span style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.4rem;">Geschätztes Ergebnis:</span>
+            <div style="display:flex;align-items:baseline;gap:.6rem;margin-bottom:.8rem;">
+              <span id="qcScoreNumber" style="font-size:3rem;font-weight:800;color:#38e68e;line-height:1;">100</span>
+              <span style="font-size:1.1rem;color:var(--muted);font-weight:600;">/ 100 Reality-Score</span>
+            </div>
+
+            <div id="qcBadge" style="display:inline-block;padding:.3rem .8rem;border-radius:999px;font-size:.82rem;font-weight:700;background:rgba(56,230,142,.15);color:#38e68e;border:1px solid #38e68e;margin-bottom:1rem;">
+              Exzellente Repository-Disziplin
+            </div>
+
+            <p id="qcSummary" style="font-size:.9rem;line-height:1.5;color:var(--ink);margin-bottom:1rem;">
+              Ihr Repository erfüllt die zentralen Standards für automatisierte Ausführungen und autonome Agenten.
+            </p>
+
+            <div style="border-top:1px solid var(--line);padding-top:.8rem;">
+              <span style="font-size:.82rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.4rem;">Empfohlene nächste Schritte:</span>
+              <ul id="qcSteps" style="margin:0;padding-left:1.2rem;font-size:.85rem;color:var(--ink);line-height:1.5;">
+                <li>Regelmäßige Monotonic-Regression-Ratchets beibehalten.</li>
+                <li>CI-Pipeline gegen Flakes absichern.</li>
+                <li>Audit-Hashes bei jedem Release archivieren.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;border-top:1px solid var(--line);padding-top:1rem;">
+            <p style="font-size:.82rem;color:var(--muted);margin-bottom:.6rem;">Möchten Sie eine unbestechliche, detaillierte 48h-Analyse Ihres echten Git-Repos?</p>
+            <a class="btn" href="#angebot" style="display:block;text-align:center;font-size:.9rem;padding:.5rem 1rem;">
+              Echten 48h-Report anfordern (5 EUR)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function calculateRealityScore() {
+      const ci = parseInt(document.getElementById('qcCi').value, 10);
+      const test = parseInt(document.getElementById('qcTest').value, 10);
+      const deps = parseInt(document.getElementById('qcDeps').value, 10);
+      const todo = parseInt(document.getElementById('qcTodo').value, 10);
+      const sec = parseInt(document.getElementById('qcSec').value, 10);
+      const total = ci + test + deps + todo + sec;
+
+      const numEl = document.getElementById('qcScoreNumber');
+      const badgeEl = document.getElementById('qcBadge');
+      const sumEl = document.getElementById('qcSummary');
+      const stepsEl = document.getElementById('qcSteps');
+
+      numEl.textContent = total;
+
+      const steps = [];
+      if (ci < 25) steps.push("CI-Pipeline reparieren und als Pflicht-Check vor Merges erzwingen.");
+      if (test < 15) steps.push("Kritische Kernpfade und Abrechnungslogik mit automatisierten Tests abdecken.");
+      if (deps < 20) steps.push("Lockfile committen und feste Versionen in package.json/pyproject.toml pinnen.");
+      if (todo < 15) steps.push("Offene TODOs/FIXMEs sichten und in Issues überführen oder beheben.");
+      if (sec < 15) steps.push("Git-Historie mit Gitleaks/Trufflehog auf versehentlich committete API-Keys scannen.");
+      if (steps.length === 0) {
+        steps.push("Regelmäßige Monotonic-Regression-Ratchets beibehalten.");
+        steps.push("Audit-Hashes bei jedem Release im Ledger archivieren.");
+      }
+
+      stepsEl.innerHTML = steps.slice(0, 3).map(s => `<li>${s}</li>`).join("");
+
+      if (total >= 80) {
+        numEl.style.color = "#38e68e";
+        badgeEl.style.color = "#38e68e";
+        badgeEl.style.borderColor = "#38e68e";
+        badgeEl.style.background = "rgba(56,230,142,.15)";
+        badgeEl.textContent = "Exzellente Repository-Disziplin";
+        sumEl.textContent = "Ihr Repository erfüllt die zentralen Standards für automatisierte Ausführungen und autonome Agenten.";
+      } else if (total >= 50) {
+        numEl.style.color = "var(--gold)";
+        badgeEl.style.color = "var(--gold)";
+        badgeEl.style.borderColor = "var(--gold)";
+        badgeEl.style.background = "rgba(217,164,65,.15)";
+        badgeEl.textContent = "Mittleres Risiko · Ausbaufähig";
+        sumEl.textContent = "Typische CI- oder Test-Schulden. Autonome KI-Agenten neigen in dieser Umgebung zu Halluzinationen und Drift.";
+      } else {
+        numEl.style.color = "#ef4444";
+        badgeEl.style.color = "#ef4444";
+        badgeEl.style.borderColor = "#ef4444";
+        badgeEl.style.background = "rgba(239,68,68,.15)";
+        badgeEl.textContent = "Kritisches Drift-Risiko";
+        sumEl.textContent = "Hohe Wahrscheinlichkeit für unbemerkte Regressionen, fehlschlagende Builds und Sicherheitslecks.";
+      }
+    }
+  </script>
 
   <section class="section" id="ablauf">
     <div class="wrap">
