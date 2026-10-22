@@ -554,6 +554,7 @@
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
             <button class="btn-sub" id="btnCopyCSV" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanCSV()">📋 CSV kopieren</button>
             <button class="btn-sub" id="btnCopyJSON" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanJSON()">📋 JSON kopieren</button>
+            <button class="btn-sub" id="btnCopyReceipt" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyReceiptJSON()">📋 Zertifikat kopieren</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanCSV()">📥 Bereinigte CSV</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanJSON()">📥 Bereinigtes JSON</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadReceiptJSON()">📜 Audit-Zertifikat (JSON)</button>
@@ -610,6 +611,7 @@
         <a class="btn-sub" href="/repo-reality-check.html#schnelltest" style="text-decoration:none;font-weight:700;color:var(--cyan);border-color:rgba(56,214,230,.35);">⚡ 30s Schnelltest</a>
         <a class="btn-sub" href="/repo-reality-check.html#beispiel" style="text-decoration:none;">📊 Beispiel-Report</a>
         <a class="btn-sub" href="/repo-reality-check.html" style="text-decoration:none;">Angebot ansehen &rarr;</a>
+        <a class="btn-sub" href="/developers.html#cli" style="text-decoration:none;">🛠️ CLI & CI/CD Gate</a>
       </div>
     </div>
   </section>
@@ -1442,6 +1444,21 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
       if (btn) {
         const orig = btn.innerHTML;
         btn.innerHTML = '✓ CSV kopiert!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2500);
+      }
+    }).catch(err => {
+      alert("Fehler beim Kopieren: " + err);
+    });
+  }
+
+  function copyReceiptJSON() {
+    if (!lastReceipt) return;
+    const btn = document.getElementById('btnCopyReceipt');
+    const jsonStr = JSON.stringify(lastReceipt, null, 2);
+    navigator.clipboard.writeText(jsonStr).then(() => {
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ Zertifikat kopiert!';
         setTimeout(() => { btn.innerHTML = orig; }, 2500);
       }
     }).catch(err => {
