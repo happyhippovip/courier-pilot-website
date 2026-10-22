@@ -411,6 +411,10 @@
             <option value="intake">Intake (Anfrage)</option>
           </select>
         </label>
+        <label for="searchConsoleLog" style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;">
+          Suche:
+          <input type="search" id="searchConsoleLog" placeholder="Keyword..." oninput="filterConsoleLogs()" aria-label="Audit-Log durchsuchen" style="background:#0c1120;border:1px solid var(--line);color:var(--ink);padding:.2rem .45rem;border-radius:4px;font-size:.75rem;width:115px;outline:none;">
+        </label>
         <label style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;user-select:none;">
           <input type="checkbox" id="chkAutoScroll" checked style="accent-color:var(--cyan);cursor:pointer;"> Auto-Scroll
         </label>
@@ -1122,14 +1126,18 @@
 
   function filterConsoleLogs() {
     const sel = document.getElementById('filterConsoleTag');
-    if (!sel) return;
-    const filterVal = sel.value.toLowerCase();
+    const filterVal = sel ? sel.value.toLowerCase() : 'all';
+    const searchInput = document.getElementById('searchConsoleLog');
+    const query = (searchInput && searchInput.value) ? searchInput.value.trim().toLowerCase() : '';
     const box = document.getElementById('consoleBox');
     if (!box) return;
     const lines = box.querySelectorAll('.log-line');
     lines.forEach(l => {
       const tag = (l.getAttribute('data-tag') || '').toLowerCase();
-      if (filterVal === 'all' || tag === filterVal) {
+      const text = (l.textContent || '').toLowerCase();
+      const matchTag = (filterVal === 'all' || tag === filterVal);
+      const matchQuery = (!query || text.includes(query));
+      if (matchTag && matchQuery) {
         l.style.display = '';
       } else {
         l.style.display = 'none';
@@ -1151,7 +1159,12 @@
     `;
 
     const sel = document.getElementById('filterConsoleTag');
-    if (sel && sel.value !== 'all' && tag.toLowerCase() !== sel.value) {
+    const filterVal = sel ? sel.value.toLowerCase() : 'all';
+    const searchInput = document.getElementById('searchConsoleLog');
+    const query = (searchInput && searchInput.value) ? searchInput.value.trim().toLowerCase() : '';
+    const tagMatches = (filterVal === 'all' || tag.toLowerCase() === filterVal);
+    const textMatches = (!query || line.textContent.toLowerCase().includes(query));
+    if (!tagMatches || !textMatches) {
       line.style.display = 'none';
     }
 
@@ -1196,6 +1209,10 @@
       const sel = document.getElementById('filterConsoleTag');
       if (sel && sel.value !== 'all') {
         sel.value = 'all';
+      }
+      const searchInput = document.getElementById('searchConsoleLog');
+      if (searchInput && searchInput.value) {
+        searchInput.value = '';
       }
       log('intake', 'Audit-Log geleert. Bereit für Szenario-Ausführung.');
       const copyLbl = document.getElementById('lblCopyConsoleLogs');
@@ -2117,6 +2134,10 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const selFilter = document.getElementById('filterConsoleTag');
     if (selFilter && selFilter.value !== 'all') {
       selFilter.value = 'all';
+    }
+    const searchInputReset = document.getElementById('searchConsoleLog');
+    if (searchInputReset && searchInputReset.value) {
+      searchInputReset.value = '';
     }
     updatePlayButtons('ready');
     document.getElementById('demoStatus').textContent = 'Status: Bereit';
