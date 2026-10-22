@@ -398,6 +398,9 @@
         <label style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;user-select:none;">
           <input type="checkbox" id="chkAutoScroll" checked style="accent-color:var(--cyan);cursor:pointer;"> Auto-Scroll
         </label>
+        <button type="button" class="btn-sub" id="btnCopyConsoleLogs" onclick="copyConsoleLogs()" style="font-size:.75rem;padding:.2rem .55rem;border-radius:4px;cursor:pointer;">
+          <span id="lblCopyConsoleLogs">📋 Logs kopieren</span>
+        </button>
         <button type="button" class="btn-sub" id="btnClearConsole" onclick="clearConsoleLog()" style="font-size:.75rem;padding:.2rem .55rem;border-radius:4px;cursor:pointer;">
           🧹 Leeren
         </button>
@@ -1013,11 +1016,40 @@
     }
   }
 
+  function copyConsoleLogs() {
+    const box = document.getElementById('consoleBox');
+    if (!box) return;
+    const lines = box.querySelectorAll('.log-line');
+    if (!lines.length) return;
+    
+    const textLines = [];
+    lines.forEach(l => {
+      const time = l.querySelector('.log-time')?.textContent || '';
+      const tag = l.querySelector('.log-tag')?.textContent || '';
+      const msg = l.querySelector('.log-msg')?.textContent || '';
+      textLines.push(`${time} ${tag} ${msg}`.trim());
+    });
+    const logDump = textLines.join('\n');
+    
+    const lbl = document.getElementById('lblCopyConsoleLogs');
+    navigator.clipboard.writeText(logDump).then(() => {
+      if (lbl) {
+        const orig = lbl.textContent;
+        lbl.textContent = '✓ Kopiert!';
+        setTimeout(() => { lbl.textContent = orig; }, 2500);
+      }
+    }).catch(err => {
+      alert("Fehler beim Kopieren: " + err);
+    });
+  }
+
   function clearConsoleLog() {
     const box = document.getElementById('consoleBox');
     if (box) {
       box.innerHTML = '';
       log('intake', 'Audit-Log geleert. Bereit für Szenario-Ausführung.');
+      const copyLbl = document.getElementById('lblCopyConsoleLogs');
+      if (copyLbl) copyLbl.textContent = '📋 Logs kopieren';
     }
   }
 
@@ -1743,6 +1775,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     document.getElementById('demoStatus').textContent = 'Status: Bereit';
     const scLbl = document.getElementById('lblCopyScenarioReceipt');
     if (scLbl) scLbl.textContent = 'Zertifikat kopieren';
+    const copyLogsLbl = document.getElementById('lblCopyConsoleLogs');
+    if (copyLogsLbl) copyLogsLbl.textContent = '📋 Logs kopieren';
   }
 </script>
 </body>
