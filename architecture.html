@@ -85,44 +85,44 @@
     </div>
   </section>
 
-  <section class="section" id="pipeline">
+  <section class="section" id="pipeline" aria-labelledby="pipelineHeading">
     <div class="wrap">
-      <h2>The Execution Pipeline</h2>
+      <h2 id="pipelineHeading">The Execution Pipeline</h2>
       <p class="section-lede">Every unit of work progresses through an explicit, fail-closed state machine.</p>
 
       <div class="report" role="region" aria-label="Execution Flow Diagram">
-        <div class="arch-chain">
-          <div class="arch-node">
+        <div class="arch-chain" role="list" aria-label="Execution Pipeline Steps">
+          <div class="arch-node" role="listitem">
             <span class="arch-badge">01</span>
             <strong>Task Intake</strong>
             <p class="fine">User goal, API dispatch, or mission seed</p>
           </div>
           <div class="arch-arrow" aria-hidden="true">→</div>
-          <div class="arch-node">
+          <div class="arch-node" role="listitem">
             <span class="arch-badge">02</span>
             <strong>Admission Gate</strong>
             <p class="fine">Host lock &amp; resource capacity check</p>
           </div>
           <div class="arch-arrow" aria-hidden="true">→</div>
-          <div class="arch-node">
+          <div class="arch-node" role="listitem">
             <span class="arch-badge">03</span>
             <strong>Provider Router</strong>
             <p class="fine">Qualified runner &amp; cost guardrails</p>
           </div>
           <div class="arch-arrow" aria-hidden="true">→</div>
-          <div class="arch-node">
+          <div class="arch-node" role="listitem">
             <span class="arch-badge">04</span>
             <strong>Execution Ledger</strong>
             <p class="fine">Durable lease &amp; append-only receipts</p>
           </div>
           <div class="arch-arrow" aria-hidden="true">→</div>
-          <div class="arch-node">
+          <div class="arch-node" role="listitem">
             <span class="arch-badge">05</span>
             <strong>Verification</strong>
             <p class="fine">Independent hashes &amp; output assertions</p>
           </div>
           <div class="arch-arrow" aria-hidden="true">→</div>
-          <div class="arch-node">
+          <div class="arch-node" role="listitem">
             <span class="arch-badge">06</span>
             <strong>Reconciliation</strong>
             <p class="fine">Verified result or clean resume point</p>
@@ -136,9 +136,9 @@
     </div>
   </section>
 
-  <section class="section" id="pillars">
+  <section class="section" id="pillars" aria-labelledby="pillarsHeading">
     <div class="wrap">
-      <h2>Core Architectural Pillars</h2>
+      <h2 id="pillarsHeading">Core Architectural Pillars</h2>
       <dl class="caplist">
         <div>
           <dt>1. Admission Control &amp; Host Isolation</dt>
@@ -168,9 +168,9 @@
     </div>
   </section>
 
-  <section class="section" id="evidence">
+  <section class="section" id="evidence" aria-labelledby="evidenceHeading">
     <div class="wrap narrow">
-      <h2>Evidence &amp; Reproducibility</h2>
+      <h2 id="evidenceHeading">Evidence &amp; Reproducibility</h2>
       <p>Courier Symphony adheres to an evidence-first rule: no technical capability is claimed on this site without an automated test suite, an immutable Git SHA, and a reproducible verification record.</p>
       <div class="order-slot" style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;">
         <a class="btn" href="/repo-reality-check.html">See Repo Reality Check</a>
