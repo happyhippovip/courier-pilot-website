@@ -82,6 +82,16 @@
       outline: 2px solid var(--cyan);
       outline-offset: 2px;
     }
+    #btnReceiptTabSummary:focus-visible,
+    #btnReceiptTabRaw:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 1px;
+    }
+    #receiptSummaryView:focus-visible,
+    #receiptBody:focus-visible {
+      outline: 1px solid var(--cyan);
+      outline-offset: 1px;
+    }
     .pipeline {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -628,18 +638,18 @@
       <div class="artifact-header">
         <span id="artifactTitle">Prüfnachweis (Verification Receipt)</span>
         <div style="display:inline-flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
-          <div class="receipt-tab-group" role="tablist" aria-label="Ansicht des Prüfnachweises" style="display:inline-flex;background:#060a14;border:1px solid var(--line);border-radius:6px;padding:2px;">
-            <button type="button" id="btnReceiptTabSummary" role="tab" aria-selected="true" onclick="switchReceiptView('summary')" style="background:var(--cyan);color:#070b16;font-size:.75rem;font-weight:700;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Übersicht</button>
-            <button type="button" id="btnReceiptTabRaw" role="tab" aria-selected="false" onclick="switchReceiptView('raw')" style="background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Raw JSON</button>
+          <div class="receipt-tab-group" role="tablist" aria-label="Ansicht des Prüfnachweises" onkeydown="handleReceiptTabKey(event)" style="display:inline-flex;background:#060a14;border:1px solid var(--line);border-radius:6px;padding:2px;">
+            <button type="button" id="btnReceiptTabSummary" role="tab" aria-selected="true" aria-controls="receiptSummaryView" onclick="switchReceiptView('summary')" style="background:var(--cyan);color:#070b16;font-size:.75rem;font-weight:700;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Übersicht</button>
+            <button type="button" id="btnReceiptTabRaw" role="tab" aria-selected="false" aria-controls="receiptBody" onclick="switchReceiptView('raw')" style="background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Raw JSON</button>
           </div>
           <span id="receiptTimingBadge" style="font-size:.72rem;font-weight:600;color:var(--cyan);background:rgba(0,212,255,.08);padding:.18rem .5rem;border-radius:10px;border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;gap:.3rem;" title="Dauer der deterministischen Verifikation">⏱️ 42 ms</span>
           <span class="receipt-badge ok" id="receiptBadge">✓ BYTE_LEVEL_GOLD_VERIFIED</span>
         </div>
       </div>
-      <div id="receiptSummaryView" style="display:block;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;font-size:.85rem;">
+      <div id="receiptSummaryView" role="tabpanel" aria-labelledby="btnReceiptTabSummary" tabindex="0" style="display:block;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;font-size:.85rem;">
         <!-- Dynamische formatierte Zusammenfassung -->
       </div>
-      <pre id="receiptBody" style="display:none;font-family:ui-monospace,monospace;font-size:.82rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;max-height:240px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;">
+      <pre id="receiptBody" role="tabpanel" aria-labelledby="btnReceiptTabRaw" tabindex="0" style="display:none;font-family:ui-monospace,monospace;font-size:.82rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;max-height:240px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;">
         <!-- Dynamischer Raw-JSON-Inhalt -->
       </pre>
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;">
@@ -1690,6 +1700,28 @@
     if (!rawView) return;
     const isRaw = (rawView.style.display === 'block');
     switchReceiptView(isRaw ? 'summary' : 'raw');
+  }
+
+  function handleReceiptTabKey(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const rawView = document.getElementById('receiptBody');
+      const isRaw = rawView && (rawView.style.display === 'block');
+      const targetMode = isRaw ? 'summary' : 'raw';
+      switchReceiptView(targetMode);
+      const targetBtn = document.getElementById(targetMode === 'raw' ? 'btnReceiptTabRaw' : 'btnReceiptTabSummary');
+      if (targetBtn) targetBtn.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      switchReceiptView('summary');
+      const btn = document.getElementById('btnReceiptTabSummary');
+      if (btn) btn.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      switchReceiptView('raw');
+      const btn = document.getElementById('btnReceiptTabRaw');
+      if (btn) btn.focus();
+    }
   }
 
   function showReceipt(scen) {
