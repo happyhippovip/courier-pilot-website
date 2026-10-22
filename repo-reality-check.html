@@ -267,8 +267,8 @@
           <h3 style="font-size:1.1rem;margin-top:0;margin-bottom:1rem;color:var(--ink);">Repository-Profil eingeben:</h3>
 
           <div style="margin-bottom:1rem;">
-            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">1. CI/CD Pipeline &amp; Automatisierung:</label>
-            <select id="qcCi" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <label for="qcCi" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">1. CI/CD Pipeline &amp; Automatisierung:</label>
+            <select id="qcCi" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="25">Grüne CI-Pipeline läuft bei jedem Push / PR (+25 Pkt)</option>
               <option value="10">CI vorhanden, schlägt aber häufig fehl oder läuft unregelmäßig (+10 Pkt)</option>
               <option value="0">Keine CI-Pipeline eingerichtet (0 Pkt)</option>
@@ -276,8 +276,8 @@
           </div>
 
           <div style="margin-bottom:1rem;">
-            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">2. Testabdeckung (Coverage):</label>
-            <select id="qcTest" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <label for="qcTest" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">2. Testabdeckung (Coverage):</label>
+            <select id="qcTest" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="25">&gt; 60% Zeilenabdeckung mit soliden Unit-/Integrationstests (+25 Pkt)</option>
               <option value="15">20% – 60% Abdeckung, Kernpfade teilweise getestet (+15 Pkt)</option>
               <option value="5">Wenige Alibi-Tests oder &lt; 20% Abdeckung (+5 Pkt)</option>
@@ -286,8 +286,8 @@
           </div>
 
           <div style="margin-bottom:1rem;">
-            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">3. Abhängigkeiten &amp; Version-Pinning:</label>
-            <select id="qcDeps" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <label for="qcDeps" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">3. Abhängigkeiten &amp; Version-Pinning:</label>
+            <select id="qcDeps" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="20">Lockfile vorhanden &amp; alle Versionen strikt gepinnt (+20 Pkt)</option>
               <option value="10">Lockfile vorhanden, aber Versionen mit Wildcards/Ranges (+10 Pkt)</option>
               <option value="0">Kein Lockfile oder unversionierte Abhängigkeiten (0 Pkt)</option>
@@ -295,8 +295,8 @@
           </div>
 
           <div style="margin-bottom:1rem;">
-            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">4. TODO &amp; FIXME Kommentare:</label>
-            <select id="qcTodo" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <label for="qcTodo" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">4. TODO &amp; FIXME Kommentare:</label>
+            <select id="qcTodo" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="15">&lt; 10 offene TODOs im gesamten Codebase (+15 Pkt)</option>
               <option value="8">10 – 50 offene TODOs / Altlasten (+8 Pkt)</option>
               <option value="0">&gt; 50 offene TODOs oder ungelöste Baustellen (0 Pkt)</option>
@@ -304,8 +304,8 @@
           </div>
 
           <div>
-            <label style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;">5. Sicherheits- &amp; Rechte-Hygiene:</label>
-            <select id="qcSec" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
+            <label for="qcSec" style="display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;cursor:pointer;">5. Sicherheits- &amp; Rechte-Hygiene:</label>
+            <select id="qcSec" aria-controls="qcScoreNumber" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;font-size:.85rem;" onchange="calculateRealityScore()">
               <option value="15">Keine Secrets im Git-Verlauf, strenge Rechte (+15 Pkt)</option>
               <option value="8">Teilweise geprüft, .env ignoriert (+8 Pkt)</option>
               <option value="0">Ungeprüft / Secrets im Verlauf nicht ausgeschlossen (0 Pkt)</option>
@@ -314,11 +314,11 @@
         </div>
 
         <!-- Live Score Result Box -->
-        <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between;">
+        <div id="qcLiveResultBox" role="status" aria-live="polite" aria-atomic="true" aria-label="Ergebnis des Reality-Score Schnelltests" style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between;">
           <div>
             <span style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.4rem;">Geschätztes Ergebnis:</span>
             <div style="display:flex;align-items:baseline;gap:.6rem;margin-bottom:.8rem;">
-              <span id="qcScoreNumber" style="font-size:3rem;font-weight:800;color:#38e68e;line-height:1;">100</span>
+              <span id="qcScoreNumber" aria-live="polite" style="font-size:3rem;font-weight:800;color:#38e68e;line-height:1;">100</span>
               <span style="font-size:1.1rem;color:var(--muted);font-weight:600;">/ 100 Reality-Score</span>
             </div>
 
@@ -356,6 +356,12 @@
                 <a class="btn" href="#angebot" style="flex:1;min-width:110px;text-align:center;font-size:.78rem;padding:.4rem .6rem;background:transparent;border:1px solid var(--line);color:var(--muted);">
                   Angebot-Details
                 </a>
+              </div>
+              <div class="qc-shortcut-hints" style="display:flex;align-items:center;gap:.45rem;font-size:.72rem;color:var(--muted);margin-top:.4rem;padding:0 .1rem;">
+                <span>⌨️ Shortcuts:</span>
+                <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.68rem;color:var(--ink);">M</kbd> Kopieren</span>
+                <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.68rem;color:var(--ink);">R</kbd> Reset</span>
+                <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.68rem;color:var(--ink);">1</kbd>-<kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.68rem;color:var(--ink);">3</kbd> Profil</span>
               </div>
             </div>
           </div>
@@ -735,6 +741,41 @@
       );
       window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
     }
+
+    // Global Keyboard Navigation for Repo Reality Check
+    window.addEventListener('keydown', (e) => {
+      const active = document.activeElement;
+      const tag = active ? active.tagName.toLowerCase() : '';
+      if (tag === 'textarea' || tag === 'input' || tag === 'select' || (active && active.isContentEditable)) {
+        return;
+      }
+      if (e.ctrlKey || e.altKey || e.metaKey) {
+        return;
+      }
+      const key = e.key;
+      if (key === '1') {
+        e.preventDefault();
+        selectScenario(0);
+      } else if (key === '2') {
+        e.preventDefault();
+        selectScenario(1);
+      } else if (key === '3') {
+        e.preventDefault();
+        selectScenario(2);
+      } else if (key === 'c' || key === 'C') {
+        e.preventDefault();
+        copySampleReportJson();
+      } else if (key === 'd' || key === 'D') {
+        e.preventDefault();
+        downloadSampleReportJson();
+      } else if (key === 'm' || key === 'M') {
+        e.preventDefault();
+        copyQuickCheckMarkdown();
+      } else if (key === 'r' || key === 'R') {
+        e.preventDefault();
+        resetQuickCheck();
+      }
+    });
   </script>
 
   <section class="section" id="ablauf">
