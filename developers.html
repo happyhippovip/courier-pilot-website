@@ -124,6 +124,68 @@
     </div>
   </section>
 
+  <section class="section" id="receipt-contract">
+    <div class="wrap">
+      <h2>4. The Verifiable Receipt Contract</h2>
+      <p class="section-lede">Courier workers generate machine-checkable verification receipts upon task completion. Every receipt binds execution output to a cryptographic SHA-256 fingerprint.</p>
+
+      <div class="report" role="region" aria-label="Receipt Schema Specification">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
+          <h3 style="margin:0;">Verification Receipt Schema (<code>receipt.schema.json</code>)</h3>
+          <button id="copy-schema-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyReceiptSchema()">📋 Copy Schema JSON</button>
+        </div>
+        <pre><code id="schema-code">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CourierReceipt",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "item_id",
+    "timestamp",
+    "status",
+    "fingerprint",
+    "tests_passed"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^rcpt-[0-9a-fA-F-]{8,}$"
+    },
+    "item_id": {
+      "type": "string"
+    },
+    "worker_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["SUCCESS", "FAILED", "BLOCKED"]
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 digest of modified trees and output artifacts"
+    },
+    "tests_passed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "execution_duration_ms": {
+      "type": "number"
+    }
+  }
+}</code></pre>
+        <p class="fine" style="margin-top:.8rem;">
+          Need a full report example? See our real-world <a href="/repo-reality-check.html#beispiel">Sample Audit Report JSON</a> or explore live pipeline events in the <a href="/demo.html">Interactive Demo</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="repo-link">
     <div class="wrap">
       <div class="report">
@@ -155,5 +217,24 @@
     </nav>
   </div>
 </footer>
+<script>
+function copyReceiptSchema() {
+  const code = document.getElementById('schema-code');
+  if (!code) return;
+  const text = code.innerText || code.textContent;
+  const btn = document.getElementById('copy-schema-btn');
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✓ Schema copied!';
+      setTimeout(() => { btn.innerHTML = orig; }, 2500);
+    }
+  }).catch(() => {
+    if (btn) {
+      btn.innerText = 'Fehler beim Kopieren';
+    }
+  });
+}
+</script>
 </body>
 </html>
