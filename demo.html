@@ -418,6 +418,13 @@
       <button class="btn-sub" id="btnReset" onclick="resetDemo()">Zurücksetzen</button>
       <span id="demoStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.9rem;color:var(--muted);margin-left:auto;">Status: Bereit</span>
     </div>
+    <div class="shortcut-hints" style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-top:.45rem;padding:0 .2rem;">
+      <span style="font-weight:600;display:inline-flex;align-items:center;gap:.25rem;">⌨️ Shortcuts:</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">S</kbd> Start</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">N</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">&rarr;</kbd> Einzelschritt</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">R</kbd> Reset</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">1</kbd>-<kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">3</kbd> Szenario</span>
+    </div>
 
     <!-- Artifact / Receipt Result Card -->
     <div class="artifact-view" id="artifactCard">
@@ -942,6 +949,51 @@
   window.addEventListener('hashchange', checkScenarioHash);
   window.addEventListener('DOMContentLoaded', checkScenarioHash);
   checkScenarioHash();
+
+  // Global Keyboard Navigation for Live Demo & Presenter Mode
+  window.addEventListener('keydown', (e) => {
+    const active = document.activeElement;
+    const tag = active ? active.tagName.toLowerCase() : '';
+    if (tag === 'textarea' || tag === 'input' || tag === 'select' || (active && active.isContentEditable)) {
+      return;
+    }
+    if (e.ctrlKey || e.altKey || e.metaKey) {
+      return;
+    }
+
+    const key = e.key;
+    if (key === 's' || key === 'S') {
+      e.preventDefault();
+      const btn = document.getElementById('btnStart');
+      if (btn && !btn.disabled) {
+        runDemo();
+      }
+    } else if (key === 'n' || key === 'N' || key === 'ArrowRight') {
+      e.preventDefault();
+      stepDemo();
+    } else if (key === 'r' || key === 'R') {
+      e.preventDefault();
+      resetDemo();
+    } else if (key === '1') {
+      e.preventDefault();
+      selectScenario('spreadsheet');
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '#scenario-spreadsheet');
+      }
+    } else if (key === '2') {
+      e.preventDefault();
+      selectScenario('security');
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '#scenario-security');
+      }
+    } else if (key === '3') {
+      e.preventDefault();
+      selectScenario('rejection');
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '#scenario-rejection');
+      }
+    }
+  });
 
   function log(tag, msg, customTime) {
     const box = document.getElementById('consoleBox');
