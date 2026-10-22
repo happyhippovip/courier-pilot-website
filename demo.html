@@ -886,6 +886,16 @@
   }
 
 
+  function escapeHtml(str) {
+    if (str == null) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // --- CSV Cleaner V1 Engine (100% Client-Side & Cryptographically Verified) ---
   let lastCleanCSV = "";
   let lastReceipt = null;
@@ -1234,10 +1244,15 @@
       let rowHtml = "";
 
       row.cleanCols.forEach((val, idx) => {
-        const wasChanged = val !== row.origCols[idx];
+        const origVal = row.origCols[idx] || "";
+        const wasChanged = val !== origVal;
         const color = wasChanged ? "var(--cyan)" : "var(--ink)";
         const bg = wasChanged ? "rgba(56,214,230,.08)" : "transparent";
-        rowHtml += `<td style='padding:.45rem .75rem;color:${color};background:${bg};white-space:nowrap;'>${val}</td>`;
+        let cellContent = escapeHtml(val);
+        if (wasChanged && origVal.trim().length > 0) {
+          cellContent = `<span style="text-decoration:line-through;opacity:0.45;font-size:0.75rem;margin-right:0.35rem;">${escapeHtml(origVal)}</span><span style="font-weight:700;">${escapeHtml(val)}</span>`;
+        }
+        rowHtml += `<td style='padding:.45rem .75rem;color:${color};background:${bg};white-space:nowrap;'>${cellContent}</td>`;
       });
 
       const fixesStr = row.fixes.length ? row.fixes.join(', ') : (row.isModified ? 'Bereinigt' : 'Unverändert');
