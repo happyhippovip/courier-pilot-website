@@ -458,11 +458,20 @@
     <div class="artifact-view" id="artifactCard">
       <div class="artifact-header">
         <span id="artifactTitle">Prüfnachweis (Verification Receipt)</span>
-        <span class="receipt-badge ok" id="receiptBadge">✓ BYTE_LEVEL_GOLD_VERIFIED</span>
+        <div style="display:inline-flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+          <div class="receipt-tab-group" role="tablist" aria-label="Ansicht des Prüfnachweises" style="display:inline-flex;background:#060a14;border:1px solid var(--line);border-radius:6px;padding:2px;">
+            <button type="button" id="btnReceiptTabSummary" role="tab" aria-selected="true" onclick="switchReceiptView('summary')" style="background:var(--cyan);color:#070b16;font-size:.75rem;font-weight:700;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Übersicht</button>
+            <button type="button" id="btnReceiptTabRaw" role="tab" aria-selected="false" onclick="switchReceiptView('raw')" style="background:transparent;color:var(--muted);font-size:.75rem;font-weight:600;border:none;border-radius:4px;padding:.2rem .6rem;cursor:pointer;">Raw JSON</button>
+          </div>
+          <span class="receipt-badge ok" id="receiptBadge">✓ BYTE_LEVEL_GOLD_VERIFIED</span>
+        </div>
       </div>
-      <div style="font-family:ui-monospace,monospace;font-size:.85rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;" id="receiptBody">
-        <!-- Dynamischer Inhalt -->
+      <div id="receiptSummaryView" style="display:block;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;font-size:.85rem;">
+        <!-- Dynamische formatierte Zusammenfassung -->
       </div>
+      <pre id="receiptBody" style="display:none;font-family:ui-monospace,monospace;font-size:.82rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;max-height:240px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;">
+        <!-- Dynamischer Raw-JSON-Inhalt -->
+      </pre>
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;">
         <p style="font-size:.85rem;color:var(--muted);margin:0;max-width:560px;" id="receiptExplanation">
           Dieser Nachweis garantiert mathematisch, dass das Arbeitsergebnis unverändert den definierten Prüfkriterien entspricht. Keine Halluzinationen, kein Durchwinken.
@@ -1142,16 +1151,82 @@
     }
   }
 
+  function renderReceiptSummary(scen, container) {
+    const r = scen.receipt;
+    const isOk = scen.resultOk;
+    let detailHtml = '';
+    if (r.output_sha256) {
+      detailHtml = `<div style="display:grid;grid-template-columns:auto 1fr;gap:.5rem;align-items:center;"><span style="color:var(--muted);font-size:.8rem;">SHA-256 Hash:</span> <code style="color:var(--cyan);word-break:break-all;font-size:.78rem;">${r.output_sha256}</code></div>`;
+    } else if (r.rules_enforced) {
+      detailHtml = `<div><span style="color:var(--muted);font-size:.8rem;">Erzwungene Regeln:</span> <span style="color:#38e68e;font-size:.82rem;font-weight:600;">${r.rules_enforced.join(', ')}</span> <span style="color:var(--muted);font-size:.8rem;">(${r.scanned_files} Dateien gescannt, ${r.violations_found} Verstöße)</span></div>`;
+    } else if (r.discrepancy) {
+      detailHtml = `<div><span style="color:var(--muted);font-size:.8rem;">Aufgedeckte Abweichung:</span> <strong style="color:#e64538;">${r.discrepancy}</strong> <span style="color:var(--muted);font-size:.8rem;">(Soll: ${r.expected_sum} / Rechnerisch: ${r.actual_sum} — ${r.reason})</span></div>`;
+    }
+
+    container.innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:.6rem;margin-bottom:.5rem;">
+        <div><span style="color:var(--muted);font-size:.78rem;display:block;">Task-Identifikator</span><strong style="color:var(--ink);">${r.task_id}</strong></div>
+        <div><span style="color:var(--muted);font-size:.78rem;display:block;">Unabhängiger Verifier</span><strong style="color:var(--ink);">${r.verifier}</strong></div>
+        <div><span style="color:var(--muted);font-size:.78rem;display:block;">Prüfergebnis</span><strong style="color:${isOk ? '#38e68e' : '#e64538'};">${r.resolution}</strong></div>
+        <div><span style="color:var(--muted);font-size:.78rem;display:block;">Siegel-Zeitstempel</span><span style="color:var(--ink);">${r.seal_time}</span></div>
+      </div>
+      <div style="border-top:1px solid var(--line);padding-top:.45rem;margin-top:.4rem;">
+        ${detailHtml}
+      </div>
+    `;
+  }
+
+  function switchReceiptView(viewMode) {
+    const summaryView = document.getElementById('receiptSummaryView');
+    const rawView = document.getElementById('receiptBody');
+    const btnSummary = document.getElementById('btnReceiptTabSummary');
+    const btnRaw = document.getElementById('btnReceiptTabRaw');
+    if (!summaryView || !rawView) return;
+
+    if (viewMode === 'raw') {
+      summaryView.style.display = 'none';
+      rawView.style.display = 'block';
+      if (btnSummary) {
+        btnSummary.style.background = 'transparent';
+        btnSummary.style.color = 'var(--muted)';
+        btnSummary.setAttribute('aria-selected', 'false');
+      }
+      if (btnRaw) {
+        btnRaw.style.background = 'var(--cyan)';
+        btnRaw.style.color = '#070b16';
+        btnRaw.setAttribute('aria-selected', 'true');
+      }
+    } else {
+      summaryView.style.display = 'block';
+      rawView.style.display = 'none';
+      if (btnSummary) {
+        btnSummary.style.background = 'var(--cyan)';
+        btnSummary.style.color = '#070b16';
+        btnSummary.setAttribute('aria-selected', 'true');
+      }
+      if (btnRaw) {
+        btnRaw.style.background = 'transparent';
+        btnRaw.style.color = 'var(--muted)';
+        btnRaw.setAttribute('aria-selected', 'false');
+      }
+    }
+  }
+
   function showReceipt(scen) {
     const card = document.getElementById('artifactCard');
     const badge = document.getElementById('receiptBadge');
     const body = document.getElementById('receiptBody');
     const expl = document.getElementById('receiptExplanation');
+    const summaryView = document.getElementById('receiptSummaryView');
 
     badge.className = 'receipt-badge ' + (scen.resultOk ? 'ok' : 'fail');
     badge.textContent = scen.badgeText;
 
     body.textContent = JSON.stringify(scen.receipt, null, 2);
+
+    if (summaryView) {
+      renderReceiptSummary(scen, summaryView);
+    }
 
     if (scen.resultOk) {
       expl.innerHTML = '<strong>Mathematische Gewissheit:</strong> Das Ergebnis wurde von einem unabhängigen Verifier abgenommen und ist dauerhaft manipulationssicher im Journal versiegelt.';
@@ -1901,6 +1976,7 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     }
     updatePlayButtons('ready');
     document.getElementById('demoStatus').textContent = 'Status: Bereit';
+    switchReceiptView('summary');
     const scLbl = document.getElementById('lblCopyScenarioReceipt');
     if (scLbl) scLbl.textContent = 'Zertifikat kopieren';
     const copyLogsLbl = document.getElementById('lblCopyConsoleLogs');
