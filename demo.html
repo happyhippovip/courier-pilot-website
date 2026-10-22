@@ -399,7 +399,18 @@
         <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></span>
         Audit-Log &amp; Zero-Trust Journal
       </span>
-      <div style="display:inline-flex;align-items:center;gap:.75rem;">
+      <div style="display:inline-flex;align-items:center;gap:.65rem;flex-wrap:wrap;">
+        <label for="filterConsoleTag" style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;">
+          Filter:
+          <select id="filterConsoleTag" onchange="filterConsoleLogs()" aria-label="Audit-Log Filter nach Kategorie" style="background:#0c1120;border:1px solid var(--line);color:var(--ink);padding:.2rem .45rem;border-radius:4px;font-size:.75rem;cursor:pointer;">
+            <option value="all" selected>Alle Tags</option>
+            <option value="verifier">Verifier (Zero-Trust)</option>
+            <option value="worker">Worker (Agent)</option>
+            <option value="dispatch">Dispatch (Lease)</option>
+            <option value="reject">Reject (Ablehnung)</option>
+            <option value="intake">Intake (Anfrage)</option>
+          </select>
+        </label>
         <label style="font-size:.78rem;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;user-select:none;">
           <input type="checkbox" id="chkAutoScroll" checked style="accent-color:var(--cyan);cursor:pointer;"> Auto-Scroll
         </label>
@@ -412,7 +423,7 @@
       </div>
     </div>
     <div class="console-box" id="consoleBox" aria-live="polite">
-      <div class="log-line">
+      <div class="log-line" data-tag="intake">
         <span class="log-time">[00:00]</span>
         <span class="log-tag intake">[BEREIT]</span>
         <span class="log-msg">Szenario ausgewählt. Drücken Sie „30s Demo starten“, um den Workflow zu durchlaufen.</span>
@@ -1019,10 +1030,28 @@
     }
   });
 
+  function filterConsoleLogs() {
+    const sel = document.getElementById('filterConsoleTag');
+    if (!sel) return;
+    const filterVal = sel.value.toLowerCase();
+    const box = document.getElementById('consoleBox');
+    if (!box) return;
+    const lines = box.querySelectorAll('.log-line');
+    lines.forEach(l => {
+      const tag = (l.getAttribute('data-tag') || '').toLowerCase();
+      if (filterVal === 'all' || tag === filterVal) {
+        l.style.display = '';
+      } else {
+        l.style.display = 'none';
+      }
+    });
+  }
+
   function log(tag, msg, customTime) {
     const box = document.getElementById('consoleBox');
     const line = document.createElement('div');
     line.className = 'log-line';
+    line.setAttribute('data-tag', tag.toLowerCase());
     
     const now = customTime || new Date().toISOString().substring(11, 19);
     line.innerHTML = `
@@ -1030,6 +1059,12 @@
       <span class="log-tag ${tag}">[${tag.toUpperCase()}]</span>
       <span class="log-msg">${msg}</span>
     `;
+
+    const sel = document.getElementById('filterConsoleTag');
+    if (sel && sel.value !== 'all' && tag.toLowerCase() !== sel.value) {
+      line.style.display = 'none';
+    }
+
     box.appendChild(line);
     const chk = document.getElementById('chkAutoScroll');
     if (!chk || chk.checked) {
@@ -1068,6 +1103,10 @@
     const box = document.getElementById('consoleBox');
     if (box) {
       box.innerHTML = '';
+      const sel = document.getElementById('filterConsoleTag');
+      if (sel && sel.value !== 'all') {
+        sel.value = 'all';
+      }
       log('intake', 'Audit-Log geleert. Bereit für Szenario-Ausführung.');
       const copyLbl = document.getElementById('lblCopyConsoleLogs');
       if (copyLbl) copyLbl.textContent = '📋 Logs kopieren';
@@ -1856,6 +1895,10 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const bar = document.getElementById('progressBar');
     if (bar) bar.setAttribute('aria-valuenow', 0);
     document.getElementById('artifactCard').classList.remove('show');
+    const selFilter = document.getElementById('filterConsoleTag');
+    if (selFilter && selFilter.value !== 'all') {
+      selFilter.value = 'all';
+    }
     updatePlayButtons('ready');
     document.getElementById('demoStatus').textContent = 'Status: Bereit';
     const scLbl = document.getElementById('lblCopyScenarioReceipt');
