@@ -144,11 +144,11 @@
 </header>
 
 <main id="main" tabindex="-1">
-  <section class="hero" id="angebot">
+  <section class="hero" id="angebot" aria-labelledby="angebotHeading">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="livedot"><span class="pulse" aria-hidden="true"></span>Beta · begrenzte Tester-Plätze</p>
-        <h1>Repo Reality Check</h1>
+        <h1 id="angebotHeading">Repo Reality Check</h1>
         <p class="lede">Du schickst uns dein Git-Repo (öffentlicher Link oder ZIP), du bekommst innerhalb von 48 Stunden einen ehrlichen Report: Testabdeckung, CI-Status, TODO-Schulden, Abhängigkeiten, Risiko-Muster, Reality-Score 0–100 und die 5 wichtigsten nächsten Schritte.</p>
         <p class="price-line"><strong>5 EUR</strong> Einführungspreis für die ersten Tester. Regulär später 99–149 EUR.</p>
         <div class="order-slot">
@@ -173,9 +173,9 @@
     </div>
   </section>
 
-  <section class="section" id="lieferumfang">
+  <section class="section" id="lieferumfang" aria-labelledby="lieferumfangHeading">
     <div class="wrap">
-      <h2>Was im Report steht</h2>
+      <h2 id="lieferumfangHeading">Was im Report steht</h2>
       <p class="section-lede">Ein Report pro Repo, innerhalb von 48 Stunden nach Eingang eines lesbaren öffentlichen Links oder einer ZIP-Datei.</p>
       <dl class="caplist">
         <div><dt>Testabdeckung</dt><dd>Wie viel des Codes von Tests erfasst ist, soweit sich das aus dem Repo ablesen lässt.</dd></div>
@@ -188,11 +188,11 @@
     </div>
   </section>
 
-  <section class="section" id="beispiel">
+  <section class="section" id="beispiel" aria-labelledby="beispielHeading">
     <div class="wrap">
       <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:1.2rem;">
         <div>
-          <h2>Beispielreport, Demo-Daten</h2>
+          <h2 id="beispielHeading">Beispielreport, Demo-Daten</h2>
           <p class="section-lede" style="margin:0;">Synthetische Beispieldaten zur Illustration typischer Repository-Profile. Wählen Sie ein Profil:</p>
         </div>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
@@ -279,12 +279,12 @@
     </div>
   </section>
 
-    <section class="section" id="schnelltest" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.5rem 0;">
+    <section class="section" id="schnelltest" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.5rem 0;" aria-labelledby="schnelltestHeading">
     <div id="audit-calc"></div>
     <div class="wrap">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
         <div>
-          <h2>Reality-Score Schnelltest (30s Selbst-Check)</h2>
+          <h2 id="schnelltestHeading">Reality-Score Schnelltest (30s Selbst-Check)</h2>
           <p class="section-lede" style="margin:0;">Beantworten Sie 5 kurze Fragen, um Ihren geschätzten Reality-Score sofort im Browser zu berechnen (100% anonym, kein Upload).</p>
         </div>
         <span class="chip chip-ok" style="font-weight:700;">Interaktiver Rechner</span>
@@ -1057,9 +1057,9 @@
     });
   </script>
 
-  <section class="section" id="ablauf">
+  <section class="section" id="ablauf" aria-labelledby="ablaufHeading">
     <div class="wrap">
-      <h2>Ablauf</h2>
+      <h2 id="ablaufHeading">Ablauf</h2>
       <ol class="steps">
         <li><span class="step-n">1</span><div><h3>Bestellen</h3><p>Einführungspreis 5 EUR für die ersten Tester. Die Anzahl der Beta-Plätze ist begrenzt. Der Bestellbutton führt auf den Zahlungslink, sobald er hinterlegt ist.</p></div></li>
         <li><span class="step-n">2</span><div><h3>Repo schicken</h3><p>Öffentlicher Git-Link mit Lesezugriff oder eine ZIP-Datei. Kein Schreibzugriff und keine Zugangsdaten.</p></div></li>
@@ -1068,9 +1068,9 @@
     </div>
   </section>
 
-  <section class="section" id="faq">
+  <section class="section" id="faq" aria-labelledby="faqHeading">
     <div class="wrap narrow">
-      <h2>FAQ</h2>
+      <h2 id="faqHeading">FAQ</h2>
       <div class="faq">
         <details>
           <summary>Was braucht ihr von mir?</summary>
@@ -1096,9 +1096,9 @@
     </div>
   </section>
 
-  <section class="section" id="bestellen">
+  <section class="section" id="bestellen" aria-labelledby="bestellenHeading">
     <div class="wrap narrow waitlist">
-      <h2>Als Beta-Tester bestellen</h2>
+      <h2 id="bestellenHeading">Als Beta-Tester bestellen</h2>
       <p class="price-line"><strong>5 EUR</strong> Einführungspreis für die ersten Tester. Regulär später 99–149 EUR. Die Anzahl der Beta-Plätze ist begrenzt.</p>
       <p>Nach der Zahlung schickst du den öffentlichen Git-Link oder die ZIP an die Bestelladresse. Den Report gibt es innerhalb von 48 Stunden.</p>
       <div class="order-slot">
