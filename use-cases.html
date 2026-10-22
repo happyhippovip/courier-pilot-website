@@ -85,25 +85,26 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="use-cases" aria-label="Use Case Catalog">
     <div class="wrap">
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;" role="tablist" aria-label="Use Case Filter">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;" role="tablist" aria-label="Use Case Filter" onkeydown="handleUseCasesTabKey(event)">
+        <span id="ucFilterStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true">Showing all 5 use cases.</span>
         <span style="font-size:.85rem;color:var(--dim);margin-right:.5rem;">Filter by capability:</span>
-        <button type="button" class="btn usecase-filter is-active" onclick="filterUseCases('all', this)" style="font-size:.8rem;padding:.3rem .75rem;background:var(--ink);color:var(--bg);border:1px solid var(--ink);">All (5)</button>
-        <button type="button" class="btn usecase-filter" onclick="filterUseCases('audit', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Audit &amp; CI/CD</button>
-        <button type="button" class="btn usecase-filter" onclick="filterUseCases('recovery', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Crash Recovery</button>
-        <button type="button" class="btn usecase-filter" onclick="filterUseCases('distributed', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Multi-Agent Mesh</button>
-        <button type="button" class="btn usecase-filter" onclick="filterUseCases('heavy', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Heavy Pipelines</button>
-        <button type="button" class="btn usecase-filter" onclick="filterUseCases('governance', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Data Governance</button>
+        <button type="button" class="btn usecase-filter is-active" role="tab" aria-selected="true" onclick="filterUseCases('all', this)" style="font-size:.8rem;padding:.3rem .75rem;background:var(--ink);color:var(--bg);border:1px solid var(--ink);">All (5)</button>
+        <button type="button" class="btn usecase-filter" role="tab" aria-selected="false" onclick="filterUseCases('audit', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Audit &amp; CI/CD</button>
+        <button type="button" class="btn usecase-filter" role="tab" aria-selected="false" onclick="filterUseCases('recovery', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Crash Recovery</button>
+        <button type="button" class="btn usecase-filter" role="tab" aria-selected="false" onclick="filterUseCases('distributed', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Multi-Agent Mesh</button>
+        <button type="button" class="btn usecase-filter" role="tab" aria-selected="false" onclick="filterUseCases('heavy', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Heavy Pipelines</button>
+        <button type="button" class="btn usecase-filter" role="tab" aria-selected="false" onclick="filterUseCases('governance', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Data Governance</button>
       </div>
 
       <div class="card-grid">
-        <article class="card" data-category="audit">
+        <article class="card" data-category="audit" aria-labelledby="ucHeading1">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
             <span class="card-num">01</span>
             <span class="chip chip-ok" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Audit &amp; CI/CD</span>
           </div>
-          <h2>Automated Codebase Verification &amp; Reality Audits</h2>
+          <h2 id="ucHeading1">Automated Codebase Verification &amp; Reality Audits</h2>
           <p>Autonomous AI agents frequently drift into hallucinated tests, broken imports, or forgotten file updates. Courier Symphony acts as an independent auditor.</p>
           <ul class="checks">
             <li><strong>Repo Reality Check:</strong> Scans real Git trees, measures lines of code, detects phantom imports, and calculates objective quality scores.</li>
@@ -117,12 +118,12 @@
           </div>
         </article>
 
-        <article class="card" data-category="recovery">
+        <article class="card" data-category="recovery" aria-labelledby="ucHeading2">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
             <span class="card-num">02</span>
             <span class="chip chip-warn" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Crash Recovery</span>
           </div>
-          <h2>Multi-Day Unattended Agent Runs</h2>
+          <h2 id="ucHeading2">Multi-Day Unattended Agent Runs</h2>
           <p>Standard agent CLI tools stop when a terminal session disconnects or an OS process hangs. Courier Symphony supervises long-running workflows with zero babysitting.</p>
           <ul class="checks">
             <li><strong>Deterministic Checkpointing:</strong> Progress is committed event-by-event to an append-only ledger on disk.</li>
@@ -136,12 +137,12 @@
           </div>
         </article>
 
-        <article class="card" data-category="distributed">
+        <article class="card" data-category="distributed" aria-labelledby="ucHeading3">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
             <span class="card-num">03</span>
             <span class="chip chip-run" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Multi-Agent Mesh</span>
           </div>
-          <h2>Cross-Platform Distributed Execution</h2>
+          <h2 id="ucHeading3">Cross-Platform Distributed Execution</h2>
           <p>Workflows often require specialized OS capabilities—macOS for specific rendering or build tools, Windows for Job Objects and PowerShell scripting.</p>
           <ul class="checks">
             <li><strong>Capability-Aware Routing:</strong> Work items are dispatched exclusively to host nodes that advertise verified execution capabilities.</li>
@@ -154,12 +155,12 @@
           </div>
         </article>
 
-        <article class="card" data-category="heavy">
+        <article class="card" data-category="heavy" aria-labelledby="ucHeading4">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
             <span class="card-num">04</span>
             <span class="chip chip-warn" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Heavy Pipelines</span>
           </div>
-          <h2>Heavy Media &amp; Asset Generation Pipelines</h2>
+          <h2 id="ucHeading4">Heavy Media &amp; Asset Generation Pipelines</h2>
           <p>Rendering Godot animations, video encoding, and multi-model synthesis demand strict resource admission and fault tolerance.</p>
           <ul class="checks">
             <li><strong>Admission Mutexes:</strong> Guarantees only one heavy render pipeline runs per physical host at any time.</li>
@@ -172,12 +173,12 @@
           </div>
         </article>
 
-        <article class="card" data-category="governance">
+        <article class="card" data-category="governance" aria-labelledby="ucHeading5">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
             <span class="card-num">05</span>
             <span class="chip chip-ok" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Data Governance</span>
           </div>
-          <h2>Cryptographically Verified Spreadsheet &amp; Business Data Cleanup</h2>
+          <h2 id="ucHeading5">Cryptographically Verified Spreadsheet &amp; Business Data Cleanup</h2>
           <p>Spreadsheets full of mixed phone formats, casing errors, broken emails, and damaged formulas are liability traps. Courier Symphony cleans business data deterministically.</p>
           <ul class="checks">
             <li><strong>Byte-Exact Formula Protection:</strong> Preserves formulas and untouched cells byte-for-byte with cryptographic verification receipts.</li>
@@ -193,10 +194,10 @@
     </div>
   </section>
 
-  <section class="section" id="evidence">
+  <section class="section" id="evidence" aria-labelledby="evidenceHeading">
     <div class="wrap">
       <div class="report">
-        <h2>Evidence-Backed Operations</h2>
+        <h2 id="evidenceHeading">Evidence-Backed Operations</h2>
         <p>Courier Symphony never relies on vague marketing claims. Every feature documented here is verified daily across automated CI suites:</p>
         <ul class="checks">
           <li>Over 1,700 automated unit and integration tests passing on Ubuntu and Windows.</li>
@@ -239,21 +240,54 @@ function filterUseCases(cat, activeBtn) {
     b.style.color = 'var(--ink)';
     b.style.border = '1px solid var(--line)';
     b.classList.remove('is-active');
+    b.setAttribute('aria-selected', 'false');
   });
   if (activeBtn) {
     activeBtn.style.background = 'var(--ink)';
     activeBtn.style.color = 'var(--bg)';
     activeBtn.style.border = '1px solid var(--ink)';
     activeBtn.classList.add('is-active');
+    activeBtn.setAttribute('aria-selected', 'true');
   }
+  let visibleCount = 0;
   const cards = document.querySelectorAll('.card-grid article.card');
   cards.forEach(card => {
     if (cat === 'all' || card.getAttribute('data-category') === cat) {
       card.style.display = '';
+      visibleCount++;
     } else {
       card.style.display = 'none';
     }
   });
+  const st = document.getElementById('ucFilterStatus');
+  if (st) {
+    const label = activeBtn ? activeBtn.textContent.trim() : cat;
+    st.textContent = `Showing ${visibleCount} use case${visibleCount === 1 ? '' : 's'} (${label}).`;
+  }
+}
+
+function handleUseCasesTabKey(e) {
+  const tabs = Array.from(document.querySelectorAll('.usecase-filter'));
+  const idx = tabs.indexOf(document.activeElement);
+  if (idx === -1) return;
+  let nextIdx = -1;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    nextIdx = (idx + 1) % tabs.length;
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    nextIdx = (idx - 1 + tabs.length) % tabs.length;
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    nextIdx = 0;
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    nextIdx = tabs.length - 1;
+  }
+  if (nextIdx !== -1) {
+    tabs[nextIdx].focus();
+    tabs[nextIdx].click();
+  }
 }
 </script>
 </body>
