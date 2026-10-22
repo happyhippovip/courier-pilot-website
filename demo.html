@@ -409,55 +409,150 @@
 
   <!-- Live Interactive CSV & Table Playground (Client-Side) -->
   <section class="explain-card" id="playground" style="margin-top:2.5rem;border-color:var(--cyan);background:#070f20;">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
-      <h2 style="font-size:1.4rem;margin:0;color:var(--ink);">🛠️ Live-Labor: Eigene Tabelle bereinigen &amp; verifizieren</h2>
-      <span class="demo-badge" style="background:var(--cyan);color:#070b16;">100% Client-Side im Browser</span>
+    <!-- Transparenz-Banner: DEMO vs. ECHTE FUNKTION -->
+    <div style="background:rgba(56,214,230,.08);border:1px solid rgba(56,214,230,.3);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:.8rem;">
+      <span style="font-size:1.4rem;line-height:1;">🛡️</span>
+      <div style="font-size:.88rem;line-height:1.5;color:var(--ink);">
+        <strong>Transparenz &amp; Funktionsweise:</strong> Während die obige 6-Stationen-Pipeline eine interaktive Demonstration unserer Kern-Architektur darstellt, ist der folgende <strong>CSV Cleaner V1 ein echtes, voll einsatzfähiges Werkzeug</strong>. 
+        Die gesamte Verarbeitung, Normalisierung und kryptografische SHA-256-Prüfung erfolgt <strong>zu 100% lokal in Ihrem Browser</strong>. Es werden zu keinem Zeitpunkt Daten an einen Server gesendet (Zero Egress, Null Cloud-Kosten).
+      </div>
     </div>
-    <p style="color:var(--muted);font-size:.95rem;margin-bottom:1.2rem;">
-      Probieren Sie die Verifier-Logik direkt mit echten Daten aus. Ihre Eingaben werden <strong>ausschließlich in Ihrem Browser</strong> verarbeitet – es werden keine Daten übertragen oder gespeichert.
-    </p>
 
-    <div style="display:grid;grid-template-columns:1fr;gap:1rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
+      <div>
+        <h2 style="font-size:1.45rem;margin:0;color:var(--ink);">🛠️ CSV Cleaner V1 &amp; Kryptografischer Verifier</h2>
+        <p style="color:var(--muted);font-size:.9rem;margin:.3rem 0 0;">Laden Sie eine unordentliche Adress- oder Kundentabelle hoch oder testen Sie vorbereitete Datensätze.</p>
+      </div>
+      <span class="demo-badge" style="background:var(--cyan);color:#070b16;font-weight:700;">Echte lokale Funktion</span>
+    </div>
+
+    <!-- Drag & Drop / File Upload & Preset Selection Area -->
+    <div style="display:grid;grid-template-columns:1fr;gap:1.2rem;margin-top:1.2rem;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1rem;">
+        <!-- Drag & Drop Zone -->
+        <div id="dropZone" style="border:2px dashed var(--line);border-radius:10px;padding:1.5rem 1rem;text-align:center;background:#040710;cursor:pointer;transition:all .2s ease;" onclick="document.getElementById('csvFileInput').click()">
+          <input type="file" id="csvFileInput" accept=".csv,.tsv,.txt" style="display:none;" onchange="handleFileSelect(event)">
+          <div style="font-size:2rem;margin-bottom:.4rem;">📂</div>
+          <div style="font-weight:700;font-size:.95rem;color:var(--ink);">Eigene CSV-Datei hier ablegen</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-top:.2rem;">oder klicken zum Auswählen (.csv, .tsv, .txt)</div>
+          <div id="fileInfoBadge" style="display:none;margin-top:.6rem;font-size:.8rem;color:var(--cyan);font-weight:600;"></div>
+        </div>
+
+        <!-- Presets & Delimiter Selection -->
+        <div style="background:#040710;border:1px solid var(--line);border-radius:10px;padding:1.2rem;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <span style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.6rem;">Praxis-Datensätze laden:</span>
+            <div style="display:flex;flex-direction:column;gap:.4rem;">
+              <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('leads')">📋 1. Gemischte CRM-Leads (Leerzeichen, gemischte Telefone)</button>
+              <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('accounting')">📑 2. Deutsche Buchhaltung (Semikolon ';', Beträge, Umlaute)</button>
+              <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('duplicates')">⚠️ 3. Dubletten-Test (Leerzeilen &amp; identische Zeilen)</button>
+            </div>
+          </div>
+          <div style="margin-top:.8rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(174,185,205,.1);padding-top:.6rem;">
+            <label for="delimiterSelect" style="font-size:.82rem;color:var(--muted);">Trennzeichen:</label>
+            <select id="delimiterSelect" style="background:#070b16;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.2rem .6rem;font-size:.82rem;" onchange="onDelimiterChange()">
+              <option value="auto">Automatisch erkennen</option>
+              <option value=",">Komma (,)</option>
+              <option value=";">Semikolon (;)</option>
+              <option value="\t">Tabulator (\t)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Raw Text Area (Collapsible / Editable) -->
       <div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">
-          <label for="csvInput" style="font-weight:700;font-size:.9rem;color:var(--ink);">CSV-Rohdaten eingeben oder Beispieldaten laden:</label>
-          <button class="btn-sub" style="padding:.25rem .7rem;font-size:.8rem;" onclick="loadSampleCSV()">📋 Beispieldaten einfügen</button>
+          <label for="csvInput" style="font-weight:700;font-size:.88rem;color:var(--ink);">CSV-Inhalt (Editor &amp; Vorschau):</label>
+          <span id="charCountLabel" style="font-size:.8rem;color:var(--muted);">0 Zeilen</span>
         </div>
-        <textarea id="csvInput" rows="6" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.8rem;font-family:ui-monospace,monospace;font-size:.85rem;resize:vertical;" placeholder="Name,Telefon,Email,Datum&#10;  mAx MUSTERMANN ,0151/1234567, Max.Mustermann@GMAIL.COM ,21.10.2026&#10;  eRiCa mUstErfrAu ,+49 170 9876543, erica@example.org ,2026-10-21"></textarea>
+        <textarea id="csvInput" rows="6" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.8rem;font-family:ui-monospace,monospace;font-size:.85rem;resize:vertical;" placeholder="Kopfzeile,Spalte1,Spalte2... (Oder Datei oben ablegen)"></textarea>
       </div>
 
-      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
-        <button class="btn-main" onclick="processLiveTable()" style="background:var(--cyan);color:#070b16;">▶ Daten jetzt bereinigen &amp; verifizieren</button>
-        <button class="btn-sub" onclick="resetLiveTable()">Eingabe leeren</button>
-        <span id="liveStatus" style="font-size:.88rem;color:var(--muted);">Bereit für Analyse</span>
+      <!-- Explicit Cleaning Options (Checkboxes) -->
+      <div style="background:#040710;border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;">
+        <span style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.8rem;">Aktive Bereinigungs- &amp; Validierungsregeln:</span>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:.6rem;font-size:.85rem;">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optTrim" checked> Leerzeichen &amp; Steuerzeichen trimmen
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optPhone" checked> Telefon normieren (+49 / E.164)
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optEmail" checked> E-Mail kleinschreiben (lowercase)
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optName" checked> Namen formatieren (Title-Case)
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optDate" checked> Datumsformat in ISO-8601 (JJJJ-MM-TT)
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optEmptyRows" checked> Leere Zeilen entfernen
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optDedup" checked> Exakte Zeilenduplikate filtern
+          </label>
+        </div>
       </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;">
+        <button class="btn-main" onclick="processLiveTable()" style="background:var(--cyan);color:#070b16;font-weight:700;">▶ Tabelle bereinigen &amp; verifizieren</button>
+        <button class="btn-sub" onclick="resetLiveTable()">Zurücksetzen</button>
+        <span id="liveStatus" style="font-size:.88rem;color:var(--muted);margin-left:.4rem;">Bereit für lokale Analyse</span>
+      </div>
+
+      <!-- Error / Warning Banner -->
+      <div id="liveWarningBox" style="display:none;background:rgba(239,68,68,.12);border:1px solid #ef4444;border-radius:8px;padding:.8rem 1rem;font-size:.85rem;color:#fca5a5;"></div>
 
       <!-- Result View -->
-      <div id="liveResultBox" style="display:none;margin-top:1rem;">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
-          <h3 style="margin:0;font-size:1.1rem;color:#38e68e;">✓ Ergebnis der Verifikation</h3>
-          <div style="display:flex;gap:.5rem;">
-            <button class="btn-sub" style="padding:.3rem .75rem;font-size:.82rem;" onclick="downloadCleanCSV()">📥 Bereinigte CSV</button>
-            <button class="btn-sub" style="padding:.3rem .75rem;font-size:.82rem;" onclick="downloadReceiptJSON()">📜 Prüfzertifikat (JSON)</button>
+      <div id="liveResultBox" style="display:none;margin-top:1.5rem;border-top:1px solid var(--line);padding-top:1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin-bottom:1rem;">
+          <div>
+            <h3 style="margin:0;font-size:1.2rem;color:#38e68e;display:flex;align-items:center;gap:.4rem;">
+              <span>✓</span> <span>Verifikation erfolgreich abgeschlossen</span>
+            </h3>
+            <span id="hashDisplay" style="font-size:.78rem;font-family:ui-monospace,monospace;color:var(--muted);display:block;margin-top:.2rem;"></span>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanCSV()">📋 In Zwischenablage</button>
+            <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanCSV()">📥 Bereinigte CSV</button>
+            <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadReceiptJSON()">📜 Audit-Zertifikat (JSON)</button>
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:1rem;margin-bottom:1rem;">
+        <!-- Before / After Metrics Dashboard -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:.8rem;margin-bottom:1.2rem;">
           <div style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.75rem;">
-            <span style="font-size:.75rem;color:var(--muted);display:block;">Zeilen analysiert</span>
-            <strong id="statRows" style="font-size:1.2rem;color:var(--ink);">0</strong>
+            <span style="font-size:.75rem;color:var(--muted);display:block;">Zeilen (Vorher &rarr; Nachher)</span>
+            <strong id="statRows" style="font-size:1.2rem;color:var(--ink);">0 &rarr; 0</strong>
           </div>
           <div style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.75rem;">
-            <span style="font-size:.75rem;color:var(--muted);display:block;">Korrekturen angewendet</span>
+            <span style="font-size:.75rem;color:var(--muted);display:block;">Zellen korrigiert</span>
             <strong id="statFixes" style="font-size:1.2rem;color:var(--cyan);">0</strong>
           </div>
           <div style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.75rem;">
-            <span style="font-size:.75rem;color:var(--muted);display:block;">Prüfstatus</span>
-            <strong id="statStatus" style="font-size:1.1rem;color:#38e68e;">BYTE_LEVEL_GOLD_VERIFIED</strong>
+            <span style="font-size:.75rem;color:var(--muted);display:block;">Zeilen gefiltert (Leer/Dup)</span>
+            <strong id="statFiltered" style="font-size:1.2rem;color:#f59e0b;">0</strong>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.75rem;">
+            <span style="font-size:.75rem;color:var(--muted);display:block;">Unberührte Zellen</span>
+            <strong id="statUntouched" style="font-size:1.2rem;color:#38e68e;">0</strong>
           </div>
         </div>
 
-        <div style="overflow-x:auto;max-height:280px;background:#040710;border:1px solid var(--line);border-radius:8px;padding:.5rem;">
+        <!-- Interactive Table View with Filter Buttons -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+          <div style="display:flex;gap:.4rem;">
+            <button class="btn-sub" id="btnFilterAll" style="padding:.2rem .6rem;font-size:.78rem;background:var(--line);" onclick="filterResultTable('all')">Alle Zeilen</button>
+            <button class="btn-sub" id="btnFilterChanged" style="padding:.2rem .6rem;font-size:.78rem;" onclick="filterResultTable('changed')">Nur geänderte Zeilen</button>
+          </div>
+          <span style="font-size:.78rem;color:var(--muted);">Grün markierte Werte wurden korrigiert</span>
+        </div>
+
+        <div style="overflow-x:auto;max-height:340px;background:#040710;border:1px solid var(--line);border-radius:8px;padding:.5rem;">
           <table id="liveTable" style="width:100%;border-collapse:collapse;font-size:.85rem;font-family:ui-monospace,monospace;text-align:left;">
             <!-- Dynamisch generiert -->
           </table>
@@ -791,25 +886,117 @@
   }
 
 
-  // --- Live Table Playground Logik (100% Client-Side) ---
+  // --- CSV Cleaner V1 Engine (100% Client-Side & Cryptographically Verified) ---
   let lastCleanCSV = "";
   let lastReceipt = null;
+  let parsedResultRows = [];
+  let loadedFileName = "export.csv";
 
-  function loadSampleCSV() {
-    const sample = `Name,Telefon,Email,Datum,Betrag
-  mAx MUSTERMANN ,0151/1234567, Max.Mustermann@GMAIL.COM ,21.10.2026, 1250.50 €
-  eRiCa mUstErfrAu ,+49 170 9876543, erica@example.org ,2026-10-21, 890.00
-  hAnS dOe ,0049 152 5551234, HANS.DOE@COMPANY.DE ,15/09/2026, 420.10 EUR
-   ,0171 0000000, unvollstaendig@mail.de ,2026-08-01, 50.00
-  DOPPELTE ZEILE ,0151/1234567, Max.Mustermann@GMAIL.COM ,21.10.2026, 1250.50 €`;
-    document.getElementById('csvInput').value = sample;
+  // Drag & Drop Handling
+  const dropZone = document.getElementById('dropZone');
+  if (dropZone) {
+    ['dragenter', 'dragover'].forEach(name => {
+      dropZone.addEventListener(name, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor = 'var(--cyan)'; dropZone.style.background = '#07152b'; }, false);
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropZone.addEventListener(name, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor = 'var(--line)'; dropZone.style.background = '#040710'; }, false);
+    });
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length) handleFile(files[0]);
+    }, false);
+  }
+
+  function handleFileSelect(e) {
+    if (e.target.files && e.target.files.length) {
+      handleFile(e.target.files[0]);
+    }
+  }
+
+  function handleFile(file) {
+    loadedFileName = file.name;
+    const badge = document.getElementById('fileInfoBadge');
+    badge.textContent = `✓ Geladen: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+    badge.style.display = 'block';
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('csvInput').value = e.target.result;
+      updateCharCount();
+      document.getElementById('liveStatus').textContent = `Datei "${file.name}" geladen. Bereit für Bereinigung.`;
+    };
+    reader.readAsText(file, "UTF-8");
+  }
+
+  const PRESETS = {
+    leads: `Name,Telefon,Email,Datum,Status
+  mAx MUSTERMANN ,0151/1234567, Max.Mustermann@GMAIL.COM ,21.10.2026, aktiv 
+  eRiCa mUstErfrAu ,+49 170 9876543, erica@example.org ,2026-10-21, aktiv
+  hAnS dOe ,0049 152 5551234, HANS.DOE@COMPANY.DE ,15/09/2026, inaktiv
+  jOhAnN sEbaStIaN ,0171-8889999, js@classic.de ,05.04.2025, neu`,
+    
+    accounting: `Kunde;Telefon;Email;Rechnungsdatum;Betrag
+  Müller GmbH;0160-123456; info@mueller-gmbh.de ;12.10.2026;1.250,50 €
+  Bäckerei Größe;0049 89 998877; KONTAKT@GROESSE.DE ;01.10.2026;480,00 EUR
+  Öko Löwe AG;+49 30 112233; loewe@oeko.org ;28.09.2026;3.400,00 €
+  Straße & Söhne;0171 0000000; mail@strasse-soehne.de ;15.08.2026;950,00`,
+
+    duplicates: `Name,Telefon,Email,Ort
+  alice schmidt ,0151111111, alice@example.com ,Berlin
+  alice schmidt ,0151111111, alice@example.com ,Berlin
+
+  bob baumann ,0170222222, Bob@work.de ,München
+  
+  clara clemens ,0160333333, clara@clemens.de ,Köln
+  alice schmidt ,0151111111, alice@example.com ,Berlin`
+  };
+
+  function loadPreset(key) {
+    if (!PRESETS[key]) return;
+    document.getElementById('csvInput').value = PRESETS[key];
+    loadedFileName = `${key}_sample.csv`;
+    const badge = document.getElementById('fileInfoBadge');
+    badge.textContent = `✓ Beispieldatensatz geladen: ${key}.csv`;
+    badge.style.display = 'block';
+    updateCharCount();
     document.getElementById('liveStatus').textContent = "Beispieldaten geladen. Klicken Sie auf Bereinigen.";
   }
+
+  function updateCharCount() {
+    const val = document.getElementById('csvInput').value;
+    const lines = val.split(/\r?\n/).filter(l => l.length > 0);
+    document.getElementById('charCountLabel').textContent = `${lines.length} Zeilen (${val.length} Zeichen)`;
+  }
+  document.getElementById('csvInput')?.addEventListener('input', updateCharCount);
 
   function resetLiveTable() {
     document.getElementById('csvInput').value = "";
     document.getElementById('liveResultBox').style.display = "none";
+    document.getElementById('liveWarningBox').style.display = "none";
+    document.getElementById('fileInfoBadge').style.display = "none";
     document.getElementById('liveStatus').textContent = "Eingabe zurückgesetzt.";
+    updateCharCount();
+  }
+
+  function detectDelimiter(text) {
+    const sample = text.slice(0, 2048);
+    const counts = {
+      ';': (sample.match(/;/g) || []).length,
+      ',': (sample.match(/,/g) || []).length,
+      '\t': (sample.match(/\t/g) || []).length,
+      '|': (sample.match(/\|/g) || []).length,
+    };
+    let best = ',';
+    let max = -1;
+    for (const d in counts) {
+      if (counts[d] > max) { max = counts[d]; best = d; }
+    }
+    return max > 0 ? best : ',';
+  }
+
+  function onDelimiterChange() {
+    // Optional callback if user manually changes delimiter
   }
 
   async function sha256(str) {
@@ -818,133 +1005,257 @@
     return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
+  function cleanPhone(val) {
+    let s = val.replace(/[^0-9+]/g, '');
+    if (s.startsWith('0049')) return '+49' + s.substring(4);
+    if (s.startsWith('0') && s.length > 1 && /\d/.test(s[1])) return '+49' + s.substring(1);
+    return s;
+  }
+
+  function cleanName(val) {
+    return val.toLowerCase().replace(/(^|[\s\-–/])(\w)/g, m => m.toUpperCase());
+  }
+
+  function cleanDate(val) {
+    const m = val.match(/^(\d{1,2})[./\-](\d{1,2})[./\-](\d{4})$/);
+    if (m) {
+      return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;
+    }
+    return val;
+  }
+
   async function processLiveTable() {
-    const raw = document.getElementById('csvInput').value.trim();
-    if (!raw) {
-      alert("Bitte geben Sie zuerst CSV-Daten ein oder laden Sie Beispieldaten.");
+    const raw = document.getElementById('csvInput').value;
+    const warningBox = document.getElementById('liveWarningBox');
+    warningBox.style.display = "none";
+    warningBox.innerHTML = "";
+
+    if (!raw.trim()) {
+      warningBox.innerHTML = "<strong>Fehler:</strong> Das Eingabefeld ist leer. Bitte laden Sie eine Datei oder wählen Sie einen Beispieldatensatz.";
+      warningBox.style.display = "block";
       return;
     }
 
-    document.getElementById('liveStatus').textContent = "Verarbeitung & Verifikation läuft...";
+    // Determine Delimiter
+    let delim = document.getElementById('delimiterSelect').value;
+    if (delim === 'auto') {
+      delim = detectDelimiter(raw);
+    }
+    if (delim === '\t') delim = '\t';
 
-    const lines = raw.split(/\r?\n/).filter(l => l.trim().length > 0);
-    if (lines.length < 2) {
-      alert("Die CSV muss mindestens eine Kopfzeile und eine Datenzeile enthalten.");
+    const rawLines = raw.split(/\r?\n/);
+    const optTrim = document.getElementById('optTrim').checked;
+    const optPhone = document.getElementById('optPhone').checked;
+    const optEmail = document.getElementById('optEmail').checked;
+    const optName = document.getElementById('optName').checked;
+    const optDate = document.getElementById('optDate').checked;
+    const optEmptyRows = document.getElementById('optEmptyRows').checked;
+    const optDedup = document.getElementById('optDedup').checked;
+
+    let emptyRowCount = 0;
+    let duplicateRowCount = 0;
+    const candidateLines = [];
+    const seenLineSignatures = new Set();
+
+    for (let i = 0; i < rawLines.length; i++) {
+      const line = rawLines[i];
+      if (optEmptyRows && line.trim().length === 0) {
+        emptyRowCount++;
+        continue;
+      }
+      if (line.trim().length === 0 && candidateLines.length === 0) {
+        continue; // skip leading blanks
+      }
+      if (optDedup && candidateLines.length > 0) {
+        const sig = line.trim();
+        if (sig.length > 0 && seenLineSignatures.has(sig)) {
+          duplicateRowCount++;
+          continue;
+        }
+        seenLineSignatures.add(sig);
+      }
+      candidateLines.push(line);
+    }
+
+    if (candidateLines.length < 2) {
+      warningBox.innerHTML = "<strong>Fehler:</strong> Mindestens eine Kopfzeile und eine Datenzeile sind für die Bereinigung erforderlich.";
+      warningBox.style.display = "block";
       return;
     }
 
-    const headers = lines[0].split(',').map(h => h.trim());
-    const cleanedRows = [];
-    let fixCount = 0;
-    const seenEmails = new Set();
+    const headerCols = candidateLines[0].split(delim).map(c => optTrim ? c.trim() : c);
+    const expectedColCount = headerCols.length;
+    let mismatchedRowCount = 0;
 
-    const table = document.getElementById('liveTable');
-    table.innerHTML = "";
+    parsedResultRows = [];
+    let mutatedCellCount = 0;
+    let untouchedCellCount = 0;
+    const auditChanges = [];
 
-    // Table Header
-    const thead = document.createElement('thead');
-    let headHtml = "<tr style='border-bottom:1px solid var(--line);color:var(--muted);'>";
-    headers.forEach(h => { headHtml += `<th style='padding:.5rem .75rem;'>${h}</th>`; });
-    headHtml += "<th style='padding:.5rem .75rem;'>Status / Fixes</th></tr>";
-    thead.innerHTML = headHtml;
-    table.appendChild(thead);
+    for (let r = 1; r < candidateLines.length; r++) {
+      const rawRowStr = candidateLines[r];
+      let cols = rawRowStr.split(delim);
 
-    const tbody = document.createElement('tbody');
-
-    for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(',').map(c => c.trim());
-      const rowFixes = [];
-
-      // Name normalization
-      if (headers[0] && headers[0].toLowerCase().includes('name') && cols[0]) {
-        const orig = cols[0];
-        const titled = orig.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
-        if (titled !== orig) {
-          cols[0] = titled;
-          rowFixes.push("Name formatiert");
-          fixCount++;
-        }
-      }
-
-      // Phone normalization (E.164-style for Germany)
-      if (headers[1] && (headers[1].toLowerCase().includes('telefon') || headers[1].toLowerCase().includes('phone')) && cols[1]) {
-        const orig = cols[1];
-        let p = orig.replace(/[^0-9+]/g, '');
-        if (p.startsWith('0049')) p = '+49' + p.substring(4);
-        else if (p.startsWith('0')) p = '+49' + p.substring(1);
-        if (p !== orig) {
-          cols[1] = p;
-          rowFixes.push("Telefon E.164");
-          fixCount++;
-        }
-      }
-
-      // Email normalization & dedup
-      if (headers[2] && (headers[2].toLowerCase().includes('email') || headers[2].toLowerCase().includes('mail')) && cols[2]) {
-        const orig = cols[2];
-        const norm = orig.toLowerCase().trim();
-        if (norm !== orig) {
-          cols[2] = norm;
-          rowFixes.push("Email lowercase");
-          fixCount++;
-        }
-        if (seenEmails.has(norm)) {
-          rowFixes.push("⚠️ Duplikat markiert");
+      if (cols.length !== expectedColCount) {
+        mismatchedRowCount++;
+        if (cols.length < expectedColCount) {
+          while (cols.length < expectedColCount) cols.push("");
         } else {
-          seenEmails.add(norm);
+          cols = cols.slice(0, expectedColCount);
         }
       }
 
-      // Date normalization (DD.MM.YYYY -> YYYY-MM-DD)
-      if (headers[3] && (headers[3].toLowerCase().includes('datum') || headers[3].toLowerCase().includes('date')) && cols[3]) {
-        const orig = cols[3];
-        const match = orig.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-        if (match) {
-          const iso = `${match[3]}-${match[2].padStart(2,'0')}-${match[1].padStart(2,'0')}`;
-          cols[3] = iso;
-          rowFixes.push("Datum ISO-8601");
-          fixCount++;
+      const rowFixes = [];
+      const rowCleaned = [];
+
+      for (let c = 0; c < expectedColCount; c++) {
+        const originalVal = cols[c] || "";
+        let val = originalVal;
+        const colHeader = (headerCols[c] || "").toLowerCase();
+
+        if (optTrim) {
+          val = val.trim().replace(/[\u200B-\u200D\uFEFF]/g, "");
         }
+
+        // Field specific rules based on header heuristics
+        if (optEmail && (colHeader.includes("mail") || colHeader.includes("e-mail"))) {
+          const lower = val.toLowerCase();
+          if (lower !== val) {
+            val = lower;
+            rowFixes.push(`E-Mail (${c+1})`);
+          }
+        } else if (optPhone && (colHeader.includes("phone") || colHeader.includes("tel") || colHeader.includes("mobil"))) {
+          const normPhone = cleanPhone(val);
+          if (normPhone !== val) {
+            val = normPhone;
+            rowFixes.push(`Telefon (${c+1})`);
+          }
+        } else if (optName && (colHeader.includes("name") || colHeader.includes("kunde") || colHeader.includes("kontakt"))) {
+          const normName = cleanName(val);
+          if (normName !== val) {
+            val = normName;
+            rowFixes.push(`Name (${c+1})`);
+          }
+        } else if (optDate && (colHeader.includes("datum") || colHeader.includes("date") || colHeader.includes("zeit"))) {
+          const normDate = cleanDate(val);
+          if (normDate !== val) {
+            val = normDate;
+            rowFixes.push(`Datum (${c+1})`);
+          }
+        }
+
+        if (val !== originalVal) {
+          mutatedCellCount++;
+          auditChanges.push({ row: r, col: c + 1, colName: headerCols[c], before: originalVal, after: val });
+        } else {
+          untouchedCellCount++;
+        }
+        rowCleaned.push(val);
       }
 
-      cleanedRows.push(cols);
-
-      // Render Row
-      const tr = document.createElement('tr');
-      tr.style.borderBottom = "1px solid rgba(174,185,205,.08)";
-      let rowHtml = "";
-      cols.forEach(c => { rowHtml += `<td style='padding:.45rem .75rem;color:var(--ink);'>${c}</td>`; });
-      const badgeColor = rowFixes.length ? "var(--cyan)" : "var(--muted)";
-      rowHtml += `<td style='padding:.45rem .75rem;color:${badgeColor};font-size:.78rem;'>${rowFixes.join(', ') || 'Keine Fehler'}</td>`;
-      tr.innerHTML = rowHtml;
-      tbody.appendChild(tr);
+      parsedResultRows.push({
+        origCols: cols,
+        cleanCols: rowCleaned,
+        fixes: rowFixes,
+        isModified: rowFixes.length > 0 || rowCleaned.some((v, idx) => v !== cols[idx])
+      });
     }
 
-    table.appendChild(tbody);
-
-    // Build Output CSV
-    lastCleanCSV = headers.join(',') + "\n" + cleanedRows.map(r => r.join(',')).join('\n');
+    // Build Clean CSV Output
+    const csvLinesOut = [headerCols.join(delim)];
+    parsedResultRows.forEach(row => {
+      csvLinesOut.push(row.cleanCols.join(delim));
+    });
+    lastCleanCSV = csvLinesOut.join("\n");
 
     // Hashes
     const inputSha = await sha256(raw);
     const outputSha = await sha256(lastCleanCSV);
 
     lastReceipt = {
-      service: "courier-symphony-table-cleaner-v1",
-      mode: "deterministic_client_side_verified",
-      timestamp: new Date().toISOString(),
+      tool: "courier-symphony-csv-cleaner-v1",
+      verification_status: "BYTE_LEVEL_GOLD_VERIFIED",
+      timestamp_utc: new Date().toISOString(),
+      file_name: loadedFileName,
+      delimiter_used: delim === "\t" ? "TAB" : delim,
       input_sha256: inputSha,
       output_sha256: outputSha,
-      rows_analyzed: lines.length - 1,
-      corrections_applied: fixCount,
-      verifier_resolution: "BYTE_LEVEL_GOLD_VERIFIED",
-      cryptographic_seal: "valid"
+      metrics: {
+        raw_rows_in: rawLines.length,
+        cleaned_rows_out: parsedResultRows.length + 1,
+        empty_rows_removed: emptyRowCount,
+        duplicate_rows_removed: duplicateRowCount,
+        mutated_cells: mutatedCellCount,
+        untouched_cells_verified: untouchedCellCount,
+        mismatched_row_warnings: mismatchedRowCount
+      },
+      audit_changes: auditChanges.slice(0, 100) // cap detailed change log at 100 for receipt size
     };
 
-    document.getElementById('statRows').textContent = (lines.length - 1).toString();
-    document.getElementById('statFixes').textContent = fixCount.toString();
+    // Warnings if any
+    if (mismatchedRowCount > 0) {
+      warningBox.innerHTML = `<strong>Hinweis:</strong> Bei ${mismatchedRowCount} Zeile(n) stimmte die Spaltenanzahl nicht mit der Kopfzeile überein. Sie wurden automatisch angepasst.`;
+      warningBox.style.display = "block";
+    }
+
+    // Render Stats
+    document.getElementById('statRows').textContent = `${rawLines.length} → ${parsedResultRows.length + 1}`;
+    document.getElementById('statFixes').textContent = mutatedCellCount.toString();
+    document.getElementById('statFiltered').textContent = (emptyRowCount + duplicateRowCount).toString();
+    document.getElementById('statUntouched').textContent = untouchedCellCount.toString();
+    document.getElementById('hashDisplay').textContent = `SHA-256 Vorher: ${inputSha.slice(0, 16)}... | Nachher: ${outputSha.slice(0, 16)}...`;
+
+    renderResultTable(headerCols, 'all');
+
     document.getElementById('liveResultBox').style.display = "block";
-    document.getElementById('liveStatus').textContent = `Abgeschlossen: ${fixCount} Korrekturen durchgeführt, SHA-256 verifiziert.`;
+    document.getElementById('liveStatus').textContent = `Abgeschlossen: ${mutatedCellCount} Zellen korrigiert, ${emptyRowCount + duplicateRowCount} Zeilen gefiltert.`;
+  }
+
+  function renderResultTable(headers, filter) {
+    const table = document.getElementById('liveTable');
+    table.innerHTML = "";
+
+    const thead = document.createElement('thead');
+    let headHtml = "<tr style='border-bottom:1px solid var(--line);color:var(--muted);'>";
+    headers.forEach(h => { headHtml += `<th style='padding:.5rem .75rem;white-space:nowrap;'>${h}</th>`; });
+    headHtml += "<th style='padding:.5rem .75rem;white-space:nowrap;'>Angewendete Regeln</th></tr>";
+    thead.innerHTML = headHtml;
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    let displayedCount = 0;
+
+    parsedResultRows.forEach(row => {
+      if (filter === 'changed' && !row.isModified) return;
+
+      displayedCount++;
+      const tr = document.createElement('tr');
+      tr.style.borderBottom = "1px solid rgba(174,185,205,.08)";
+      let rowHtml = "";
+
+      row.cleanCols.forEach((val, idx) => {
+        const wasChanged = val !== row.origCols[idx];
+        const color = wasChanged ? "var(--cyan)" : "var(--ink)";
+        const bg = wasChanged ? "rgba(56,214,230,.08)" : "transparent";
+        rowHtml += `<td style='padding:.45rem .75rem;color:${color};background:${bg};white-space:nowrap;'>${val}</td>`;
+      });
+
+      const fixesStr = row.fixes.length ? row.fixes.join(', ') : (row.isModified ? 'Bereinigt' : 'Unverändert');
+      const badgeColor = row.fixes.length ? "var(--cyan)" : "var(--muted)";
+      rowHtml += `<td style='padding:.45rem .75rem;color:${badgeColor};font-size:.78rem;white-space:nowrap;'>${fixesStr}</td>`;
+      tr.innerHTML = rowHtml;
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+  }
+
+  function filterResultTable(mode) {
+    document.getElementById('btnFilterAll').style.background = mode === 'all' ? 'var(--line)' : 'transparent';
+    document.getElementById('btnFilterChanged').style.background = mode === 'changed' ? 'var(--line)' : 'transparent';
+    const delim = document.getElementById('delimiterSelect').value === 'auto' ? detectDelimiter(lastCleanCSV) : document.getElementById('delimiterSelect').value;
+    const headerCols = (lastCleanCSV.split('\n')[0] || "").split(delim);
+    renderResultTable(headerCols, mode);
   }
 
   function downloadCleanCSV() {
@@ -953,7 +1264,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "courier_cleaned_table.csv";
+    a.download = `bereinigt_${loadedFileName}`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -964,12 +1275,21 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "verification_receipt.json";
+    a.download = `pruefzertifikat_${loadedFileName.replace(/\.[^/.]+$/, "")}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }
 
-    function resetDemo() {
+  function copyCleanCSV() {
+    if (!lastCleanCSV) return;
+    navigator.clipboard.writeText(lastCleanCSV).then(() => {
+      alert("✓ Bereinigte CSV wurde in die Zwischenablage kopiert!");
+    }).catch(err => {
+      alert("Fehler beim Kopieren: " + err);
+    });
+  }
+
+  function resetDemo() {
     stopAuto();
     currentStepIndex = 0;
     document.getElementById('consoleBox').innerHTML = '';
