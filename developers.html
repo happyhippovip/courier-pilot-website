@@ -77,6 +77,7 @@
 </header>
 
 <main id="main" tabindex="-1" class="page">
+  <div id="devCopyStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
   <section class="section">
     <div class="wrap">
       <p class="tag">Technical Specifications</p>
@@ -91,7 +92,7 @@
       <p class="section-lede">All state transitions are recorded as immutable, monotonically sequenced JSONL events.</p>
 
       <div class="report" role="region" aria-label="Event Log Example">
-        <pre><code>{
+        <pre tabindex="0" role="region" aria-label="Ledger Event Envelope JSONL"><code>{
   "event_id": "evt-01J9X8K7B1...",
   "type": "WORK_ITEM_SEEDED",
   "item_id": "P9",
@@ -152,7 +153,7 @@
       <div id="cli" class="report" role="region" aria-label="Work Queue Audit Engine">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem;">
           <h3 style="margin:0;">Work Queue Audit Engine (<code>work_queue_audit.py</code>)</h3>
-          <button id="copy-cli-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyAuditCli()">📋 Copy CLI Command</button>
+          <button id="copy-cli-btn" class="btn btn-ghost" aria-controls="devCopyStatus" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyAuditCli()">📋 Copy CLI Command</button>
         </div>
         <p>Audits ledger files for cryptographic and state machine consistency:</p>
         <ul class="checks">
@@ -160,17 +161,17 @@
           <li><strong>Scope Collision Detection:</strong> Verifies no two concurrent workers claimed intersecting codebase files (<code>CONCURRENT_SCOPE_CONFLICT</code>).</li>
           <li><strong>State Invariant Auditing:</strong> Catches illegal double claims, unheld releases, or expired lease extensions.</li>
         </ul>
-        <pre><code id="audit-cli-code">python -m courier_core.work_queue_audit --ledger /path/to/ledger.jsonl --fail-closed
+        <pre tabindex="0" role="region" aria-label="Work Queue Audit CLI Command"><code id="audit-cli-code">python -m courier_core.work_queue_audit --ledger /path/to/ledger.jsonl --fail-closed
 # Output: {"ok": true, "events_audited": 142, "items": 9, "violations": []}</code></pre>
       </div>
 
       <div class="report" role="region" aria-label="CI/CD Integration" style="margin-top:1.5rem;">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem;">
           <h3 style="margin:0;">Automated CI/CD Gate (GitHub Actions / GitLab CI)</h3>
-          <button id="copy-workflow-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyAuditWorkflow()">📋 Copy Workflow (.yml)</button>
+          <button id="copy-workflow-btn" class="btn btn-ghost" aria-controls="devCopyStatus" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyAuditWorkflow()">📋 Copy Workflow (.yml)</button>
         </div>
         <p>Integrate Courier state verification directly into pull request checks. Fails the build immediately if illegal state transitions or concurrent file mutations are detected:</p>
-        <pre><code id="audit-workflow-code">name: Courier Audit Gate
+        <pre tabindex="0" role="region" aria-label="GitHub Actions CI/CD Gate Workflow"><code id="audit-workflow-code">name: Courier Audit Gate
 on: [push, pull_request]
 
 jobs:
@@ -203,11 +204,11 @@ jobs:
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
           <h3 style="margin:0;">Verification Receipt Schema (<code>receipt.schema.json</code>)</h3>
           <div style="display:flex;gap:.5rem;align-items:center;">
-            <button id="copy-schema-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyReceiptSchema()">📋 Copy Schema JSON</button>
+            <button id="copy-schema-btn" class="btn btn-ghost" aria-controls="devCopyStatus" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copyReceiptSchema()">📋 Copy Schema JSON</button>
             <a href="/receipt.schema.json" download="receipt.schema.json" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;text-decoration:none;">📥 Download Schema (.json)</a>
           </div>
         </div>
-        <pre><code id="schema-code">{
+        <pre tabindex="0" role="region" aria-label="Receipt JSON Schema Definition"><code id="schema-code">{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "CourierReceipt",
   "type": "object",
@@ -261,11 +262,11 @@ jobs:
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
           <h3 style="margin:0;">Sample Receipt Instance (<code>sample-receipt.json</code>)</h3>
           <div style="display:flex;gap:.5rem;align-items:center;">
-            <button id="copy-sample-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copySampleReceipt()">📋 Copy Sample JSON</button>
+            <button id="copy-sample-btn" class="btn btn-ghost" aria-controls="devCopyStatus" style="font-size:.85rem;padding:.35rem .8rem;" onclick="copySampleReceipt()">📋 Copy Sample JSON</button>
             <a href="/sample-receipt.json" download="sample-receipt.json" class="btn btn-ghost" style="font-size:.85rem;padding:.35rem .8rem;text-decoration:none;">📥 Download Sample (.json)</a>
           </div>
         </div>
-        <pre><code id="sample-code">{
+        <pre tabindex="0" role="region" aria-label="Sample Receipt Instance"><code id="sample-code">{
   "receipt_id": "rcpt-c8f912ae-4b01-49fa-91b3-1934ba098def",
   "item_id": "wq-task-20261022-0042",
   "worker_id": "mac-physical-worker-01",
@@ -325,6 +326,8 @@ function copyAuditCli() {
       btn.innerHTML = '✓ Command copied!';
       setTimeout(() => { btn.innerHTML = orig; }, 2500);
     }
+    const st = document.getElementById('devCopyStatus');
+    if (st) st.textContent = 'Audit CLI command copied to clipboard.';
   }).catch(() => {
     if (btn) {
       btn.innerText = 'Fehler beim Kopieren';
@@ -343,6 +346,8 @@ function copyAuditWorkflow() {
       btn.innerHTML = '✓ Workflow copied!';
       setTimeout(() => { btn.innerHTML = orig; }, 2500);
     }
+    const st = document.getElementById('devCopyStatus');
+    if (st) st.textContent = 'CI/CD audit gate workflow copied to clipboard.';
   }).catch(() => {
     if (btn) {
       btn.innerText = 'Fehler beim Kopieren';
@@ -361,6 +366,8 @@ function copyReceiptSchema() {
       btn.innerHTML = '✓ Schema copied!';
       setTimeout(() => { btn.innerHTML = orig; }, 2500);
     }
+    const st = document.getElementById('devCopyStatus');
+    if (st) st.textContent = 'Receipt JSON schema copied to clipboard.';
   }).catch(() => {
     if (btn) {
       btn.innerText = 'Fehler beim Kopieren';
@@ -379,6 +386,8 @@ function copySampleReceipt() {
       btn.innerHTML = '✓ Sample copied!';
       setTimeout(() => { btn.innerHTML = orig; }, 2500);
     }
+    const st = document.getElementById('devCopyStatus');
+    if (st) st.textContent = 'Sample receipt JSON copied to clipboard.';
   }).catch(() => {
     if (btn) {
       btn.innerText = 'Fehler beim Kopieren';
