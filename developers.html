@@ -18,17 +18,39 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "TechArticle",
-  "@id": "https://couriersymphony.de/developers.html#article",
-  "headline": "Courier Symphony Developer Documentation & Ledger Contracts",
-  "url": "https://couriersymphony.de/developers.html",
-  "description": "Developer specifications for append-only execution ledgers, atomic work queues, and verifiable receipts.",
-  "inLanguage": "en",
-  "publisher": {
-    "@type": "Organization",
-    "name": "Courier Symphony",
-    "url": "https://couriersymphony.de/"
-  }
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://couriersymphony.de/developers.html#article",
+      "headline": "Courier Symphony Developer Documentation & Ledger Contracts",
+      "url": "https://couriersymphony.de/developers.html",
+      "description": "Developer specifications for append-only execution ledgers, atomic work queues, and verifiable receipts.",
+      "inLanguage": "en",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Courier Symphony",
+        "url": "https://couriersymphony.de/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://couriersymphony.de/developers.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://couriersymphony.de/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Developers",
+          "item": "https://couriersymphony.de/developers.html"
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
