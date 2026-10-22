@@ -185,6 +185,14 @@
       display: flex;
       gap: .75rem;
     }
+    .log-num {
+      color: rgba(174,185,205,.35);
+      flex-shrink: 0;
+      font-size: .75rem;
+      user-select: none;
+      min-width: 2.2rem;
+      font-variant-numeric: tabular-nums;
+    }
     .log-time { color: #5a667e; flex-shrink: 0; }
     .log-tag { font-weight: bold; flex-shrink: 0; }
     .log-tag.intake { color: var(--gold); }
@@ -996,6 +1004,7 @@
   let currentStepIndex = 0;
   let timerId = null;
   let loopTimerId = null;
+  let logLineCounter = 0;
 
   function selectScenario(key) {
     const btn = document.querySelector(`.scenario-btn[data-scenario="${key}"]`);
@@ -1210,8 +1219,11 @@
     line.className = 'log-line';
     line.setAttribute('data-tag', tag.toLowerCase());
     
+    logLineCounter++;
+    const lineNumStr = String(logLineCounter).padStart(3, '0');
     const now = customTime || new Date().toISOString().substring(11, 19);
     line.innerHTML = `
+      <span class="log-num">#${lineNumStr}</span>
       <span class="log-time">[${now}]</span>
       <span class="log-tag ${tag}">[${tag.toUpperCase()}]</span>
       <span class="log-msg">${msg}</span>
@@ -1243,10 +1255,11 @@
     
     const textLines = [];
     lines.forEach(l => {
+      const num = l.querySelector('.log-num')?.textContent || '';
       const time = l.querySelector('.log-time')?.textContent || '';
       const tag = l.querySelector('.log-tag')?.textContent || '';
       const msg = l.querySelector('.log-msg')?.textContent || '';
-      textLines.push(`${time} ${tag} ${msg}`.trim());
+      textLines.push(`${num} ${time} ${tag} ${msg}`.trim());
     });
     const logDump = textLines.join('\n');
     
@@ -1270,10 +1283,11 @@
 
     const textLines = [];
     lines.forEach(l => {
+      const num = l.querySelector('.log-num')?.textContent || '';
       const time = l.querySelector('.log-time')?.textContent || '';
       const tag = l.querySelector('.log-tag')?.textContent || '';
       const msg = l.querySelector('.log-msg')?.textContent || '';
-      textLines.push(`${time} ${tag} ${msg}`.trim());
+      textLines.push(`${num} ${time} ${tag} ${msg}`.trim());
     });
     const logDump = textLines.join('\n');
     const blob = new Blob([logDump], { type: 'text/plain;charset=utf-8' });
@@ -1299,6 +1313,7 @@
     const box = document.getElementById('consoleBox');
     if (box) {
       box.innerHTML = '';
+      logLineCounter = 0;
       const sel = document.getElementById('filterConsoleTag');
       if (sel && sel.value !== 'all') {
         sel.value = 'all';
@@ -2228,6 +2243,7 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     }
     currentStepIndex = 0;
     document.getElementById('consoleBox').innerHTML = '';
+    logLineCounter = 0;
     log('intake', `Szenario gewechselt zu: „${SCENARIOS[currentScenarioKey].title}“. Bereit für Start.`);
     
     for (let i = 1; i <= 6; i++) {
