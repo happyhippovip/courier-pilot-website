@@ -189,10 +189,14 @@ button.btn:disabled,.btn.is-disabled{
 .page address{font-style:normal;color:var(--muted)}
 
 /* Footer */
-.footer{margin-top:3rem;border-top:1px solid var(--line);padding:1.6rem 0 2.2rem;color:var(--muted);font-size:.9rem}
+.footer,.foot{margin-top:3rem;border-top:1px solid var(--line);padding:1.6rem 0 2.2rem;color:var(--muted);font-size:.9rem}
 .footer-grid{display:grid;gap:.4rem}
-.footer p{margin:0}
-.footer a{color:var(--muted)}
+.footer p,.foot-copy{margin:0}
+.footer a,.foot a{color:var(--muted);text-decoration:none;transition:color .15s ease}
+.footer a:hover,.foot a:hover{color:var(--ink)}
+.foot-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem}
+.foot-nav{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
+.scenario-btn{transition:all .15s ease}
 
 /* Privacy page */
 .page{padding:2.5rem 0}
