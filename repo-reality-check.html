@@ -262,7 +262,19 @@
         </ol>
         <p class="hub-foot">Alle Zahlen und Dateinamen in diesem Kasten sind Demo-Daten. Ein echter Report bezieht sich nur auf das Repo, das du schickst.</p>
         </div>
-        <pre id="realityReportJsonBody" role="tabpanel" aria-labelledby="btnReportTabRaw" tabindex="0" style="display:none;font-family:ui-monospace,monospace;font-size:.82rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin:1rem 0;max-height:420px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;color:var(--ink);"></pre>
+        <div id="realityJsonToolbar" style="display:none;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .4rem 0;padding:.35rem .6rem;background:#060a14;border:1px solid var(--line);border-radius:6px;font-size:.78rem;">
+          <span style="display:inline-flex;align-items:center;gap:.4rem;">
+            <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></span>
+            <strong style="color:var(--ink);">JSON-Audit-Protokoll</strong>
+            <span id="jsonBytesBadge" style="font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.05);padding:.1rem .4rem;border-radius:10px;border:1px solid var(--line);">(~1.4 KB)</span>
+          </span>
+          <div style="display:flex;gap:.4rem;align-items:center;">
+            <button type="button" class="btn" id="btnCopyJsonInline" onclick="copySampleReportJson()" style="font-size:.75rem;padding:.2rem .55rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);cursor:pointer;" title="Kopiert das gesamte JSON in die Zwischenablage (Taste C)">📋 Kopieren</button>
+            <button type="button" class="btn" id="btnDownloadJsonInline" onclick="downloadSampleReportJson()" style="font-size:.75rem;padding:.2rem .55rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);cursor:pointer;" title="JSON als Datei herunterladen (Taste D)">📥 Download (.json)</button>
+          </div>
+        </div>
+        <pre id="realityReportJsonBody" role="tabpanel" aria-labelledby="btnReportTabRaw" tabindex="0" onclick="copySampleReportJson()" onkeydown="if(event.key==='Enter'||event.key===' ')copySampleReportJson()" title="Klicken oder Taste C zum Kopieren des vollständigen JSON-Audits" style="display:none;font-family:ui-monospace,monospace;font-size:.82rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin:.4rem 0 1rem 0;max-height:420px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;color:var(--ink);cursor:pointer;transition:border-color .2s ease;"></pre>
+        <span id="jsonCopyStatus" role="status" aria-live="polite" style="position:absolute;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap;"></span>
       </article>
     </div>
   </section>
@@ -486,14 +498,22 @@
     function switchReportView(mode) {
       const visual = document.getElementById("realityReportVisual");
       const raw = document.getElementById("realityReportJsonBody");
+      const toolbar = document.getElementById("realityJsonToolbar");
+      const bytesBadge = document.getElementById("jsonBytesBadge");
       const btnSummary = document.getElementById("btnReportTabSummary");
       const btnRaw = document.getElementById("btnReportTabRaw");
       if (!visual || !raw) return;
 
       if (mode === "raw") {
-        raw.textContent = JSON.stringify(getSampleReportPayload(), null, 2);
+        const jsonStr = JSON.stringify(getSampleReportPayload(), null, 2);
+        raw.textContent = jsonStr;
+        if (bytesBadge) {
+          const bytes = (new TextEncoder().encode(jsonStr)).length;
+          bytesBadge.textContent = `(${bytes} Bytes)`;
+        }
         visual.style.display = "none";
         raw.style.display = "block";
+        if (toolbar) toolbar.style.display = "flex";
         if (btnSummary) {
           btnSummary.style.background = "transparent";
           btnSummary.style.color = "var(--muted)";
@@ -507,6 +527,7 @@
       } else {
         visual.style.display = "block";
         raw.style.display = "none";
+        if (toolbar) toolbar.style.display = "none";
         if (btnSummary) {
           btnSummary.style.background = "var(--cyan)";
           btnSummary.style.color = "#070b16";
@@ -597,8 +618,14 @@
         } catch (e) {}
       }
       const rawView = document.getElementById("realityReportJsonBody");
+      const bytesBadge = document.getElementById("jsonBytesBadge");
       if (rawView && rawView.style.display === "block") {
-        rawView.textContent = JSON.stringify(getSampleReportPayload(), null, 2);
+        const jsonStr = JSON.stringify(getSampleReportPayload(), null, 2);
+        rawView.textContent = jsonStr;
+        if (bytesBadge) {
+          const bytes = (new TextEncoder().encode(jsonStr)).length;
+          bytesBadge.textContent = `(${bytes} Bytes)`;
+        }
       }
     }
 
@@ -689,6 +716,9 @@
       const payload = getSampleReportPayload();
       const str = JSON.stringify(payload, null, 2);
       const btn = document.getElementById("btnCopySampleReportJson");
+      const btnInline = document.getElementById("btnCopyJsonInline");
+      const statusEl = document.getElementById("jsonCopyStatus");
+      const preEl = document.getElementById("realityReportJsonBody");
       const done = () => {
         if (btn) {
           const orig = btn.textContent;
@@ -698,6 +728,25 @@
             btn.textContent = orig;
             btn.style.color = "var(--cyan)";
           }, 1800);
+        }
+        if (btnInline) {
+          const origInline = btnInline.textContent;
+          btnInline.textContent = "✓ Kopiert!";
+          btnInline.style.color = "#38e68e";
+          setTimeout(() => {
+            btnInline.textContent = origInline;
+            btnInline.style.color = "var(--cyan)";
+          }, 1800);
+        }
+        if (preEl) {
+          preEl.style.borderColor = "var(--cyan)";
+          setTimeout(() => {
+            preEl.style.borderColor = "var(--line)";
+          }, 450);
+        }
+        if (statusEl) {
+          statusEl.textContent = "JSON-Report erfolgreich in die Zwischenablage kopiert.";
+          setTimeout(() => { statusEl.textContent = ""; }, 2500);
         }
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
