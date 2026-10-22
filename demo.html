@@ -551,7 +551,8 @@
             <span id="hashDisplay" style="font-size:.78rem;font-family:ui-monospace,monospace;color:var(--muted);display:block;margin-top:.2rem;"></span>
           </div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-            <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanCSV()">📋 In Zwischenablage</button>
+            <button class="btn-sub" id="btnCopyCSV" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanCSV()">📋 CSV kopieren</button>
+            <button class="btn-sub" id="btnCopyJSON" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanJSON()">📋 JSON kopieren</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanCSV()">📥 Bereinigte CSV</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanJSON()">📥 Bereinigtes JSON</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadReceiptJSON()">📜 Audit-Zertifikat (JSON)</button>
@@ -1381,8 +1382,40 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
 
   function copyCleanCSV() {
     if (!lastCleanCSV) return;
+    const btn = document.getElementById('btnCopyCSV');
     navigator.clipboard.writeText(lastCleanCSV).then(() => {
-      alert("✓ Bereinigte CSV wurde in die Zwischenablage kopiert!");
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ CSV kopiert!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2500);
+      }
+    }).catch(err => {
+      alert("Fehler beim Kopieren: " + err);
+    });
+  }
+
+  function copyCleanJSON() {
+    if (!lastCleanCSV || !parsedResultRows.length) return;
+    const delim = document.getElementById('delimiterSelect').value === 'auto' ? detectDelimiter(lastCleanCSV) : document.getElementById('delimiterSelect').value;
+    const headerLine = lastCleanCSV.split(/\r?\n/)[0] || "";
+    const headers = headerLine.split(delim).map(h => h.trim());
+    
+    const records = parsedResultRows.map(row => {
+      const obj = {};
+      headers.forEach((h, idx) => {
+        const key = h || `spalte_${idx + 1}`;
+        obj[key] = row.cleanCols[idx] !== undefined ? row.cleanCols[idx] : "";
+      });
+      return obj;
+    });
+
+    const btn = document.getElementById('btnCopyJSON');
+    navigator.clipboard.writeText(JSON.stringify(records, null, 2)).then(() => {
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ JSON kopiert!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2500);
+      }
     }).catch(err => {
       alert("Fehler beim Kopieren: " + err);
     });
