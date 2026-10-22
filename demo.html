@@ -78,6 +78,10 @@
       color: var(--gold);
       font-weight: 700;
     }
+    .scenario-btn:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
     .pipeline {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -375,11 +379,13 @@
   </div>
 
   <div class="demo-container">
-    <div class="scenario-picker">
-      <span style="font-weight:700;font-size:.9rem;align-self:center;margin-right:.5rem;">Szenario wählen:</span>
-      <button class="scenario-btn is-active" id="scenario-spreadsheet" data-scenario="spreadsheet" aria-pressed="true">1. Datenbereinigung &amp; Schema-Prüfung (Erfolg)</button>
-      <button class="scenario-btn" id="scenario-security" data-scenario="security" aria-pressed="false">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
-      <button class="scenario-btn" id="scenario-rejection" data-scenario="rejection" aria-pressed="false">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
+    <div class="scenario-picker" role="region" aria-label="Szenario-Steuerung">
+      <span style="font-weight:700;font-size:.9rem;align-self:center;margin-right:.5rem;" id="lblScenarioNav">Szenario wählen:</span>
+      <div class="scenario-nav" role="tablist" aria-labelledby="lblScenarioNav" onkeydown="handleScenarioTabKey(event)" style="display:inline-flex;gap:.5rem;flex-wrap:wrap;">
+        <button type="button" class="scenario-btn is-active" id="scenario-spreadsheet" data-scenario="spreadsheet" aria-pressed="true" role="tab" aria-selected="true" aria-controls="consoleBox">1. Datenbereinigung &amp; Schema-Prüfung (Erfolg)</button>
+        <button type="button" class="scenario-btn" id="scenario-security" data-scenario="security" aria-pressed="false" role="tab" aria-selected="false" aria-controls="consoleBox">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
+        <button type="button" class="scenario-btn" id="scenario-rejection" data-scenario="rejection" aria-pressed="false" role="tab" aria-selected="false" aria-controls="consoleBox">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
+      </div>
       <button class="btn-sub" id="btnAutoRunScenario" title="Szenario abspielen oder pausieren (Taste P)" style="margin-left:auto;font-size:.82rem;padding:.35rem .75rem;color:var(--cyan);border-color:rgba(56,214,230,.35);" onclick="runDemo()">▶ Szenario abspielen</button>
       <button class="btn-sub" id="btnCopyScenarioLink" style="font-size:.82rem;padding:.35rem .75rem;" onclick="copyScenarioLink()">🔗 Link teilen</button>
     </div>
@@ -464,7 +470,7 @@
         </button>
       </div>
     </div>
-    <div class="console-box" id="consoleBox" aria-live="polite">
+    <div class="console-box" id="consoleBox" role="tabpanel" aria-labelledby="scenario-spreadsheet" aria-live="polite">
       <div class="log-line" data-tag="intake">
         <span class="log-time">[00:00]</span>
         <span class="log-tag intake">[BEREIT]</span>
@@ -557,6 +563,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">1</kbd>, <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">2</kbd>, <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">3</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Szenario wechseln (Tabelle, Security, Rejection)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&larr;</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&rarr;</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">Home</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">End</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Szenario-Tabs fokussieren &amp; navigieren (W3C ARIA Tablist)</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">L</kbd></span>
@@ -1076,11 +1086,56 @@
     document.querySelectorAll('.scenario-btn').forEach(b => {
       b.classList.remove('is-active');
       b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-selected', 'false');
     });
     btn.classList.add('is-active');
     btn.setAttribute('aria-pressed', 'true');
+    btn.setAttribute('aria-selected', 'true');
+    const cBox = document.getElementById('consoleBox');
+    if (cBox) cBox.setAttribute('aria-labelledby', btn.id);
     currentScenarioKey = key;
     resetDemo();
+  }
+
+  function handleScenarioTabKey(e) {
+    const keys = ['spreadsheet', 'security', 'rejection'];
+    const idx = keys.indexOf(currentScenarioKey);
+    if (idx === -1) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextKey = keys[(idx + 1) % keys.length];
+      selectScenario(nextKey);
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', `#scenario-${nextKey}`);
+      }
+      const b = document.getElementById(`scenario-${nextKey}`);
+      if (b) b.focus();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevKey = keys[(idx + keys.length - 1) % keys.length];
+      selectScenario(prevKey);
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', `#scenario-${prevKey}`);
+      }
+      const b = document.getElementById(`scenario-${prevKey}`);
+      if (b) b.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      selectScenario(keys[0]);
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', `#scenario-${keys[0]}`);
+      }
+      const b = document.getElementById(`scenario-${keys[0]}`);
+      if (b) b.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      selectScenario(keys[keys.length - 1]);
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', `#scenario-${keys[keys.length - 1]}`);
+      }
+      const b = document.getElementById(`scenario-${keys[keys.length - 1]}`);
+      if (b) b.focus();
+    }
   }
 
   function copyScenarioLink() {
