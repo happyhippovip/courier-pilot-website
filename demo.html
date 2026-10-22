@@ -345,6 +345,7 @@
       <button class="scenario-btn is-active" id="scenario-spreadsheet" data-scenario="spreadsheet">1. Datenbereinigung &amp; Schema-Prüfung (Erfolg)</button>
       <button class="scenario-btn" id="scenario-security" data-scenario="security">2. Code- &amp; Sicherheitsaudit (Erfolg)</button>
       <button class="scenario-btn" id="scenario-rejection" data-scenario="rejection">3. Manipulierte Daten (Verifier schlägt an / Negativbeispiel)</button>
+      <button class="btn-sub" id="btnAutoRunScenario" style="margin-left:auto;font-size:.82rem;padding:.35rem .75rem;color:var(--cyan);border-color:rgba(56,214,230,.35);" onclick="runDemo()">▶ Szenario abspielen</button>
     </div>
 
     <!-- Stepper Pipeline -->
@@ -854,13 +855,22 @@
   });
 
   function checkScenarioHash() {
-    const hash = (window.location.hash || '').toLowerCase();
-    if (hash === '#scenario-spreadsheet' || hash === '#spreadsheet') {
+    const rawHash = (window.location.hash || '').toLowerCase();
+    const cleanHash = rawHash.split('?')[0];
+    if (cleanHash === '#scenario-spreadsheet' || cleanHash === '#spreadsheet') {
       selectScenario('spreadsheet');
-    } else if (hash === '#scenario-security' || hash === '#security') {
+    } else if (cleanHash === '#scenario-security' || cleanHash === '#security') {
       selectScenario('security');
-    } else if (hash === '#scenario-rejection' || hash === '#rejection') {
+    } else if (cleanHash === '#scenario-rejection' || cleanHash === '#rejection') {
       selectScenario('rejection');
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasAutoRun = urlParams.get('run') === '1' || urlParams.get('autorun') === '1' || rawHash.includes('run=1') || rawHash.includes('autorun');
+    if (hasAutoRun) {
+      setTimeout(() => {
+        runDemo();
+      }, 400);
     }
   }
 
