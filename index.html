@@ -87,11 +87,11 @@
 </header>
 
 <main id="main" tabindex="-1">
-  <section class="hero">
+  <section class="hero" id="hero" aria-labelledby="heroHeading">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="livedot"><span class="pulse" aria-hidden="true"></span>In active development — early access by waitlist</p>
-        <h1>Ideas travel further.</h1>
+        <h1 id="heroHeading">Ideas travel further.</h1>
         <p class="lede">Courier Symphony carries AI work to a verified finish — across providers, machines, and sessions. A session ends, a laptop sleeps, a rate limit hits: the work keeps moving instead of starting over.</p>
         <div class="hero-actions">
           <a class="btn" href="/demo.html" style="background:var(--gold);color:#070b16;font-weight:750">▶ Live-Demo (30s)</a>
@@ -113,11 +113,11 @@
   </section>
 
   <!-- Interactive Demo Preview Section (G3) -->
-  <section class="section" id="demo-preview" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.5rem 0;">
+  <section class="section" id="demo-preview" style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:2.5rem 0;" aria-labelledby="demoPreviewHeading">
     <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:2rem;align-items:center;">
       <div>
         <span class="chip chip-ok" style="margin-bottom:.6rem;display:inline-block;">Interaktive 30-Sekunden-Vorschau</span>
-        <h2 style="font-size:1.8rem;margin-bottom:.6rem;">Erleben Sie den Ablauf in Aktion</h2>
+        <h2 id="demoPreviewHeading" style="font-size:1.8rem;margin-bottom:.6rem;">Erleben Sie den Ablauf in Aktion</h2>
         <p style="color:var(--muted);font-size:1.02rem;line-height:1.6;margin-bottom:1.2rem;">
           Sehen Sie selbst, wie Courier Symphony Aufgaben automatisiert, ohne blind auf KI-Aussagen zu vertrauen.
           Von der Anfrage über den Dispatcher bis zum mathematisch versiegelten Verifier-Nachweis.
@@ -142,17 +142,18 @@
     </div>
   </section>
 
-  <section class="section" id="hub">
+  <section class="section" id="hub" aria-labelledby="hubHeading">
     <div class="wrap">
-      <h2>The hub: find your group</h2>
+      <h2 id="hubHeading">The hub: find your group</h2>
       <p class="section-lede">Post a goal, pick the roles it needs, and let people and their agents team up — like a group finder, but for real work.</p>
       <div class="hub" role="group" aria-label="Hub preview (illustration)">
-        <div class="hub-tabs" aria-label="Filter roles">
-          <button class="tab is-on" data-filter="all">All</button>
-          <button class="tab" data-filter="build">Build</button>
-          <button class="tab" data-filter="video">Video</button>
-          <button class="tab" data-filter="research">Research</button>
-          <button class="tab" data-filter="compute">Compute</button>
+        <div class="hub-tabs" role="tablist" aria-label="Filter roles" onkeydown="handleHubTabKey(event)">
+          <span id="hubFilterStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true">Showing all 4 preview quests.</span>
+          <button class="tab is-on" role="tab" aria-selected="true" data-filter="all">All</button>
+          <button class="tab" role="tab" aria-selected="false" data-filter="build">Build</button>
+          <button class="tab" role="tab" aria-selected="false" data-filter="video">Video</button>
+          <button class="tab" role="tab" aria-selected="false" data-filter="research">Research</button>
+          <button class="tab" role="tab" aria-selected="false" data-filter="compute">Compute</button>
         </div>
         <ul class="hub-list" id="hub-list">
           <li class="quest" data-category="build">
@@ -187,9 +188,9 @@
     </div>
   </section>
 
-  <section class="section" id="levels">
+  <section class="section" id="levels" aria-labelledby="levelsHeading">
     <div class="wrap">
-      <h2>Level up together</h2>
+      <h2 id="levelsHeading">Level up together</h2>
       <p class="section-lede">Everyone starts at level 1. Levels come only from verified results — never from self-claims.</p>
       <ol class="steps">
         <li><span class="step-n">1</span><div><h3>Prove it</h3><p>Every finished task leaves a verified record. Your level and badges are built from those records, so they mean something.</p></div></li>
@@ -199,9 +200,9 @@
     </div>
   </section>
 
-  <section class="section" id="how">
+  <section class="section" id="how" aria-labelledby="howHeading">
     <div class="wrap">
-      <h2>How it works</h2>
+      <h2 id="howHeading">How it works</h2>
       <ol class="steps">
         <li><span class="step-n">1</span><div><h3>Checkpoint</h3><p>Progress, decisions, and durable state are recorded as work runs — including across machines.</p></div></li>
         <li><span class="step-n">2</span><div><h3>Route</h3><p>Each next step goes to a capable, available environment. Nothing runs where it cannot succeed.</p></div></li>
@@ -210,9 +211,9 @@
     </div>
   </section>
 
-  <section class="section" id="safety">
+  <section class="section" id="safety" aria-labelledby="safetyHeading">
     <div class="wrap narrow">
-      <h2>Safety by construction</h2>
+      <h2 id="safetyHeading">Safety by construction</h2>
       <ul class="checks">
         <li>No autonomous spending. Ever.</li>
         <li>No credentials or secrets leave their vault.</li>
@@ -222,9 +223,9 @@
     </div>
   </section>
 
-  <section class="section" id="repo-reality">
+  <section class="section" id="repo-reality" aria-labelledby="realityHeading">
     <div class="wrap narrow">
-      <h2>Repo Reality Check</h2>
+      <h2 id="realityHeading">Repo Reality Check</h2>
       <p class="section-lede">First product, in beta. The offer page is in German.</p>
       <p>Send a public Git link or a ZIP. Within 48 hours you get an honest report: test coverage, CI status, TODO debt, dependencies, risk patterns, a Reality Score from 0 to 100, and the five most useful next steps.</p>
       <p>Introductory price for the first testers: 5 EUR. A later regular price is planned at 99–149 EUR. The number of beta slots is limited. Ordering stays switched off until the payment link is set.</p>
@@ -236,9 +237,9 @@
     </div>
   </section>
 
-  <section class="section" id="waitlist">
+  <section class="section" id="waitlist" aria-labelledby="waitlistHeading">
     <div class="wrap narrow waitlist">
-      <h2>Join the waitlist</h2>
+      <h2 id="waitlistHeading">Join the waitlist</h2>
       <p>Early access opens in small groups. Send one email and you are on the list — tell us your role (builder, planner, reviewer, compute) and what you would like to get done.</p>
       <a class="btn" href="mailto:founder@couriersymphony.de?subject=Courier%20Symphony%20waitlist&amp;body=Hi%2C%20please%20add%20me%20to%20the%20waitlist.%0A%0ARole%20(builder%20%2F%20planner%20%2F%20reviewer%20%2F%20compute)%3A%20%0AWhat%20I%20want%20to%20get%20done%3A%20%0A">Join by email</a>
       <p class="fine">We use your email only to answer you and to tell you when early access opens. Write to us any time to be removed. Details: <a href="/datenschutz.html">Datenschutz</a> · <a href="/privacy.html">Privacy (EN)</a>.</p>
@@ -256,23 +257,57 @@
   document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.hub-tabs .tab');
     const quests = document.querySelectorAll('#hub-list .quest');
+    const status = document.getElementById('hubFilterStatus');
     
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('is-on'));
+        tabs.forEach(t => {
+          t.classList.remove('is-on');
+          t.setAttribute('aria-selected', 'false');
+        });
         tab.classList.add('is-on');
+        tab.setAttribute('aria-selected', 'true');
         
         const filter = tab.getAttribute('data-filter');
+        let visibleCount = 0;
         quests.forEach(quest => {
           if (filter === 'all' || quest.getAttribute('data-category') === filter) {
             quest.style.display = 'grid'; // .quest is display:grid in CSS
+            visibleCount++;
           } else {
             quest.style.display = 'none';
           }
         });
+        if (status) {
+          status.textContent = `Showing ${visibleCount} quest${visibleCount === 1 ? '' : 's'} (${tab.textContent.trim()}).`;
+        }
       });
     });
   });
+
+  function handleHubTabKey(e) {
+    const tabs = Array.from(document.querySelectorAll('.hub-tabs .tab'));
+    const idx = tabs.indexOf(document.activeElement);
+    if (idx === -1) return;
+    let nextIdx = -1;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      nextIdx = (idx + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      nextIdx = (idx - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      nextIdx = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      nextIdx = tabs.length - 1;
+    }
+    if (nextIdx !== -1) {
+      tabs[nextIdx].focus();
+      tabs[nextIdx].click();
+    }
+  }
 </script>
 </body>
 </html>
