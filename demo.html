@@ -801,17 +801,17 @@
       <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;">
         <button class="btn-main" onclick="processLiveTable()" style="background:var(--cyan);color:#070b16;font-weight:700;">▶ Tabelle bereinigen &amp; verifizieren</button>
         <button class="btn-sub" onclick="resetLiveTable()">Zurücksetzen</button>
-        <span id="liveStatus" style="font-size:.88rem;color:var(--muted);margin-left:.4rem;">Bereit für lokale Analyse</span>
+        <span id="liveStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.88rem;color:var(--muted);margin-left:.4rem;">Bereit für lokale Analyse</span>
       </div>
 
       <!-- Error / Warning Banner -->
-      <div id="liveWarningBox" style="display:none;background:rgba(239,68,68,.12);border:1px solid #ef4444;border-radius:8px;padding:.8rem 1rem;font-size:.85rem;color:#fca5a5;"></div>
+      <div id="liveWarningBox" role="alert" aria-live="assertive" aria-atomic="true" style="display:none;background:rgba(239,68,68,.12);border:1px solid #ef4444;border-radius:8px;padding:.8rem 1rem;font-size:.85rem;color:#fca5a5;"></div>
 
       <!-- Result View -->
-      <div id="liveResultBox" style="display:none;margin-top:1.5rem;border-top:1px solid var(--line);padding-top:1.5rem;">
+      <div id="liveResultBox" role="region" aria-labelledby="liveResultHeading" style="display:none;margin-top:1.5rem;border-top:1px solid var(--line);padding-top:1.5rem;">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin-bottom:1rem;">
           <div>
-            <h3 style="margin:0;font-size:1.2rem;color:#38e68e;display:flex;align-items:center;gap:.4rem;">
+            <h3 id="liveResultHeading" style="margin:0;font-size:1.2rem;color:#38e68e;display:flex;align-items:center;gap:.4rem;">
               <span>✓</span> <span>Verifikation erfolgreich abgeschlossen</span>
             </h3>
             <span id="hashDisplay" style="font-size:.78rem;font-family:ui-monospace,monospace;color:var(--muted);display:block;margin-top:.2rem;"></span>
@@ -848,9 +848,9 @@
 
         <!-- Interactive Table View with Filter Buttons -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-          <div style="display:flex;gap:.4rem;">
-            <button class="btn-sub" id="btnFilterAll" style="padding:.2rem .6rem;font-size:.78rem;background:var(--line);" onclick="filterResultTable('all')">Alle Zeilen</button>
-            <button class="btn-sub" id="btnFilterChanged" style="padding:.2rem .6rem;font-size:.78rem;" onclick="filterResultTable('changed')">Nur geänderte Zeilen</button>
+          <div style="display:flex;gap:.4rem;" role="group" aria-label="Tabellenfilter">
+            <button class="btn-sub" id="btnFilterAll" aria-pressed="true" style="padding:.2rem .6rem;font-size:.78rem;background:var(--line);" onclick="filterResultTable('all')">Alle Zeilen</button>
+            <button class="btn-sub" id="btnFilterChanged" aria-pressed="false" style="padding:.2rem .6rem;font-size:.78rem;" onclick="filterResultTable('changed')">Nur geänderte Zeilen</button>
           </div>
           <span style="font-size:.78rem;color:var(--muted);">Grün markierte Werte wurden korrigiert</span>
         </div>
@@ -2192,6 +2192,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     document.getElementById('fileInfoBadge').style.display = "none";
     document.getElementById('btnFilterAll').textContent = "Alle Zeilen";
     document.getElementById('btnFilterChanged').textContent = "Nur geänderte Zeilen";
+    document.getElementById('btnFilterAll').setAttribute('aria-pressed', 'true');
+    document.getElementById('btnFilterChanged').setAttribute('aria-pressed', 'false');
     const inputHint = document.getElementById('inputHintBadge');
     if (inputHint) inputHint.style.display = "none";
     document.getElementById('liveStatus').textContent = "Eingabe zurückgesetzt.";
@@ -2521,6 +2523,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
   function filterResultTable(mode) {
     document.getElementById('btnFilterAll').style.background = mode === 'all' ? 'var(--line)' : 'transparent';
     document.getElementById('btnFilterChanged').style.background = mode === 'changed' ? 'var(--line)' : 'transparent';
+    document.getElementById('btnFilterAll').setAttribute('aria-pressed', mode === 'all' ? 'true' : 'false');
+    document.getElementById('btnFilterChanged').setAttribute('aria-pressed', mode === 'changed' ? 'true' : 'false');
     const delim = document.getElementById('delimiterSelect').value === 'auto' ? detectDelimiter(lastCleanCSV) : document.getElementById('delimiterSelect').value;
     const headerCols = (lastCleanCSV.split('\n')[0] || "").split(delim);
     renderResultTable(headerCols, mode);
@@ -2581,6 +2585,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
         btn.innerHTML = '✓ CSV kopiert!';
         setTimeout(() => { btn.innerHTML = orig; }, 2500);
       }
+      const st = document.getElementById('liveStatus');
+      if (st) st.textContent = 'Bereinigte CSV-Daten erfolgreich in die Zwischenablage kopiert.';
     }).catch(err => {
       alert("Fehler beim Kopieren: " + err);
     });
@@ -2596,6 +2602,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
         btn.innerHTML = '✓ Zertifikat kopiert!';
         setTimeout(() => { btn.innerHTML = orig; }, 2500);
       }
+      const st = document.getElementById('liveStatus');
+      if (st) st.textContent = 'Kryptografisches Audit-Zertifikat erfolgreich in die Zwischenablage kopiert.';
     }).catch(err => {
       alert("Fehler beim Kopieren: " + err);
     });
@@ -2623,6 +2631,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
         btn.innerHTML = '✓ JSON kopiert!';
         setTimeout(() => { btn.innerHTML = orig; }, 2500);
       }
+      const st = document.getElementById('liveStatus');
+      if (st) st.textContent = 'Bereinigte JSON-Daten erfolgreich in die Zwischenablage kopiert.';
     }).catch(err => {
       alert("Fehler beim Kopieren: " + err);
     });
