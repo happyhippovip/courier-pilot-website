@@ -350,40 +350,40 @@
     </div>
 
     <!-- Stepper Pipeline -->
-    <div class="pipeline" id="pipeline" role="region" aria-label="Ablaufschritte">
-      <div class="pipe-step" id="step-1">
+    <div class="pipeline" id="pipeline" role="list" aria-label="Ablaufschritte der Verifikationspipeline">
+      <div class="pipe-step" id="step-1" role="listitem">
         <span class="step-num">1</span>
         <span class="step-title">Anfrage</span>
         <span class="step-desc">Zielvertrag &amp; Prüfkriterien festlegen</span>
       </div>
-      <div class="pipe-step" id="step-2">
+      <div class="pipe-step" id="step-2" role="listitem">
         <span class="step-num">2</span>
         <span class="step-title">Dispatcher</span>
         <span class="step-desc">Geprüfter Worker &amp; Lease-Sicherung</span>
       </div>
-      <div class="pipe-step" id="step-3">
+      <div class="pipe-step" id="step-3" role="listitem">
         <span class="step-num">3</span>
         <span class="step-title">Agent</span>
         <span class="step-desc">Autonome Ausführung &amp; Datensatzerzeugung</span>
       </div>
-      <div class="pipe-step" id="step-4">
+      <div class="pipe-step" id="step-4" role="listitem">
         <span class="step-num">4</span>
         <span class="step-title">Ergebnis</span>
         <span class="step-desc">Artefakt mit SHA-256 Prüfsumme</span>
       </div>
-      <div class="pipe-step" id="step-5">
+      <div class="pipe-step" id="step-5" role="listitem">
         <span class="step-num">5</span>
         <span class="step-title">Verifier</span>
         <span class="step-desc">Unabhängige Abnahme (Zero-Trust)</span>
       </div>
-      <div class="pipe-step" id="step-6">
+      <div class="pipe-step" id="step-6" role="listitem">
         <span class="step-num">6</span>
         <span class="step-title">Abschluss</span>
         <span class="step-desc">Manipulationssicherer Nachweis</span>
       </div>
     </div>
 
-    <div class="progress-bar" aria-hidden="true">
+    <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Fortschritt der Verifikation">
       <div class="progress-fill" id="progressFill"></div>
     </div>
 
@@ -401,7 +401,7 @@
       <button class="btn-main" id="btnStart" onclick="runDemo()">▶ 30s Demo starten</button>
       <button class="btn-sub" id="btnStep" onclick="stepDemo()">Einzelschritt weiter</button>
       <button class="btn-sub" id="btnReset" onclick="resetDemo()">Zurücksetzen</button>
-      <span id="demoStatus" style="font-size:.9rem;color:var(--muted);margin-left:auto;">Status: Bereit</span>
+      <span id="demoStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.9rem;color:var(--muted);margin-left:auto;">Status: Bereit</span>
     </div>
 
     <!-- Artifact / Receipt Result Card -->
@@ -913,7 +913,12 @@
     const el = document.getElementById(`step-${stepNum}`);
     if (!el) return;
     el.classList.remove('is-active', 'is-done', 'is-failed');
-    if (status === 'active') el.classList.add('is-active');
+    if (status === 'active') {
+      el.classList.add('is-active');
+      el.setAttribute('aria-current', 'step');
+    } else {
+      el.removeAttribute('aria-current');
+    }
     if (status === 'done') el.classList.add('is-done');
     if (status === 'failed') el.classList.add('is-failed');
   }
@@ -922,6 +927,8 @@
     const fill = document.getElementById('progressFill');
     const pct = Math.round((stepIndex / total) * 100);
     fill.style.width = pct + '%';
+    const bar = document.getElementById('progressBar');
+    if (bar) bar.setAttribute('aria-valuenow', pct);
     
     const scen = SCENARIOS[currentScenarioKey];
     if (!scen.resultOk && stepIndex >= 5) {
@@ -1608,11 +1615,16 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     
     for (let i = 1; i <= 6; i++) {
       const el = document.getElementById(`step-${i}`);
-      if (el) el.classList.remove('is-active', 'is-done', 'is-failed');
+      if (el) {
+        el.classList.remove('is-active', 'is-done', 'is-failed');
+        el.removeAttribute('aria-current');
+      }
     }
     
     document.getElementById('progressFill').style.width = '0%';
     document.getElementById('progressFill').classList.remove('failed');
+    const bar = document.getElementById('progressBar');
+    if (bar) bar.setAttribute('aria-valuenow', 0);
     document.getElementById('artifactCard').classList.remove('show');
     document.getElementById('btnStart').disabled = false;
     document.getElementById('btnStart').textContent = '▶ 30s Demo starten';
