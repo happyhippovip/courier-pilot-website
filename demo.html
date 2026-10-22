@@ -483,7 +483,7 @@
     </div>
     <div class="shortcut-hints" style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-top:.45rem;padding:0 .2rem;">
       <span style="font-weight:600;display:inline-flex;align-items:center;gap:.25rem;">⌨️ Shortcuts:</span>
-      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">S</kbd> Start/Pause</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">S</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">A</kbd> Start/Pause</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">N</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">&rarr;</kbd> Einzelschritt</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">R</kbd> Reset</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">T</kbd> Tempo</span>
@@ -508,7 +508,7 @@
         </p>
         <div style="display:grid;grid-template-columns:1fr;gap:.5rem;font-size:.84rem;margin-bottom:1.2rem;">
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
-            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">S</kbd></span>
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">S</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--cyan);font-weight:700;">A</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Wiedergabe starten, pausieren oder fortsetzen</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
@@ -1097,7 +1097,7 @@
     }
 
     const key = e.key;
-    if (key === 's' || key === 'S') {
+    if (key === 's' || key === 'S' || key === 'a' || key === 'A') {
       e.preventDefault();
       const btn = document.getElementById('btnStart');
       if (btn && !btn.disabled) {
