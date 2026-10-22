@@ -477,6 +477,7 @@
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('accounting')">📑 2. Deutsche Buchhaltung (Semikolon ';', Beträge, Umlaute)</button>
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('duplicates')">⚠️ 3. Dubletten-Test (Leerzeilen &amp; identische Zeilen)</button>
               <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('inventory')">📦 4. Lagerbestand &amp; Inventar (IDs, Datum, Duplikate)</button>
+              <button class="btn-sub" style="text-align:left;font-size:.82rem;padding:.4rem .8rem;" onclick="loadPreset('tsv_logs')">📊 5. Dev-Server-Logs (Tabulator '\t', Timestamps, Level)</button>
             </div>
             <a href="/sample-inventory-dirty.csv" download="sample-inventory-dirty.csv" class="btn-sub" style="display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:.82rem;padding:.45rem .8rem;margin-top:.6rem;width:100%;justify-content:center;border-color:rgba(56,214,230,.3);color:var(--cyan);">
               <span>📥</span> <span>Beispieldatei herunterladen (.csv)</span>
@@ -1020,15 +1021,30 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
 
   art-33100 ,  dichtungsring nbr 40  , Dichtungen , 1200 , 02.10.2026 , supplier@seal-corp.de , lieferbar
   ART-45091 , servoantrieb ac 400w , Antriebstechnik , 12 , 15/08/2026 , 0049 711 554433 , bestellt 
-  art-33100 , dichtungsring nbr 40 , Dichtungen , 1200 , 02.10.2026 , supplier@seal-corp.de , lieferbar`
+  art-33100 , dichtungsring nbr 40 , Dichtungen , 1200 , 02.10.2026 , supplier@seal-corp.de , lieferbar`,
+
+    tsv_logs: `Timestamp\tWorker_ID\tLevel\tEvent_Type\tDuration_ms\tStatus
+2026-10-22 08:30:15\tworker-node-01\tINFO\tTASK_CLAIM\t12.4\tOK
+21.10.2026 23:45:00\tworker-node-02\twarn\tLEASE_RETRY\t450.0\tRETRY
+2026-10-22 09:15:30\tworker-mac-01\tERROR\tMEMORY_PRESSURE\t1250.8\tFAIL
+15/09/2026 14:20:10\tworker-node-01\tinfo\tTASK_FINISH\t88.2\tOK
+2026-10-22 09:15:30\tworker-mac-01\tERROR\tMEMORY_PRESSURE\t1250.8\tFAIL`
   };
 
   function loadPreset(key) {
     if (!PRESETS[key]) return;
     document.getElementById('csvInput').value = PRESETS[key];
-    loadedFileName = `${key}_sample.csv`;
+    const ext = key === 'tsv_logs' ? 'tsv' : 'csv';
+    loadedFileName = `${key}_sample.${ext}`;
+    if (key === 'tsv_logs') {
+      document.getElementById('delimiterSelect').value = '\t';
+    } else if (key === 'accounting') {
+      document.getElementById('delimiterSelect').value = ';';
+    } else {
+      document.getElementById('delimiterSelect').value = ',';
+    }
     const badge = document.getElementById('fileInfoBadge');
-    badge.textContent = `✓ Beispieldatensatz geladen: ${key}.csv`;
+    badge.textContent = `✓ Beispieldatensatz geladen: ${key}.${ext}`;
     badge.style.display = 'block';
     updateCharCount();
     document.getElementById('liveStatus').textContent = "Beispieldaten geladen. Klicken Sie auf Bereinigen.";
