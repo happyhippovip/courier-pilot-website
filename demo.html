@@ -92,7 +92,12 @@
       padding: 1rem .85rem;
       text-align: center;
       position: relative;
+      cursor: help;
       transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pipe-step:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
     }
     .pipe-step.is-active {
       border-color: var(--cyan);
@@ -352,32 +357,32 @@
 
     <!-- Stepper Pipeline -->
     <div class="pipeline" id="pipeline" role="list" aria-label="Ablaufschritte der Verifikationspipeline">
-      <div class="pipe-step" id="step-1" role="listitem">
+      <div class="pipe-step" id="step-1" role="listitem" tabindex="0" title="Phase 1: Anfrage &amp; Zielvertrag — Definition der Zielkriterien, Scope-Grenzen und verifizierbaren Akzeptanzbedingungen.">
         <span class="step-num">1</span>
         <span class="step-title">Anfrage</span>
         <span class="step-desc">Zielvertrag &amp; Prüfkriterien festlegen</span>
       </div>
-      <div class="pipe-step" id="step-2" role="listitem">
+      <div class="pipe-step" id="step-2" role="listitem" tabindex="0" title="Phase 2: Dispatcher &amp; Lease — Kryptografische Worker-Registrierung, Lease-Zuweisung und Token-Boundaries.">
         <span class="step-num">2</span>
         <span class="step-title">Dispatcher</span>
         <span class="step-desc">Geprüfter Worker &amp; Lease-Sicherung</span>
       </div>
-      <div class="pipe-step" id="step-3" role="listitem">
+      <div class="pipe-step" id="step-3" role="listitem" tabindex="0" title="Phase 3: Autonome Agent-Ausführung — Isolierte Aufgabenausführung und Erzeugung der Zwischen- und Endartefakte.">
         <span class="step-num">3</span>
         <span class="step-title">Agent</span>
         <span class="step-desc">Autonome Ausführung &amp; Datensatzerzeugung</span>
       </div>
-      <div class="pipe-step" id="step-4" role="listitem">
+      <div class="pipe-step" id="step-4" role="listitem" tabindex="0" title="Phase 4: Ergebnis-Bereitstellung — Erfassung aller Ergebnisdateien mit SHA-256 Prüfsummen und Erstellung des Arbeitsberichts.">
         <span class="step-num">4</span>
         <span class="step-title">Ergebnis</span>
         <span class="step-desc">Artefakt mit SHA-256 Prüfsumme</span>
       </div>
-      <div class="pipe-step" id="step-5" role="listitem">
+      <div class="pipe-step" id="step-5" role="listitem" tabindex="0" title="Phase 5: Unabhängiger Verifier — Zero-Trust-Prüfung gegen Zielvertrag; PASS- oder REJECT-Entscheidung ohne Modellvertrauen.">
         <span class="step-num">5</span>
         <span class="step-title">Verifier</span>
         <span class="step-desc">Unabhängige Abnahme (Zero-Trust)</span>
       </div>
-      <div class="pipe-step" id="step-6" role="listitem">
+      <div class="pipe-step" id="step-6" role="listitem" tabindex="0" title="Phase 6: Manipulationssicherer Abschluss — Signiertes Audit-Zertifikat mit kryptografischer Nachweiskette und Protokoll-Siegel.">
         <span class="step-num">6</span>
         <span class="step-title">Abschluss</span>
         <span class="step-desc">Manipulationssicherer Nachweis</span>
