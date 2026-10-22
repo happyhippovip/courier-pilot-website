@@ -49,9 +49,22 @@
 
   <section class="section">
     <div class="wrap">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;" role="tablist" aria-label="Use Case Filter">
+        <span style="font-size:.85rem;color:var(--dim);margin-right:.5rem;">Filter by capability:</span>
+        <button type="button" class="btn usecase-filter is-active" onclick="filterUseCases('all', this)" style="font-size:.8rem;padding:.3rem .75rem;background:var(--ink);color:var(--bg);border:1px solid var(--ink);">All (5)</button>
+        <button type="button" class="btn usecase-filter" onclick="filterUseCases('audit', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Audit &amp; CI/CD</button>
+        <button type="button" class="btn usecase-filter" onclick="filterUseCases('recovery', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Crash Recovery</button>
+        <button type="button" class="btn usecase-filter" onclick="filterUseCases('distributed', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Multi-Agent Mesh</button>
+        <button type="button" class="btn usecase-filter" onclick="filterUseCases('heavy', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Heavy Pipelines</button>
+        <button type="button" class="btn usecase-filter" onclick="filterUseCases('governance', this)" style="font-size:.8rem;padding:.3rem .75rem;background:transparent;color:var(--ink);border:1px solid var(--line);">Data Governance</button>
+      </div>
+
       <div class="card-grid">
-        <article class="card">
-          <span class="card-num">01</span>
+        <article class="card" data-category="audit">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <span class="card-num">01</span>
+            <span class="chip chip-ok" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Audit &amp; CI/CD</span>
+          </div>
           <h2>Automated Codebase Verification &amp; Reality Audits</h2>
           <p>Autonomous AI agents frequently drift into hallucinated tests, broken imports, or forgotten file updates. Courier Symphony acts as an independent auditor.</p>
           <ul class="checks">
@@ -65,8 +78,11 @@
           </div>
         </article>
 
-        <article class="card">
-          <span class="card-num">02</span>
+        <article class="card" data-category="recovery">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <span class="card-num">02</span>
+            <span class="chip chip-warn" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Crash Recovery</span>
+          </div>
           <h2>Multi-Day Unattended Agent Runs</h2>
           <p>Standard agent CLI tools stop when a terminal session disconnects or an OS process hangs. Courier Symphony supervises long-running workflows with zero babysitting.</p>
           <ul class="checks">
@@ -80,8 +96,11 @@
           </div>
         </article>
 
-        <article class="card">
-          <span class="card-num">03</span>
+        <article class="card" data-category="distributed">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <span class="card-num">03</span>
+            <span class="chip chip-run" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Multi-Agent Mesh</span>
+          </div>
           <h2>Cross-Platform Distributed Execution</h2>
           <p>Workflows often require specialized OS capabilities—macOS for specific rendering or build tools, Windows for Job Objects and PowerShell scripting.</p>
           <ul class="checks">
@@ -95,8 +114,11 @@
           </div>
         </article>
 
-        <article class="card">
-          <span class="card-num">04</span>
+        <article class="card" data-category="heavy">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <span class="card-num">04</span>
+            <span class="chip chip-warn" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Heavy Pipelines</span>
+          </div>
           <h2>Heavy Media &amp; Asset Generation Pipelines</h2>
           <p>Rendering Godot animations, video encoding, and multi-model synthesis demand strict resource admission and fault tolerance.</p>
           <ul class="checks">
@@ -110,8 +132,11 @@
           </div>
         </article>
 
-        <article class="card">
-          <span class="card-num">05</span>
+        <article class="card" data-category="governance">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <span class="card-num">05</span>
+            <span class="chip chip-ok" style="font-size:.72rem;padding:.15rem .5rem;font-weight:600;">Data Governance</span>
+          </div>
           <h2>Cryptographically Verified Spreadsheet &amp; Business Data Cleanup</h2>
           <p>Spreadsheets full of mixed phone formats, casing errors, broken emails, and damaged formulas are liability traps. Courier Symphony cleans business data deterministically.</p>
           <ul class="checks">
@@ -164,5 +189,30 @@
     </nav>
   </div>
 </footer>
+<script>
+function filterUseCases(cat, activeBtn) {
+  const buttons = document.querySelectorAll('.usecase-filter');
+  buttons.forEach(b => {
+    b.style.background = 'transparent';
+    b.style.color = 'var(--ink)';
+    b.style.border = '1px solid var(--line)';
+    b.classList.remove('is-active');
+  });
+  if (activeBtn) {
+    activeBtn.style.background = 'var(--ink)';
+    activeBtn.style.color = 'var(--bg)';
+    activeBtn.style.border = '1px solid var(--ink)';
+    activeBtn.classList.add('is-active');
+  }
+  const cards = document.querySelectorAll('.card-grid article.card');
+  cards.forEach(card => {
+    if (cat === 'all' || card.getAttribute('data-category') === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
 </body>
 </html>

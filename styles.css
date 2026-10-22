@@ -117,6 +117,8 @@ h3{font-size:1.1rem}
 .chip{justify-self:start;font-size:.8rem;color:var(--muted);background:rgba(174,185,205,.08);border-radius:6px;padding:.15rem .55rem}
 .chip-ok{color:#b6dc8f}
 .chip-run{color:var(--cyan)}
+.chip-warn{color:var(--gold)}
+.usecase-filter{transition:all .15s ease;cursor:pointer}
 .hub-foot{margin:.8rem 0 0;color:var(--muted);font-size:.8rem}
 
 /* Waitlist */
