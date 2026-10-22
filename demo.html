@@ -487,7 +487,8 @@
       <label style="display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;color:var(--muted);cursor:pointer;user-select:none;">
         <input type="checkbox" id="chkLoopDemo" onchange="toggleLoopDemo(this.checked)" style="accent-color:var(--cyan);cursor:pointer;"> Dauerschleife (Kiosk)
       </label>
-      <span id="demoStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.9rem;color:var(--muted);margin-left:auto;">Status: Bereit</span>
+      <span id="demoStopwatchBadge" style="font-size:.78rem;font-weight:600;color:var(--cyan);background:rgba(0,212,255,.08);padding:.18rem .5rem;border-radius:10px;border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;gap:.25rem;user-select:none;margin-left:auto;" title="Laufzeit der aktuellen Demo-Ausführung">⏱️ 0.0s</span>
+      <span id="demoStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.9rem;color:var(--muted);">Status: Bereit</span>
     </div>
     <div class="shortcut-hints" style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-top:.45rem;padding:0 .2rem;">
       <span style="font-weight:600;display:inline-flex;align-items:center;gap:.25rem;">⌨️ Shortcuts:</span>
@@ -1577,6 +1578,7 @@
 
     if (currentStepIndex >= scen.steps.length) {
       // Finished
+      freezeStopwatch();
       highlightStep(step.num, isFail ? 'failed' : 'done');
       showReceipt(scen);
       document.getElementById('demoStatus').textContent = scen.resultOk ? 'Status: Erfolgreich verifiziert ✓' : 'Status: Fehler aufgedeckt (Fail-Closed) ✗';
@@ -1672,6 +1674,53 @@
     }
   }
 
+  let stopwatchTimerId = null;
+  let stopwatchStartTime = 0;
+  let stopwatchElapsed = 0;
+
+  function updateStopwatchBadge() {
+    const badge = document.getElementById('demoStopwatchBadge');
+    if (!badge) return;
+    const sec = (stopwatchElapsed / 1000).toFixed(1);
+    badge.textContent = `⏱️ ${sec}s`;
+  }
+
+  function startStopwatch(reset = false) {
+    if (reset) {
+      stopwatchElapsed = 0;
+    }
+    if (stopwatchTimerId) {
+      clearInterval(stopwatchTimerId);
+    }
+    stopwatchStartTime = performance.now() - stopwatchElapsed;
+    stopwatchTimerId = setInterval(() => {
+      stopwatchElapsed = performance.now() - stopwatchStartTime;
+      updateStopwatchBadge();
+    }, 100);
+  }
+
+  function pauseStopwatch() {
+    if (stopwatchTimerId) {
+      clearInterval(stopwatchTimerId);
+      stopwatchTimerId = null;
+      stopwatchElapsed = performance.now() - stopwatchStartTime;
+      updateStopwatchBadge();
+    }
+  }
+
+  function freezeStopwatch() {
+    pauseStopwatch();
+  }
+
+  function resetStopwatch() {
+    if (stopwatchTimerId) {
+      clearInterval(stopwatchTimerId);
+      stopwatchTimerId = null;
+    }
+    stopwatchElapsed = 0;
+    updateStopwatchBadge();
+  }
+
   function runDemo() {
     const scen = SCENARIOS[currentScenarioKey];
     if (!scen) return;
@@ -1679,6 +1728,7 @@
     // 1. If currently running -> Pause
     if (timerId !== null) {
       stopAuto();
+      pauseStopwatch();
       updatePlayButtons('paused');
       document.getElementById('demoStatus').textContent = `Status: Pausiert (Schritt ${currentStepIndex} von ${scen.steps.length})`;
       return;
@@ -1689,6 +1739,7 @@
       updatePlayButtons('running');
       document.getElementById('demoStatus').textContent = `Demo läuft (Schritt ${currentStepIndex} von ${scen.steps.length})...`;
       demoSpeed = getDemoSpeed();
+      startStopwatch(false);
       timerId = setInterval(() => {
         advanceStep();
       }, demoSpeed);
@@ -1700,6 +1751,7 @@
     updatePlayButtons('running');
     document.getElementById('demoStatus').textContent = 'Demo läuft (30 Sekunden)...';
     
+    startStopwatch(true);
     advanceStep();
     demoSpeed = getDemoSpeed();
     timerId = setInterval(() => {
@@ -1710,6 +1762,7 @@
   function stepDemo() {
     const scen = SCENARIOS[currentScenarioKey];
     stopAuto();
+    pauseStopwatch();
     advanceStep();
     if (currentStepIndex > 0 && currentStepIndex < (scen ? scen.steps.length : 6)) {
       updatePlayButtons('paused');
@@ -1719,6 +1772,7 @@
   function jumpToStep(targetStepNum) {
     if (targetStepNum < 1 || targetStepNum > 6) return;
     stopAuto();
+    pauseStopwatch();
     const scen = SCENARIOS[currentScenarioKey];
     if (!scen || !scen.steps) return;
 
@@ -2364,6 +2418,7 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
 
   function resetDemo() {
     stopAuto();
+    resetStopwatch();
     if (loopTimerId) {
       clearTimeout(loopTimerId);
       loopTimerId = null;
