@@ -211,8 +211,9 @@
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
           <p class="demo-flag" style="margin:0;">Beispielreport, Demo-Daten · Interaktive Vorschau</p>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button type="button" class="btn" id="btnCopyScenarioLink" onclick="copyScenarioLink()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">🔗 Link kopieren</button>
             <button type="button" class="btn" id="btnCopySampleReportJson" onclick="copySampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📋 JSON kopieren</button>
-            <button type="button" class="btn" onclick="downloadSampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📥 Szenario als JSON</button>
+            <button type="button" class="btn" id="btnDownloadSampleReportJson" onclick="downloadSampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📥 Szenario als JSON</button>
             <a class="btn" href="/sample-reality-report.json" download="sample-reality-report.json" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);text-decoration:none;">📄 Statischer Report (.json)</a>
             <a class="btn" href="#schnelltest" onclick="applyToQuickCheck()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--ink);">⚡ Im Schnelltest prüfen</a>
           </div>
@@ -223,8 +224,8 @@
             <h3 id="demo-title">demo-org/widget-api</h3>
             <p class="quest-meta" id="demo-meta">Erfundenes Startup-MVP · Branch main · Commit demo000</p>
           </div>
-          <div class="score">
-            <span class="score-n" id="demo-score-val" style="color:var(--gold);">42</span>
+          <div class="score" role="status" aria-live="polite" aria-atomic="true" aria-label="Aktueller Reality-Score des ausgewählten Profils">
+            <span class="score-n" id="demo-score-val" style="color:var(--gold);" aria-live="polite">42</span>
             <span class="score-l" id="demo-score-lbl">Reality-Score 0–100<br>Mittleres Drift-Risiko</span>
           </div>
         </div>
@@ -504,6 +505,14 @@
 
       document.getElementById("demo-risk-list").innerHTML = s.risks.map(r => `<li>${r}</li>`).join("");
       document.getElementById("demo-steps-list").innerHTML = s.steps.map(st => `<li>${st}</li>`).join("");
+
+      if (window.history && window.history.replaceState) {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("scenario", (idx + 1).toString());
+          window.history.replaceState(null, "", url.toString());
+        } catch (e) {}
+      }
     }
 
     function handleScenarioTabKey(e) {
@@ -561,6 +570,32 @@
       a.download = `reality_report_${s.name.replace(/[^a-zA-Z0-9_-]/g, "_")}.json`;
       a.click();
       URL.revokeObjectURL(a.href);
+    }
+
+    function copyScenarioLink() {
+      const base = window.location.origin + window.location.pathname;
+      const shareUrl = `${base}?scenario=${currentScenarioIdx + 1}#beispiel`;
+      const btn = document.getElementById("btnCopyScenarioLink");
+      const done = () => {
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = "✓ Link kopiert!";
+          btn.style.color = "#38e68e";
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.style.color = "var(--cyan)";
+          }, 1800);
+        }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(done).catch(() => {
+          fallbackCopyText(shareUrl);
+          done();
+        });
+      } else {
+        fallbackCopyText(shareUrl);
+        done();
+      }
     }
 
     function copySampleReportJson() {
@@ -769,6 +804,9 @@
       } else if (key === '3') {
         e.preventDefault();
         selectScenario(2);
+      } else if (key === 'u' || key === 'U') {
+        e.preventDefault();
+        copyScenarioLink();
       } else if (key === 'c' || key === 'C') {
         e.preventDefault();
         copySampleReportJson();
@@ -818,6 +856,17 @@
           if (e.target === modal) toggleRealityHelpModal(false);
         });
       }
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const scenParam = params.get("scenario");
+        if (scenParam === "1" || scenParam === "startup") {
+          selectScenario(0);
+        } else if (scenParam === "2" || scenParam === "enterprise") {
+          selectScenario(1);
+        } else if (scenParam === "3" || scenParam === "legacy") {
+          selectScenario(2);
+        }
+      } catch (e) {}
     });
   </script>
 
@@ -895,6 +944,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&larr;</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">&rarr;</kbd></span>
             <span style="color:var(--ink);font-weight:600;">W3C ARIA Tab-Navigation zwischen Szenario-Reitern</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">U</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Direktlink zum aktuellen Szenario kopieren</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">C</kbd></span>
