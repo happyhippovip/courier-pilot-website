@@ -411,9 +411,19 @@
       <div style="font-family:ui-monospace,monospace;font-size:.85rem;background:#040710;padding:.85rem;border-radius:6px;border:1px solid var(--line);margin-bottom:.8rem;" id="receiptBody">
         <!-- Dynamischer Inhalt -->
       </div>
-      <p style="font-size:.85rem;color:var(--muted);margin:0;" id="receiptExplanation">
-        Dieser Nachweis garantiert mathematisch, dass das Arbeitsergebnis unverändert den definierten Prüfkriterien entspricht. Keine Halluzinationen, kein Durchwinken.
-      </p>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;">
+        <p style="font-size:.85rem;color:var(--muted);margin:0;max-width:560px;" id="receiptExplanation">
+          Dieser Nachweis garantiert mathematisch, dass das Arbeitsergebnis unverändert den definierten Prüfkriterien entspricht. Keine Halluzinationen, kein Durchwinken.
+        </p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+          <a href="/sample-receipt.json" download="sample-receipt.json" class="btn-sub" style="font-size:.78rem;padding:.3rem .65rem;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;">
+            <span>📥</span> <span>Muster-Zertifikat (.json)</span>
+          </a>
+          <a href="/developers.html#receipt-contract" class="btn-sub" style="font-size:.78rem;padding:.3rem .65rem;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;">
+            <span>📄</span> <span>Schema-Spezifikation</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -617,6 +627,7 @@
       </div>
       <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
         <a class="btn-sub" href="/repo-reality-check.html#schnelltest" style="text-decoration:none;font-weight:700;color:var(--cyan);border-color:rgba(56,214,230,.35);">⚡ 30s Schnelltest</a>
+        <a class="btn-sub" href="/sample-reality-report.json" download="sample-reality-report.json" style="text-decoration:none;">📥 Report-Muster (.json)</a>
         <a class="btn-sub" href="/repo-reality-check.html#beispiel" style="text-decoration:none;">📊 Beispiel-Report</a>
         <a class="btn-sub" href="/repo-reality-check.html" style="text-decoration:none;">Angebot ansehen &rarr;</a>
         <a class="btn-sub" href="/developers.html#cli" style="text-decoration:none;">🛠️ CLI & CI/CD Gate</a>
