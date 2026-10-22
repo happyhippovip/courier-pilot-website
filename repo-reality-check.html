@@ -236,9 +236,19 @@
 
           <div style="margin-top:1.5rem;border-top:1px solid var(--line);padding-top:1rem;">
             <p style="font-size:.82rem;color:var(--muted);margin-bottom:.6rem;">Möchten Sie eine unbestechliche, detaillierte 48h-Analyse Ihres echten Git-Repos?</p>
-            <a class="btn" href="#angebot" style="display:block;text-align:center;font-size:.9rem;padding:.5rem 1rem;">
-              Echten 48h-Report anfordern (5 EUR)
-            </a>
+            <div style="display:flex;gap:.5rem;flex-direction:column;">
+              <a class="btn" id="qcMailtoBtn" href="#" onclick="requestBetaReportMailto(event)" style="text-align:center;font-size:.9rem;padding:.5rem 1rem;background:var(--gold);color:#070b16;font-weight:700;">
+                ✉ Analyse für dieses Profil anfragen (5 EUR)
+              </a>
+              <div style="display:flex;gap:.5rem;">
+                <button type="button" class="btn" id="qcCopyBtn" onclick="copyQuickCheckMarkdown()" style="flex:1;font-size:.78rem;padding:.4rem .6rem;background:transparent;border:1px solid var(--line);color:var(--ink);">
+                  📋 Ergebnis kopieren
+                </button>
+                <a class="btn" href="#angebot" style="flex:1;text-align:center;font-size:.78rem;padding:.4rem .6rem;background:transparent;border:1px solid var(--line);color:var(--muted);">
+                  Angebot-Details
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -454,6 +464,73 @@
         badgeEl.textContent = "Kritisches Drift-Risiko";
         sumEl.textContent = "Hohe Wahrscheinlichkeit für unbemerkte Regressionen, fehlschlagende Builds und Sicherheitslecks.";
       }
+    }
+
+    function copyQuickCheckMarkdown() {
+      const ci = parseInt(document.getElementById('qcCi').value, 10);
+      const test = parseInt(document.getElementById('qcTest').value, 10);
+      const deps = parseInt(document.getElementById('qcDeps').value, 10);
+      const todo = parseInt(document.getElementById('qcTodo').value, 10);
+      const sec = parseInt(document.getElementById('qcSec').value, 10);
+      const total = ci + test + deps + todo + sec;
+      const badge = document.getElementById('qcBadge').textContent.trim();
+      const summary = document.getElementById('qcSummary').textContent.trim();
+
+      const stepLis = Array.from(document.querySelectorAll('#qcSteps li')).map((li, i) => `${i + 1}. ${li.textContent.trim()}`).join('\n');
+
+      const md = `# Repo Reality-Score Selbsttest\n\n` +
+        `**Reality-Score:** ${total} / 100 (${badge})\n` +
+        `**Einschätzung:** ${summary}\n\n` +
+        `### Profil-Aufschlüsselung:\n` +
+        `- CI/CD Pipeline: ${ci} / 25 Pkt\n` +
+        `- Testabdeckung: ${test} / 25 Pkt\n` +
+        `- Abhängigkeiten: ${deps} / 20 Pkt\n` +
+        `- TODO-Schulden: ${todo} / 15 Pkt\n` +
+        `- Secret-Scanning: ${sec} / 15 Pkt\n\n` +
+        `### Empfohlene nächste Schritte:\n` +
+        `${stepLis}\n\n` +
+        `---\n` +
+        `Erstellt via https://couriersymphony.de/repo-reality-check.html#schnelltest`;
+
+      navigator.clipboard.writeText(md).then(() => {
+        const btn = document.getElementById('qcCopyBtn');
+        const orig = btn.textContent;
+        btn.textContent = "✓ Kopiert!";
+        btn.style.color = "#38e68e";
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.style.color = "var(--ink)";
+        }, 2200);
+      }).catch(err => {
+        alert("Fehler beim Kopieren: " + err);
+      });
+    }
+
+    function requestBetaReportMailto(e) {
+      if (e) e.preventDefault();
+      const ci = parseInt(document.getElementById('qcCi').value, 10);
+      const test = parseInt(document.getElementById('qcTest').value, 10);
+      const deps = parseInt(document.getElementById('qcDeps').value, 10);
+      const todo = parseInt(document.getElementById('qcTodo').value, 10);
+      const sec = parseInt(document.getElementById('qcSec').value, 10);
+      const total = ci + test + deps + todo + sec;
+      const badge = document.getElementById('qcBadge').textContent.trim();
+      const stepLis = Array.from(document.querySelectorAll('#qcSteps li')).map((li, i) => `${i + 1}. ${li.textContent.trim()}`).join('\n');
+
+      const subject = encodeURIComponent(`Repo Reality Check Beta — Selbsttest-Ergebnis (${total}/100)`);
+      const body = encodeURIComponent(
+        `Hallo Courier Symphony Team,\n\n` +
+        `ich habe den 30s Schnelltest auf couriersymphony.de durchgeführt:\n\n` +
+        `- Geschätzter Reality-Score: ${total} / 100 (${badge})\n` +
+        `- Profil: CI=${ci}/25, Tests=${test}/25, Deps=${deps}/20, TODOs=${todo}/15, Secrets=${sec}/15\n\n` +
+        `Dringendste Handlungsfelder laut Selbsttest:\n` +
+        `${stepLis}\n\n` +
+        `Mein Repository (öffentlicher Git-Link oder ZIP per separatem Transfer):\n` +
+        `[Hier Git-Link einfügen, z.B. https://github.com/...]\n\n` +
+        `Bitte kontaktiert mich für den 5-EUR-Beta-Report.\n\n` +
+        `Beste Grüße\n`
+      );
+      window.location.href = `mailto:founder@couriersymphony.de?subject=${subject}&body=${body}`;
     }
   </script>
 
