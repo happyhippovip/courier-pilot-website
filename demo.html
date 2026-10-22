@@ -419,13 +419,22 @@
       <button class="btn-main" id="btnStart" onclick="runDemo()">▶ 30s Demo starten</button>
       <button class="btn-sub" id="btnStep" onclick="stepDemo()">Einzelschritt weiter</button>
       <button class="btn-sub" id="btnReset" onclick="resetDemo()">Zurücksetzen</button>
+      <div style="display:inline-flex;align-items:center;gap:.35rem;font-size:.85rem;color:var(--muted);">
+        <label for="speedSelect" style="cursor:pointer;font-size:.82rem;">Tempo:</label>
+        <select id="speedSelect" onchange="changeDemoSpeed()" aria-label="Geschwindigkeit der Demonstration" style="background:#0c1120;border:1px solid var(--line);color:var(--ink);padding:.35rem .6rem;border-radius:6px;font-size:.82rem;cursor:pointer;">
+          <option value="4500" selected>1x (Normal · 4.5s)</option>
+          <option value="2200">2x (Schnell · 2.2s)</option>
+          <option value="1200">3x (Turbo · 1.2s)</option>
+        </select>
+      </div>
       <span id="demoStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.9rem;color:var(--muted);margin-left:auto;">Status: Bereit</span>
     </div>
     <div class="shortcut-hints" style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin-top:.45rem;padding:0 .2rem;">
       <span style="font-weight:600;display:inline-flex;align-items:center;gap:.25rem;">⌨️ Shortcuts:</span>
-      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">S</kbd> Start</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">S</kbd> Start/Pause</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">N</kbd> / <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">&rarr;</kbd> Einzelschritt</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">R</kbd> Reset</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">T</kbd> Tempo</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">1</kbd>-<kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">3</kbd> Szenario</span>
     </div>
 
@@ -995,6 +1004,13 @@
       if (window.history && window.history.replaceState) {
         window.history.replaceState(null, '', '#scenario-rejection');
       }
+    } else if (key === 't' || key === 'T') {
+      e.preventDefault();
+      const sel = document.getElementById('speedSelect');
+      if (sel) {
+        sel.selectedIndex = (sel.selectedIndex + 1) % sel.options.length;
+        changeDemoSpeed();
+      }
     }
   });
 
@@ -1154,6 +1170,27 @@
     }
   }
 
+  let demoSpeed = 4500;
+
+  function getDemoSpeed() {
+    const sel = document.getElementById('speedSelect');
+    if (sel && sel.value) {
+      const val = parseInt(sel.value, 10);
+      if (!isNaN(val) && val > 0) return val;
+    }
+    return demoSpeed;
+  }
+
+  function changeDemoSpeed() {
+    demoSpeed = getDemoSpeed();
+    if (timerId !== null) {
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        advanceStep();
+      }, demoSpeed);
+    }
+  }
+
   function runDemo() {
     const scen = SCENARIOS[currentScenarioKey];
     if (!scen) return;
@@ -1170,9 +1207,10 @@
     if (currentStepIndex > 0 && currentStepIndex < scen.steps.length) {
       updatePlayButtons('running');
       document.getElementById('demoStatus').textContent = `Demo läuft (Schritt ${currentStepIndex} von ${scen.steps.length})...`;
+      demoSpeed = getDemoSpeed();
       timerId = setInterval(() => {
         advanceStep();
-      }, 4500);
+      }, demoSpeed);
       return;
     }
 
@@ -1182,9 +1220,10 @@
     document.getElementById('demoStatus').textContent = 'Demo läuft (30 Sekunden)...';
     
     advanceStep();
+    demoSpeed = getDemoSpeed();
     timerId = setInterval(() => {
       advanceStep();
-    }, 4500);
+    }, demoSpeed);
   }
 
   function stepDemo() {
