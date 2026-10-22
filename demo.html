@@ -497,9 +497,12 @@
 
       <!-- Raw Text Area (Collapsible / Editable) -->
       <div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;flex-wrap:wrap;gap:.4rem;">
           <label for="csvInput" style="font-weight:700;font-size:.88rem;color:var(--ink);">CSV-Inhalt (Editor &amp; Vorschau):</label>
-          <span id="charCountLabel" style="font-size:.8rem;color:var(--muted);">0 Zeilen</span>
+          <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+            <span id="inputHintBadge" style="font-size:.78rem;padding:.15rem .55rem;border-radius:4px;display:none;font-family:ui-monospace,monospace;"></span>
+            <span id="charCountLabel" style="font-size:.8rem;color:var(--muted);">0 Zeilen</span>
+          </div>
         </div>
         <textarea id="csvInput" rows="6" style="width:100%;background:#040710;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.8rem;font-family:ui-monospace,monospace;font-size:.85rem;resize:vertical;" placeholder="Kopfzeile,Spalte1,Spalte2... (Oder Datei oben ablegen)"></textarea>
       </div>
@@ -1056,8 +1059,36 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const val = document.getElementById('csvInput').value;
     const lines = val.split(/\r?\n/).filter(l => l.length > 0);
     document.getElementById('charCountLabel').textContent = `${lines.length} Zeilen (${val.length} Zeichen)`;
+
+    const badge = document.getElementById('inputHintBadge');
+    if (!badge) return;
+    if (!val.trim()) {
+      badge.style.display = 'none';
+      return;
+    }
+
+    const selectVal = document.getElementById('delimiterSelect')?.value || 'auto';
+    const delim = selectVal === 'auto' ? detectDelimiter(val) : (selectVal === '\\t' ? '\t' : selectVal);
+    const delimName = delim === '\t' ? 'Tab' : (delim === ';' ? 'Semikolon' : (delim === ',' ? 'Komma' : delim));
+
+    const firstLine = lines[0] || '';
+    const cols = firstLine.split(delim);
+
+    badge.style.display = 'inline-block';
+    if (cols.length <= 1) {
+      badge.style.background = 'rgba(230, 69, 56, 0.15)';
+      badge.style.color = '#e64538';
+      badge.style.border = '1px solid rgba(230, 69, 56, 0.3)';
+      badge.textContent = `Hinweis: Nur 1 Spalte erkannt (Trennzeichen '${delimName}' prüfen)`;
+    } else {
+      badge.style.background = 'rgba(56, 230, 142, 0.12)';
+      badge.style.color = '#38e68e';
+      badge.style.border = '1px solid rgba(56, 230, 142, 0.25)';
+      badge.textContent = `Erkannt: ${cols.length} Spalten · Trennzeichen: ${delimName}`;
+    }
   }
   document.getElementById('csvInput')?.addEventListener('input', updateCharCount);
+  document.getElementById('delimiterSelect')?.addEventListener('change', updateCharCount);
 
   function resetLiveTable() {
     document.getElementById('csvInput').value = "";
@@ -1066,6 +1097,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     document.getElementById('fileInfoBadge').style.display = "none";
     document.getElementById('btnFilterAll').textContent = "Alle Zeilen";
     document.getElementById('btnFilterChanged').textContent = "Nur geänderte Zeilen";
+    const inputHint = document.getElementById('inputHintBadge');
+    if (inputHint) inputHint.style.display = "none";
     document.getElementById('liveStatus').textContent = "Eingabe zurückgesetzt.";
     updateCharCount();
   }
@@ -1304,8 +1337,15 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     };
 
     // Warnings if any
+    const warningMsgs = [];
+    if (expectedColCount <= 1) {
+      warningMsgs.push(`In der Kopfzeile wurde nur 1 Spalte mit dem Trennzeichen (${delim === '\t' ? 'Tab' : delim}) erkannt. Bitte prüfen Sie die Trennzeichen-Einstellung.`);
+    }
     if (mismatchedRowCount > 0) {
-      warningBox.innerHTML = `<strong>Hinweis:</strong> Bei ${mismatchedRowCount} Zeile(n) stimmte die Spaltenanzahl nicht mit der Kopfzeile überein. Sie wurden automatisch angepasst.`;
+      warningMsgs.push(`Bei ${mismatchedRowCount} Zeile(n) stimmte die Spaltenanzahl nicht mit der Kopfzeile überein. Sie wurden automatisch angepasst.`);
+    }
+    if (warningMsgs.length > 0) {
+      warningBox.innerHTML = `<strong>Hinweis:</strong> ${warningMsgs.join(' ')}`;
       warningBox.style.display = "block";
     }
 
