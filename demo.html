@@ -553,6 +553,7 @@
           <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="copyCleanCSV()">📋 In Zwischenablage</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanCSV()">📥 Bereinigte CSV</button>
+            <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanJSON()">📥 Bereinigtes JSON</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadReceiptJSON()">📜 Audit-Zertifikat (JSON)</button>
           </div>
         </div>
@@ -1339,6 +1340,30 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const a = document.createElement("a");
     a.href = url;
     a.download = `bereinigt_${loadedFileName}`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadCleanJSON() {
+    if (!lastCleanCSV || !parsedResultRows.length) return;
+    const delim = document.getElementById('delimiterSelect').value === 'auto' ? detectDelimiter(lastCleanCSV) : document.getElementById('delimiterSelect').value;
+    const headerLine = lastCleanCSV.split(/\r?\n/)[0] || "";
+    const headers = headerLine.split(delim).map(h => h.trim());
+    
+    const records = parsedResultRows.map(row => {
+      const obj = {};
+      headers.forEach((h, idx) => {
+        const key = h || `spalte_${idx + 1}`;
+        obj[key] = row.cleanCols[idx] !== undefined ? row.cleanCols[idx] : "";
+      });
+      return obj;
+    });
+
+    const blob = new Blob([JSON.stringify(records, null, 2)], { type: "application/json;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bereinigt_${loadedFileName.replace(/\.[^/.]+$/, "")}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }
