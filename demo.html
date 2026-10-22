@@ -421,6 +421,9 @@
         <button type="button" class="btn-sub" id="btnCopyConsoleLogs" onclick="copyConsoleLogs()" style="font-size:.75rem;padding:.2rem .55rem;border-radius:4px;cursor:pointer;">
           <span id="lblCopyConsoleLogs">📋 Logs kopieren</span>
         </button>
+        <button type="button" class="btn-sub" id="btnDownloadConsoleLogs" onclick="downloadConsoleLogs()" style="font-size:.75rem;padding:.2rem .55rem;border-radius:4px;cursor:pointer;" title="Audit-Log als .log Datei exportieren">
+          <span id="lblDownloadLogs">💾 Exportieren</span>
+        </button>
         <button type="button" class="btn-sub" id="btnClearConsole" onclick="clearConsoleLog()" style="font-size:.75rem;padding:.2rem .55rem;border-radius:4px;cursor:pointer;">
           🧹 Leeren
         </button>
@@ -459,6 +462,7 @@
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">R</kbd> Reset</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">T</kbd> Tempo</span>
       <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">1</kbd>-<kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">3</kbd> Szenario</span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem;"><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.12rem .38rem;font-family:ui-monospace,monospace;font-size:.72rem;color:var(--ink);">L</kbd> Export</span>
       <button type="button" id="btnHelpModal" onclick="toggleHelpModal()" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--cyan);font-size:.75rem;padding:.18rem .55rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;" aria-haspopup="dialog" aria-controls="keyboardHelpModal">
         <kbd style="background:#111625;border:1px solid var(--line);border-radius:3px;padding:.08rem .3rem;font-family:ui-monospace,monospace;font-size:.7rem;color:var(--cyan);">?</kbd> <span>Tastatur-Hilfe</span>
       </button>
@@ -496,6 +500,10 @@
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">1</kbd>, <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">2</kbd>, <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">3</kbd></span>
             <span style="color:var(--ink);font-weight:600;">Szenario wechseln (Tabelle, Security, Rejection)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
+            <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">L</kbd></span>
+            <span style="color:var(--ink);font-weight:600;">Audit-Log als .log Datei herunterladen</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;background:#040710;border-radius:6px;border:1px solid rgba(174,185,205,.08);">
             <span><kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">?</kbd> oder <kbd style="background:#111625;border:1px solid var(--line);border-radius:4px;padding:.15rem .45rem;font-family:ui-monospace,monospace;font-size:.78rem;color:var(--ink);">F1</kbd></span>
@@ -1095,6 +1103,9 @@
         sel.selectedIndex = (sel.selectedIndex + 1) % sel.options.length;
         changeDemoSpeed();
       }
+    } else if (key === 'l' || key === 'L') {
+      e.preventDefault();
+      downloadConsoleLogs();
     } else if (key === '?' || key === 'F1') {
       e.preventDefault();
       toggleHelpModal();
@@ -1200,6 +1211,39 @@
     }).catch(err => {
       alert("Fehler beim Kopieren: " + err);
     });
+  }
+
+  function downloadConsoleLogs() {
+    const box = document.getElementById('consoleBox');
+    if (!box) return;
+    const lines = box.querySelectorAll('.log-line');
+    if (!lines.length) return;
+
+    const textLines = [];
+    lines.forEach(l => {
+      const time = l.querySelector('.log-time')?.textContent || '';
+      const tag = l.querySelector('.log-tag')?.textContent || '';
+      const msg = l.querySelector('.log-msg')?.textContent || '';
+      textLines.push(`${time} ${tag} ${msg}`.trim());
+    });
+    const logDump = textLines.join('\n');
+    const blob = new Blob([logDump], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
+    a.href = url;
+    a.download = `courier-audit-${currentScenarioKey}-${ts}.log`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    const lbl = document.getElementById('lblDownloadLogs');
+    if (lbl) {
+      const orig = lbl.textContent;
+      lbl.textContent = '✓ Exportiert!';
+      setTimeout(() => { lbl.textContent = orig; }, 1800);
+    }
   }
 
   function clearConsoleLog() {
