@@ -1,0 +1,47 @@
+{
+  "report_id": "audit-20261022-reality-mvp42",
+  "tool": "Courier Symphony Reality Engine (Beta)",
+  "report_type": "Repository Reality Audit",
+  "generated_at": "2026-10-22T08:50:00Z",
+  "is_synthetic_demo": true,
+  "repository": {
+    "name": "demo-org/widget-api",
+    "meta": "Startup-MVP · Branch main · Commit demo000",
+    "reality_score": 42,
+    "risk_evaluation": "Mittleres Drift-Risiko",
+    "visibility": "public",
+    "loc_estimated": 14250,
+    "primary_language": "TypeScript / Python"
+  },
+  "metrics": {
+    "coverage_percent": 18,
+    "coverage_detail": "18 % der Zeilen (Beispielrechnung)",
+    "ci_status": "Letzter Lauf auf main: fehlgeschlagen (Workflow timeout)",
+    "todo_count": 37,
+    "todo_detail": "37 offene TODO/FIXME Kommentare",
+    "dependencies_total": 64,
+    "dependencies_unpinned": 4,
+    "dependencies_detail": "64 direkte Einträge, 4 ohne feste Version",
+    "patterns_detail": "3 Muster im Beispiel identifiziert"
+  },
+  "identified_risk_patterns": [
+    "Vorhandene Tests laufen in der Beispiel-CI nicht automatisch.",
+    "Keine feste Lock-Datei (package-lock.json/poetry.lock fehlt).",
+    "Kritisches Zahlungsmodul billing hat 0% Testabdeckung."
+  ],
+  "top_5_recommended_actions": [
+    "Die vorhandenen Tests bei jedem Push in der CI ausführen.",
+    "Den fehlgeschlagenen Workflow auf main reparieren.",
+    "Eine Lock-Datei committen, damit Abhängigkeiten deterministisch bleiben.",
+    "Die 11 TODOs im Zahlungsmodul schließen oder issue-fencing anwenden.",
+    "Den Pfad refund mit einem gezielten Integrationstest absichern."
+  ],
+  "quickcheck_factors": {
+    "ci_pipeline": 10,
+    "test_suite": 5,
+    "dependencies": 10,
+    "todo_hygiene": 8,
+    "secret_scanning": 8
+  },
+  "audit_note": "Dieser Report ist ein statisches Referenz-Beispiel von couriersymphony.de. Ein echter Report umfasst die unbestechliche 48h-Analyse Ihres echten Repositories."
+}

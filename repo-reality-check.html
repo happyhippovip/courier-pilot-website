@@ -139,8 +139,9 @@
       <article class="report" aria-labelledby="demo-title">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
           <p class="demo-flag" style="margin:0;">Beispielreport, Demo-Daten · Interaktive Vorschau</p>
-          <div style="display:flex;gap:.5rem;">
-            <button type="button" class="btn" onclick="downloadSampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📥 Als JSON exportieren</button>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button type="button" class="btn" onclick="downloadSampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📥 Szenario als JSON</button>
+            <a class="btn" href="/sample-reality-report.json" download="sample-reality-report.json" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);text-decoration:none;">📄 Statischer Report (.json)</a>
             <a class="btn" href="#schnelltest" onclick="applyToQuickCheck()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--ink);">⚡ Im Schnelltest prüfen</a>
           </div>
         </div>
