@@ -85,35 +85,55 @@
 
   <section class="section" id="beispiel">
     <div class="wrap">
-      <h2>Beispielreport, Demo-Daten</h2>
-      <p class="section-lede">Synthetische Beispieldaten zur Illustration. Kein echtes Repository und keine Messung aus einem Kundenprojekt.</p>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:1.2rem;">
+        <div>
+          <h2>Beispielreport, Demo-Daten</h2>
+          <p class="section-lede" style="margin:0;">Synthetische Beispieldaten zur Illustration typischer Repository-Profile. Wählen Sie ein Profil:</p>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;" role="tablist" aria-label="Szenario-Auswahl">
+          <button type="button" class="btn scenario-btn is-active" id="btnScen1" onclick="selectScenario(0)" style="font-size:.82rem;padding:.35rem .75rem;">1. Startup MVP (Score 42)</button>
+          <button type="button" class="btn scenario-btn" id="btnScen2" onclick="selectScenario(1)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">2. Enterprise Core (Score 89)</button>
+          <button type="button" class="btn scenario-btn" id="btnScen3" onclick="selectScenario(2)" style="font-size:.82rem;padding:.35rem .75rem;background:transparent;border:1px solid var(--line);color:var(--ink);">3. Legacy Bridge (Score 19)</button>
+        </div>
+      </div>
+
       <article class="report" aria-labelledby="demo-title">
-        <p class="demo-flag">Beispielreport, Demo-Daten</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;">
+          <p class="demo-flag" style="margin:0;">Beispielreport, Demo-Daten · Interaktive Vorschau</p>
+          <div style="display:flex;gap:.5rem;">
+            <button type="button" class="btn" onclick="downloadSampleReportJson()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--cyan);">📥 Als JSON exportieren</button>
+            <a class="btn" href="#schnelltest" onclick="applyToQuickCheck()" style="font-size:.78rem;padding:.25rem .6rem;background:var(--bg2);border:1px solid var(--line);color:var(--ink);">⚡ Im Schnelltest prüfen</a>
+          </div>
+        </div>
+
         <div class="report-top">
           <div>
             <h3 id="demo-title">demo-org/widget-api</h3>
-            <p class="quest-meta">Erfundenes Beispiel · Branch main · Commit demo000</p>
+            <p class="quest-meta" id="demo-meta">Erfundenes Startup-MVP · Branch main · Commit demo000</p>
           </div>
           <div class="score">
-            <span class="score-n">42</span>
-            <span class="score-l">Reality-Score 0–100<br>Beispielwert, keine Messung</span>
+            <span class="score-n" id="demo-score-val" style="color:var(--gold);">42</span>
+            <span class="score-l" id="demo-score-lbl">Reality-Score 0–100<br>Mittleres Drift-Risiko</span>
           </div>
         </div>
-        <dl class="report-metrics">
-          <div><dt>Testabdeckung</dt><dd>18 % der Zeilen (Beispielrechnung)</dd></div>
-          <div><dt>CI-Status</dt><dd>Letzter Lauf auf main: fehlgeschlagen (Beispiel)</dd></div>
-          <div><dt>TODO-Schulden</dt><dd>37 offene TODO/FIXME (Beispiel)</dd></div>
-          <div><dt>Abhängigkeiten</dt><dd>64 direkte Einträge, 4 ohne feste Version (Beispiel)</dd></div>
-          <div><dt>Risiko-Muster</dt><dd>3 Muster im Beispiel, siehe unten</dd></div>
+
+        <dl class="report-metrics" id="demo-metrics">
+          <div><dt>Testabdeckung</dt><dd id="mCoverage">18 % der Zeilen (Beispielrechnung)</dd></div>
+          <div><dt>CI-Status</dt><dd id="mCi">Letzter Lauf auf main: fehlgeschlagen (Beispiel)</dd></div>
+          <div><dt>TODO-Schulden</dt><dd id="mTodo">37 offene TODO/FIXME (Beispiel)</dd></div>
+          <div><dt>Abhängigkeiten</dt><dd id="mDeps">64 direkte Einträge, 4 ohne feste Version (Beispiel)</dd></div>
+          <div><dt>Risiko-Muster</dt><dd id="mPatterns">3 Muster im Beispiel, siehe unten</dd></div>
         </dl>
-        <h3>Risiko-Muster im Beispiel</h3>
-        <ul class="report-list">
+
+        <h3 id="demo-risk-head">Risiko-Muster im Beispiel</h3>
+        <ul class="report-list" id="demo-risk-list">
           <li>Vorhandene Tests laufen in der Beispiel-CI nicht.</li>
           <li>Im Beispiel liegt keine Lock-Datei.</li>
           <li>Das Beispielmodul <code>billing</code> hat keinen Test.</li>
         </ul>
-        <h3>Die 5 wichtigsten nächsten Schritte (Beispiel)</h3>
-        <ol class="report-steps">
+
+        <h3 id="demo-steps-head">Die 5 wichtigsten nächsten Schritte (Beispiel)</h3>
+        <ol class="report-steps" id="demo-steps-list">
           <li>Die vorhandenen Tests bei jedem Push in der CI ausführen.</li>
           <li>Den fehlgeschlagenen Workflow auf main reparieren.</li>
           <li>Eine Lock-Datei committen, damit die Beispiel-Abhängigkeiten festliegen.</li>
@@ -226,6 +246,164 @@
   </section>
 
   <script>
+    const SCENARIOS = [
+      {
+        name: "demo-org/widget-api",
+        meta: "Erfundenes Startup-MVP · Branch main · Commit demo000",
+        score: 42,
+        color: "var(--gold)",
+        risk: "Mittleres Drift-Risiko",
+        metrics: {
+          cov: "18 % der Zeilen (Beispielrechnung)",
+          ci: "Letzter Lauf auf main: fehlgeschlagen (Workflow timeout)",
+          todo: "37 offene TODO/FIXME Kommentare",
+          deps: "64 direkte Einträge, 4 ohne feste Version",
+          patterns: "3 Muster im Beispiel identifiziert"
+        },
+        risks: [
+          "Vorhandene Tests laufen in der Beispiel-CI nicht automatisch.",
+          "Keine feste Lock-Datei (package-lock.json/poetry.lock fehlt).",
+          "Kritisches Zahlungsmodul billing hat 0% Testabdeckung."
+        ],
+        steps: [
+          "Die vorhandenen Tests bei jedem Push in der CI ausführen.",
+          "Den fehlgeschlagenen Workflow auf main reparieren.",
+          "Eine Lock-Datei committen, damit Abhängigkeiten deterministisch bleiben.",
+          "Die 11 TODOs im Zahlungsmodul schließen oder issue-fencing anwenden.",
+          "Den Pfad refund mit einem gezielten Integrationstest absichern."
+        ],
+        qc: { ci: 10, test: 5, deps: 10, todo: 8, sec: 8 }
+      },
+      {
+        name: "acme-corp/settlement-core",
+        meta: "Erfundenes Enterprise-Fintech · Branch production · Commit release-2.4",
+        score: 89,
+        color: "#38e68e",
+        risk: "Exzellente Repository-Disziplin",
+        metrics: {
+          cov: "91 % der Zeilen (Strikte Branch-Coverage)",
+          ci: "Letzter Lauf auf production: grün (Dauer: 3m 42s)",
+          todo: "3 offene TODO/FIXME Kommentare mit Issue-Referenz",
+          deps: "42 direkte Abhängigkeiten, alle mit SHA-256 Hashes gepinnt",
+          patterns: "0 kritische Muster, 1 Nebenläufigkeits-Optimierung"
+        },
+        risks: [
+          "Sehr hohes Build-Volumen: CI-Cache-Optimierung für Docker-Layer empfohlen.",
+          "Flaky Testrate von 0.4% bei asynchronen Webhook-Mocks."
+        ],
+        steps: [
+          "Monotonic-Coverage-Ratchet aktivieren (kein PR darf Coverage senken).",
+          "E2E-Webhook-Mocks deterministisch isolieren.",
+          "Wöchentliches Dependency-Vulnerability-Scanning automatisieren.",
+          "Audit-Hashes der Artefakte signieren und im Ledger ablegen.",
+          "Berechtigungs-Scope für CI-Runner weiter minimieren."
+        ],
+        qc: { ci: 25, test: 25, deps: 20, todo: 15, sec: 15 }
+      },
+      {
+        name: "legacy-labs/sync-bridge",
+        meta: "Erfundenes Altsystem · Branch master · Commit legacy99",
+        score: 19,
+        color: "#ef4444",
+        risk: "Kritisches Drift- & Ausfallrisiko",
+        metrics: {
+          cov: "0 % der Zeilen (Keine Tests im Repo vorhanden)",
+          ci: "Keine CI-Pipeline eingerichtet (.github/workflows leer)",
+          todo: "84 offene TODO/FIXME Kommentare teilweise aus 2021",
+          deps: "118 direkte Abhängigkeiten, viele mit Wildcards (*)",
+          patterns: "5 kritische Muster identifiziert"
+        },
+        risks: [
+          "Keine automatisierte Verifikation vor Produktiv-Deployment.",
+          "Wildcard-Versionen führen bei jedem Build zu unvorhersehbaren Updates.",
+          "Möglicherweise ungeschützte Secrets im Git-Verlauf.",
+          "Starke Kopplung ohne Modularisierung.",
+          "Fehlende Fehlerbehandlung in Kern-Synchronisationsschleifen."
+        ],
+        steps: [
+          "Minimalen Smoke-Test für den Haupt-Sync-Endpunkt schreiben.",
+          "Eine grundlegende CI-Pipeline mit Linter und Syntax-Check anlegen.",
+          "Abhängigkeiten mit festen Versionsnummern pinnen.",
+          "Git-Historie mit Gitleaks auf versehentlich committete Credentials prüfen.",
+          "Offene Architektur-Baustellen vor weiteren Feature-Arbeiten bereinigen."
+        ],
+        qc: { ci: 0, test: 0, deps: 0, todo: 0, sec: 0 }
+      }
+    ];
+
+    let currentScenarioIdx = 0;
+
+    function selectScenario(idx) {
+      currentScenarioIdx = idx;
+      const s = SCENARIOS[idx];
+
+      // Update buttons
+      for (let i = 0; i < 3; i++) {
+        const btn = document.getElementById("btnScen" + (i + 1));
+        if (i === idx) {
+          btn.style.background = "var(--ink)";
+          btn.style.color = "var(--bg)";
+          btn.style.border = "1px solid var(--ink)";
+        } else {
+          btn.style.background = "transparent";
+          btn.style.color = "var(--ink)";
+          btn.style.border = "1px solid var(--line)";
+        }
+      }
+
+      document.getElementById("demo-title").textContent = s.name;
+      document.getElementById("demo-meta").textContent = s.meta;
+      const scoreVal = document.getElementById("demo-score-val");
+      scoreVal.textContent = s.score;
+      scoreVal.style.color = s.color;
+      document.getElementById("demo-score-lbl").innerHTML = "Reality-Score 0–100<br>" + s.risk;
+
+      document.getElementById("mCoverage").textContent = s.metrics.cov;
+      document.getElementById("mCi").textContent = s.metrics.ci;
+      document.getElementById("mTodo").textContent = s.metrics.todo;
+      document.getElementById("mDeps").textContent = s.metrics.deps;
+      document.getElementById("mPatterns").textContent = s.metrics.patterns;
+
+      document.getElementById("demo-risk-list").innerHTML = s.risks.map(r => `<li>${r}</li>`).join("");
+      document.getElementById("demo-steps-list").innerHTML = s.steps.map(st => `<li>${st}</li>`).join("");
+    }
+
+    function downloadSampleReportJson() {
+      const s = SCENARIOS[currentScenarioIdx];
+      const payload = {
+        tool: "Courier Symphony Reality Engine (Beta)",
+        report_type: "Repository Reality Audit",
+        generated_at: new Date().toISOString(),
+        is_synthetic_demo: true,
+        repository: {
+          name: s.name,
+          meta: s.meta,
+          reality_score: s.score,
+          risk_evaluation: s.risk
+        },
+        metrics: s.metrics,
+        identified_risk_patterns: s.risks,
+        top_5_recommended_actions: s.steps,
+        audit_note: "Dieser Report ist ein interaktives Demo-Beispiel von couriersymphony.de. Ein echter Report umfasst die unbestechliche 48h-Analyse Ihres echten Repositories."
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `reality_report_${s.name.replace(/[^a-zA-Z0-9_-]/g, "_")}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function applyToQuickCheck() {
+      const s = SCENARIOS[currentScenarioIdx];
+      document.getElementById("qcCi").value = s.qc.ci;
+      document.getElementById("qcTest").value = s.qc.test;
+      document.getElementById("qcDeps").value = s.qc.deps;
+      document.getElementById("qcTodo").value = s.qc.todo;
+      document.getElementById("qcSec").value = s.qc.sec;
+      calculateRealityScore();
+    }
+
     function calculateRealityScore() {
       const ci = parseInt(document.getElementById('qcCi').value, 10);
       const test = parseInt(document.getElementById('qcTest').value, 10);
