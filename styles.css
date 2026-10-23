@@ -345,3 +345,40 @@ pre[tabindex="0"]:focus-visible {
   outline: 2px solid var(--cyan);
   outline-offset: 2px;
 }
+
+/* Print styles for high-fidelity presentation and reports (WIN-IMP-088) */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+  .header, .nav, .nav-cta, .btn, .btn-main, .btn-sub, .btn-ghost, .footer,
+  .speed-ctrl, .scenario-nav, .drop-zone, #fileInfoBadge {
+    display: none !important;
+  }
+  .wrap, main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    background: transparent !important;
+  }
+  pre, code {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+    white-space: pre-wrap !important;
+    break-inside: avoid;
+  }
+  h1, h2, h3 {
+    color: #0f172a !important;
+    break-after: avoid;
+  }
+}
