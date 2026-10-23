@@ -1,0 +1,24 @@
+{
+  "name": "Courier Symphony — Offline Reality Demo",
+  "short_name": "Courier Symphony",
+  "description": "Unabhängige deterministische Verifier-Engine für automatisierte Workflows und CSV-Audits.",
+  "start_url": "/demo.html",
+  "display": "standalone",
+  "background_color": "#040710",
+  "theme_color": "#07152b",
+  "orientation": "any",
+  "lang": "de-DE",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

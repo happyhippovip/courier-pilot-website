@@ -15,6 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#070b16">
 <link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">
@@ -307,6 +308,13 @@
       tabs[nextIdx].focus();
       tabs[nextIdx].click();
     }
+  }
+
+  // Offline Service Worker Registration (WIN-NEXT-122 & 124)
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
   }
 </script>
 </body>

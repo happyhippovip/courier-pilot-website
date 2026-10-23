@@ -61,7 +61,7 @@ console.log('Testing WIN-NEXT-110: Asset and link regression...');
 const distPath = path.join(root, 'dist');
 assert(fs.existsSync(distPath), 'dist/ must exist');
 const distFiles = fs.readdirSync(distPath);
-assert.strictEqual(distFiles.length, 25, 'dist must contain exactly 25 files');
+assert.strictEqual(distFiles.length, 27, 'dist must contain exactly 27 files (including manifest.json and sw.js)');
 assert(distFiles.includes('demo.html') && distFiles.includes('styles.css') && distFiles.includes('.htaccess'), 'Core assets present in dist');
 console.log(`✓ WIN-NEXT-110: Asset- und Link-Regression erfolgreich (${distFiles.length} Dateien in dist/).`);
 

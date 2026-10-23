@@ -382,3 +382,14 @@ pre[tabindex="0"]:focus-visible {
     break-after: avoid;
   }
 }
+
+/* High-Contrast Mode Support (WIN-NEXT-132) */
+@media (forced-colors: active) {
+  .btn, .btn-main, .btn-sub, .btn-ghost, .nav-cta, .chip, .badge, th, td {
+    forced-color-adjust: none;
+    border: 1px solid ButtonText !important;
+  }
+  .is-active, [aria-selected="true"], [aria-pressed="true"] {
+    outline: 2px solid Highlight !important;
+  }
+}

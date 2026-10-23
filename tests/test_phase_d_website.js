@@ -10,7 +10,8 @@ const PAGES = [
 ];
 const ASSETS = [
   "styles.css", "favicon.svg", "apple-touch-icon.png", "og-cover.png",
-  "robots.txt", "sitemap.xml", "receipt.schema.json", "sample-receipt.json",
+  "robots.txt", "sitemap.xml", "manifest.json", "sw.js",
+  "receipt.schema.json", "sample-receipt.json",
   "sample-reality-report.json", "sample-inventory-dirty.csv", "sample-inventory-clean.json"
 ];
 
@@ -18,7 +19,7 @@ const ASSETS = [
 ASSETS.forEach(asset => {
   assert(fs.existsSync(path.join(root, asset)), `Asset ${asset} must exist`);
 });
-console.log('✓ WIN-IMP-034: Alle 11 statischen Assets lokal vorhanden');
+console.log(`✓ WIN-IMP-034: Alle ${ASSETS.length} statischen Assets lokal vorhanden`);
 
 // 033 404-Seite
 const page404 = fs.readFileSync(path.join(root, '404.html'), 'utf8');

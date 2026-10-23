@@ -15,6 +15,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#070b16">
   <link rel="stylesheet" href="styles.css">
   <style>
@@ -789,6 +790,9 @@
             <input type="checkbox" id="optDate" checked> Datumsformat in ISO-8601 (JJJJ-MM-TT)
           </label>
           <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
+            <input type="checkbox" id="optAmount" checked> Beträge &amp; Währung normieren (€/$)
+          </label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
             <input type="checkbox" id="optEmptyRows" checked> Leere Zeilen entfernen
           </label>
           <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">
@@ -803,6 +807,9 @@
         <button class="btn-sub" onclick="resetLiveTable()">Zurücksetzen</button>
         <span id="liveStatus" role="status" aria-live="polite" aria-atomic="true" style="font-size:.88rem;color:var(--muted);margin-left:.4rem;">Bereit für lokale Analyse</span>
       </div>
+
+      <!-- Screenreader Live Announcer (WIN-NEXT-131) -->
+      <div id="liveAnnouncer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
       <!-- Error / Warning Banner -->
       <div id="liveWarningBox" role="alert" aria-live="assertive" aria-atomic="true" style="display:none;background:rgba(239,68,68,.12);border:1px solid #ef4444;border-radius:8px;padding:.8rem 1rem;font-size:.85rem;color:#fca5a5;"></div>
@@ -823,6 +830,7 @@
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanCSV()">📥 Bereinigte CSV</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadCleanJSON()">📥 Bereinigtes JSON</button>
             <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadReceiptJSON()">📜 Audit-Zertifikat (JSON)</button>
+            <button class="btn-sub" style="padding:.4rem .9rem;font-size:.85rem;" onclick="downloadAuditLogJSON()">📑 Audit-Log (JSON)</button>
           </div>
         </div>
 
@@ -2256,10 +2264,50 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
   }
 
   function cleanDate(val) {
-    const m = val.trim().match(/^(\d{1,2})[./\-](\d{1,2})[./\-](\d{2}|\d{4})(\s+\d{1,2}:\d{2}(?::\d{2})?)?$/);
+    const s = val.trim();
+    // 1. EU / German: DD.MM.YYYY, DD/MM/YYYY, DD-MM-YYYY or 2-digit year DD.MM.YY
+    const m = s.match(/^(\d{1,2})[./\-](\d{1,2})[./\-](\d{2}|\d{4})(\s+\d{1,2}:\d{2}(?::\d{2})?)?$/);
     if (m) {
       const y = m[3].length === 2 ? '20' + m[3] : m[3];
       return `${y}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}${m[4] || ''}`;
+    }
+    // 2. ISO format with slashes or dashes: YYYY/MM/DD
+    const mIso = s.match(/^(\d{4})[./\-](\d{1,2})[./\-](\d{1,2})(\s+\d{1,2}:\d{2}(?::\d{2})?)?$/);
+    if (mIso) {
+      return `${mIso[1]}-${mIso[2].padStart(2, '0')}-${mIso[3].padStart(2, '0')}${mIso[4] || ''}`;
+    }
+    return val;
+  }
+
+  function cleanAmount(val) {
+    let s = val.trim();
+    if (!s) return val;
+    let currency = '';
+    if (/[€$£¥]|EUR|USD|CHF|GBP/i.test(s)) {
+      if (s.includes('€') || /\bEUR\b/i.test(s)) currency = 'EUR';
+      else if (s.includes('$') || /\bUSD\b/i.test(s)) currency = 'USD';
+      else if (/\bCHF\b/i.test(s)) currency = 'CHF';
+      else if (s.includes('£') || /\bGBP\b/i.test(s)) currency = 'GBP';
+    }
+    let numPart = s.replace(/[€$£¥]|EUR|USD|CHF|GBP/gi, '').trim();
+    // German format with thousands dots and comma: 1.250,50 -> 1250.50
+    if (/^\d{1,3}(\.\d{3})+,\d{1,2}$/.test(numPart)) {
+      numPart = numPart.replace(/\./g, '').replace(',', '.');
+    }
+    // German comma without thousands dots: 1250,50 -> 1250.50
+    else if (/^\d+,\d{1,2}$/.test(numPart)) {
+      numPart = numPart.replace(',', '.');
+    }
+    // US format with thousands commas: 1,250.50 -> 1250.50
+    else if (/^\d{1,3}(,\d{3})+\.\d{1,2}$/.test(numPart)) {
+      numPart = numPart.replace(/,/g, '');
+    }
+    // Swiss format with apostrophes: 1'250.50 -> 1250.50
+    else if (/^\d{1,3}('\d{3})+\.\d{1,2}$/.test(numPart)) {
+      numPart = numPart.replace(/'/g, '');
+    }
+    if (!isNaN(parseFloat(numPart)) && isFinite(numPart)) {
+      return currency ? `${numPart} ${currency}` : numPart;
     }
     return val;
   }
@@ -2278,8 +2326,8 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     if (h.includes("name") || h.includes("kunde") || h.includes("kontakt")) {
       return { label: "Name", pill: "Title-Case", color: "#a78bfa", bg: "rgba(167,139,250,.15)" };
     }
-    if (h.includes("betrag") || h.includes("preis") || h.includes("bestand") || h.includes("duration") || h.includes("menge")) {
-      return { label: "Numerisch", pill: "Num / Messwert", color: "#60a5fa", bg: "rgba(96,165,250,.15)" };
+    if (h.includes("betrag") || h.includes("preis") || h.includes("summe") || h.includes("amount") || h.includes("price") || h.includes("bestand") || h.includes("kosten")) {
+      return { label: "Betrag", pill: "Währung / Dezimal", color: "#60a5fa", bg: "rgba(96,165,250,.15)" };
     }
     return { label: "Text", pill: "Trim / Clean", color: "var(--muted)", bg: "rgba(174,185,205,.1)" };
   }
@@ -2309,6 +2357,7 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const optEmail = document.getElementById('optEmail').checked;
     const optName = document.getElementById('optName').checked;
     const optDate = document.getElementById('optDate').checked;
+    const optAmount = document.getElementById('optAmount') ? document.getElementById('optAmount').checked : true;
     const optEmptyRows = document.getElementById('optEmptyRows').checked;
     const optDedup = document.getElementById('optDedup').checked;
 
@@ -2402,6 +2451,12 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
             val = normDate;
             rowFixes.push(`Datum (${c+1})`);
           }
+        } else if (optAmount && (colHeader.includes("betrag") || colHeader.includes("preis") || colHeader.includes("summe") || colHeader.includes("amount") || colHeader.includes("price") || colHeader.includes("kosten"))) {
+          const normAmt = cleanAmount(val);
+          if (normAmt !== val) {
+            val = normAmt;
+            rowFixes.push(`Betrag (${c+1})`);
+          }
         }
 
         if (val !== originalVal) {
@@ -2491,12 +2546,12 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     let headHtml = "<tr style='border-bottom:1px solid var(--line);color:var(--muted);'>";
     headers.forEach(h => {
       const typeInfo = detectColumnType(h);
-      headHtml += `<th style='padding:.6rem .75rem;white-space:nowrap;text-align:left;'>
+      headHtml += `<th scope="col" style='padding:.6rem .75rem;white-space:nowrap;text-align:left;'>
         <div style="font-weight:700;color:var(--ink);">${escapeHtml(h)}</div>
         <span style="display:inline-block;margin-top:.25rem;font-size:.7rem;font-weight:600;padding:.15rem .45rem;border-radius:4px;color:${typeInfo.color};background:${typeInfo.bg};border:1px solid rgba(174,185,205,.15);">${typeInfo.pill}</span>
       </th>`;
     });
-    headHtml += "<th style='padding:.6rem .75rem;white-space:nowrap;text-align:left;'><div style='font-weight:700;color:var(--ink);'>Angewendete Regeln</div><span style='display:inline-block;margin-top:.25rem;font-size:.7rem;color:var(--muted);'>Audit &amp; Fixes</span></th></tr>";
+    headHtml += "<th scope=\"col\" style='padding:.6rem .75rem;white-space:nowrap;text-align:left;'><div style='font-weight:700;color:var(--ink);'>Angewendete Regeln</div><span style='display:inline-block;margin-top:.25rem;font-size:.7rem;color:var(--muted);'>Audit &amp; Fixes</span></th></tr>";
     thead.innerHTML = headHtml;
     table.appendChild(thead);
 
@@ -2547,6 +2602,10 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const delim = document.getElementById('delimiterSelect').value === 'auto' ? detectDelimiter(lastCleanCSV) : document.getElementById('delimiterSelect').value;
     const headerCols = (lastCleanCSV.split('\n')[0] || "").split(delim);
     renderResultTable(headerCols, mode);
+    const announcer = document.getElementById('liveAnnouncer');
+    if (announcer) {
+      announcer.textContent = mode === 'all' ? 'Alle Zeilen werden angezeigt.' : 'Nur geänderte Zeilen werden angezeigt.';
+    }
   }
 
   function downloadCleanCSV() {
@@ -2591,6 +2650,28 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const a = document.createElement("a");
     a.href = url;
     a.download = `pruefzertifikat_${loadedFileName.replace(/\.[^/.]+$/, "")}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadAuditLogJSON() {
+    if (!lastReceipt) return;
+    const auditData = {
+      audit_title: "Courier Symphony Audit Trail",
+      verification_status: lastReceipt.verification_status,
+      timestamp_utc: lastReceipt.timestamp_utc,
+      file_name: lastReceipt.file_name,
+      delimiter_used: lastReceipt.delimiter_used,
+      input_sha256: lastReceipt.input_sha256,
+      output_sha256: lastReceipt.output_sha256,
+      metrics: lastReceipt.metrics,
+      detailed_changes: lastReceipt.audit_changes || []
+    };
+    const blob = new Blob([JSON.stringify(auditData, null, 2)], { type: "application/json;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `audit_log_${loadedFileName.replace(/\.[^/.]+$/, "")}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -2700,6 +2781,13 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
     const copyLogsLbl = document.getElementById('lblCopyConsoleLogs');
     if (copyLogsLbl) copyLogsLbl.textContent = '📋 Logs kopieren';
     updateLogCounter();
+  }
+
+  // Offline Service Worker Registration (WIN-NEXT-122 & 124)
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
   }
 </script>
 </body>
