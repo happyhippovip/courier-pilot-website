@@ -849,8 +849,8 @@
         <!-- Interactive Table View with Filter Buttons -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
           <div style="display:flex;gap:.4rem;" role="group" aria-label="Tabellenfilter">
-            <button class="btn-sub" id="btnFilterAll" aria-pressed="true" style="padding:.2rem .6rem;font-size:.78rem;background:var(--line);" onclick="filterResultTable('all')">Alle Zeilen</button>
-            <button class="btn-sub" id="btnFilterChanged" aria-pressed="false" style="padding:.2rem .6rem;font-size:.78rem;" onclick="filterResultTable('changed')">Nur geänderte Zeilen</button>
+            <button type="button" class="btn-sub" id="btnFilterAll" aria-pressed="true" style="padding:.2rem .6rem;font-size:.78rem;background:var(--line);" onclick="filterResultTable('all')">Alle Zeilen</button>
+            <button type="button" class="btn-sub" id="btnFilterChanged" aria-pressed="false" style="padding:.2rem .6rem;font-size:.78rem;" onclick="filterResultTable('changed')">Nur geänderte Zeilen</button>
           </div>
           <span style="font-size:.78rem;color:var(--muted);">Grün markierte Werte wurden korrigiert</span>
         </div>
