@@ -1089,6 +1089,10 @@
   let timerId = null;
   let loopTimerId = null;
   let logLineCounter = 0;
+  let demoSpeed = 4500;
+  let stopwatchTimerId = null;
+  let stopwatchStartTime = 0;
+  let stopwatchElapsed = 0;
 
   function selectScenario(key) {
     const btn = document.querySelector(`.scenario-btn[data-scenario="${key}"]`);
@@ -1817,8 +1821,6 @@
     }
   }
 
-  let demoSpeed = 4500;
-
   function getDemoSpeed() {
     const sel = document.getElementById('speedSelect');
     if (sel && sel.value) {
@@ -1873,10 +1875,6 @@
       // Ignore localStorage restrictions in sandboxed environments
     }
   }
-
-  let stopwatchTimerId = null;
-  let stopwatchStartTime = 0;
-  let stopwatchElapsed = 0;
 
   function updateStopwatchBadge() {
     const badge = document.getElementById('demoStopwatchBadge');
