@@ -2047,6 +2047,15 @@
       .replace(/'/g, "&#039;");
   }
 
+  function escapeCSVCell(val, delim) {
+    if (val == null) return "";
+    const s = String(val);
+    if (s.includes(delim) || s.includes('"') || s.includes('\n') || s.includes('\r')) {
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
   // --- CSV Cleaner V1 Engine (100% Client-Side & Cryptographically Verified) ---
   let lastCleanCSV = "";
   let lastReceipt = null;
@@ -2412,10 +2421,10 @@ ART-10492,kugellager 12mm stahl,Mechanik,250,14.10.2026,+49 (0) 89 1234567,aktiv
       });
     }
 
-    // Build Clean CSV Output
-    const csvLinesOut = [headerCols.join(delim)];
+    // Build Clean CSV Output (RFC 4180 compliant escaping)
+    const csvLinesOut = [headerCols.map(h => escapeCSVCell(h, delim)).join(delim)];
     parsedResultRows.forEach(row => {
-      csvLinesOut.push(row.cleanCols.join(delim));
+      csvLinesOut.push(row.cleanCols.map(v => escapeCSVCell(v, delim)).join(delim));
     });
     lastCleanCSV = csvLinesOut.join("\n");
 
