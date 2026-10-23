@@ -2076,6 +2076,16 @@
   }
 
   function handleFile(file) {
+    if (!file) return;
+    const MAX_BYTES = 5 * 1024 * 1024; // 5 MB Sicherheitsgrenze (WIN-IMP-056)
+    const warningBox = document.getElementById('csvWarningBox');
+    if (file.size > MAX_BYTES) {
+      if (warningBox) {
+        warningBox.innerHTML = `<strong>Sicherheitsgrenze überschritten:</strong> Die Datei "${escapeHtml(file.name)}" (${(file.size / (1024*1024)).toFixed(1)} MB) überschreitet das Limit von 5 MB für die browserseitige Verarbeitung.`;
+        warningBox.style.display = 'block';
+      }
+      return;
+    }
     loadedFileName = file.name;
     const badge = document.getElementById('fileInfoBadge');
     badge.textContent = `✓ Geladen: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
